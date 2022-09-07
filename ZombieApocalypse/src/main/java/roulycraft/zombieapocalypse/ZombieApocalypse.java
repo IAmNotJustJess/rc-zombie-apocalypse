@@ -2,14 +2,18 @@ package roulycraft.zombieapocalypse;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import roulycraft.zombieapocalypse.commands.ZACommand;
+import roulycraft.zombieapocalypse.managers.GameManager;
+
+import java.util.Objects;
 
 public final class ZombieApocalypse extends JavaPlugin {
 
+    private GameManager gameManager;
     @Override
     public void onEnable() {
 
         getLogger().info("Zinicjalizowano plugin!");
-        getServer().getPluginCommand("za").setExecutor(new ZACommand());
+        Objects.requireNonNull(getServer().getPluginCommand("za")).setExecutor(new ZACommand());
 //        getPlugin(ZombieApocalypse.class).saveDefaultConfig();
         // Plugin startup logic
     }
