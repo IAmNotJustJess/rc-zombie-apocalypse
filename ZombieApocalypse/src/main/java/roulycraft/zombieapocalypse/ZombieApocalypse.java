@@ -12,7 +12,7 @@ public final class ZombieApocalypse extends JavaPlugin {
     @Override
     public void onEnable() {
 
-        getLogger().info("Zinicjalizowano plugin!");
+        getLogger().info("§aZinicjalizowano plugin ZombieApocalypse!");
         Objects.requireNonNull(getServer().getPluginCommand("za")).setExecutor(new ZACommand());
 //        getPlugin(ZombieApocalypse.class).saveDefaultConfig();
         // Plugin startup logic

@@ -3,10 +3,7 @@ package roulycraft.zombieapocalypse.managers;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import java.util.ArrayList;
-import java.util.UUID;
-import java.util.List;
-import java.util.HashMap;
+import java.util.*;
 
 public class GameInstance {
 
@@ -14,6 +11,7 @@ public class GameInstance {
     private final String name;
     private final List<UUID> players = new ArrayList<>();
     private String displayName;
+    private Location lobby;
     private final List<Location> playerSpawnLocs = new ArrayList<>();
     private final List<Location> zombieSpawnLocs = new ArrayList<>();
     public GameState gameState = GameState.LOBBY;
@@ -41,6 +39,13 @@ public class GameInstance {
         return this.displayName;
     }
 
+    public Location getLobby() {
+        return this.lobby;
+    }
+    public List<UUID> getPlayers() {
+        return this.players;
+    }
+
     public List<Location> getPlayerSpawnLocs() {
         return this.playerSpawnLocs;
     }
@@ -49,13 +54,24 @@ public class GameInstance {
         return this.zombieSpawnLocs;
     }
 
-    public String getConcretePlayerSpawnLocs(Integer i) {
-        return String.valueOf(this.playerSpawnLocs.get(i));
+    public Location getConcretePlayerSpawnLoc(Integer i) {
+        return this.playerSpawnLocs.get(i);
     }
 
-    public String getConcreteZombieSpawnLocs(Integer i) {
-        return String.valueOf(this.zombieSpawnLocs.get(i));
+    public Location getConcreteZombieSpawnLoc(Integer i) {
+        return this.zombieSpawnLocs.get(i);
     }
+
+    public Location getRandomPlayerSpawnLoc() {
+        int rng = new Random().nextInt(this.playerSpawnLocs.size());
+        return this.playerSpawnLocs.get(rng);
+    }
+
+    public Location getRandomZombieSpawnLoc() {
+        int rng = new Random().nextInt(this.zombieSpawnLocs.size());
+        return this.zombieSpawnLocs.get(rng);
+    }
+
 
     public Integer getWave() {
         return this.wave;
@@ -106,6 +122,10 @@ public class GameInstance {
         if (this.gameState != GameState.ACTIVE && this.gameState != GameState.FINISHED) {
             this.displayName = s;
         }
+    }
+
+    public void setLobby(Location l) {
+        this.lobby = l;
     }
 
     public void setWave(Integer i) {
