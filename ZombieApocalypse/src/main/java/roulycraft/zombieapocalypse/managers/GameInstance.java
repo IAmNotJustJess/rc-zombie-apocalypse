@@ -103,45 +103,66 @@ public class GameInstance {
 
     // SETTERS
     public void setDisplayName(String s) {
-        this.displayName = s;
+        if (this.gameState != GameState.ACTIVE && this.gameState != GameState.FINISHED) {
+            this.displayName = s;
+        }
     }
 
     public void setWave(Integer i) {
-        this.wave = i;
+        if (this.gameState == GameState.ACTIVE) {
+            this.wave = i;
+        }
     }
 
     public void setTimeLeft(Integer i) {
-        this.timeLeft = i;
+        if (this.gameState == GameState.ACTIVE) {
+            this.timeLeft = i;
+        }
     }
 
     public void setZombieKills(Integer i) {
-        this.zombieKills = i;
+        if (this.gameState == GameState.ACTIVE) {
+            this.zombieKills = i;
+        }
     }
 
     public void setGameDifficulty(Integer i) {
-        this.gameDifficulty = i;
+        if (this.gameState == GameState.STARTING) {
+            this.gameDifficulty = i;
+        }
     }
 
     public void setZombieHPMultiplier(Double d) {
-        this.zombieHPMultiplier = d;
+        if (this.gameState == GameState.ACTIVE) {
+            this.zombieHPMultiplier = d;
+        }
     }
 
     public void setZombieDMGMultiplier(Double d) {
-        this.zombieDMGMultiplier = d;
+        if (this.gameState == GameState.ACTIVE) {
+            this.zombieDMGMultiplier = d;
+        }
     }
 
     public void setPlayerHPMultiplier(Double d) {
-        this.playerHPMultiplier = d;
+        if (this.gameState == GameState.ACTIVE) {
+            this.playerHPMultiplier = d;
+        }
     }
 
     public void setPlayerDMGMultiplier(Double d) {
-        this.playerDMGMultiplier = d;
+        if (this.gameState == GameState.ACTIVE) {
+            this.playerDMGMultiplier = d;
+        }
     }
 
     public void setPlayerAmmoMultiplier(Double d) {
-        this.playerAmmoMultiplier = d;
+        if (this.gameState == GameState.ACTIVE) {
+            this.playerAmmoMultiplier = d;
+        }
     }
 
+    // A. SETTERS
     public void setGameState(GameState gameState) {
 
         if (this.gameState == GameState.LOBBY && gameState != GameState.COUNTDOWN) return;
