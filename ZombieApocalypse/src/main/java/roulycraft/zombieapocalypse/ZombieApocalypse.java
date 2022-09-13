@@ -2,13 +2,13 @@ package roulycraft.zombieapocalypse;
 
 import org.bukkit.plugin.java.JavaPlugin;
 import roulycraft.zombieapocalypse.commands.ZACommand;
-import roulycraft.zombieapocalypse.managers.GameManager;
+import roulycraft.zombieapocalypse.managers.GameInstance;
 
 import java.util.Objects;
 
 public final class ZombieApocalypse extends JavaPlugin {
 
-    private GameManager gameManager;
+    private GameInstance gameManager;
     @Override
     public void onEnable() {
 

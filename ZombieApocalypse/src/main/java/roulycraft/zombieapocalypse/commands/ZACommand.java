@@ -13,12 +13,12 @@ public class ZACommand implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("za")) {
 
             if (args.length == 0) {
-                sender.sendMessage("Wincyj argumentów dawaj §x§0§0§f§f§0§0test §6test");
+                sender.sendMessage("§cPodaj więcej argumentów!");
                 return true;
             }
 
             if (!sender.isOp() || !sender.hasPermission("podstawka")) {
-                sender.sendMessage("Permisje kurwa");
+                sender.sendMessage("§4BŁĄD! §cBrakuje uprawnień...");
                 return true;
             }
 
@@ -41,7 +41,6 @@ public class ZACommand implements CommandExecutor {
 
                 return true;
             }
-            sender.sendMessage("Jest zajebiście");
             return true;
 
             }
