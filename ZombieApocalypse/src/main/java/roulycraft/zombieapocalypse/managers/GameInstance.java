@@ -1,8 +1,7 @@
 package roulycraft.zombieapocalypse.managers;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.bukkit.Bukkit;
-import roulycraft.zombieapocalypse.ZombieApocalypse;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.UUID;
@@ -12,36 +11,25 @@ import java.util.HashMap;
 public class GameInstance {
 
     // INSTANCE VALUES
-    private final ZombieApocalypse plugin;
     private final String name;
-    private final String displayName;
-    private final List<UUID> playerSpawnLocs = new ArrayList<UUID>();
-    private final List<UUID> zombieSpawnLocs = new ArrayList<UUID>();
+    private final List<UUID> players = new ArrayList<>();
+    private String displayName;
+    private final List<Location> playerSpawnLocs = new ArrayList<>();
+    private final List<Location> zombieSpawnLocs = new ArrayList<>();
     public GameState gameState = GameState.LOBBY;
-    private final Integer wave;
-    private final Integer timeLeft;
-    private final Integer zombieKills;
-    private final Integer gameDifficulty;
-    private final Double zombieHPMultiplier;
-    private final Double zombieDMGMultiplier;
-    private final Double playerHPMultiplier;
-    private final Double playerDMGMultiplier;
-    private final Double playerAmmoMultiplier;
+    private Integer wave;
+    private Integer timeLeft;
+    private Integer zombieKills;
+    private Integer gameDifficulty;
+    private Double zombieHPMultiplier;
+    private Double zombieDMGMultiplier;
+    private Double playerHPMultiplier;
+    private Double playerDMGMultiplier;
+    private Double playerAmmoMultiplier;
     private final HashMap<String, Boolean> selectedModifiers = new HashMap<String, Boolean>();
 
-    public GameInstance(ZombieApocalypse plugin, String name, String displayName, Integer wave, Integer timeLeft, Integer zombieKills, Integer gameDifficulty, Double zombieHPMultiplier, Double zombieDMGMultiplier, Double playerHPMultiplier, Double playerDMGMultiplier, Double playerAmmoMultiplier) {
-        this.plugin = plugin;
+    public GameInstance(String name) {
         this.name = name;
-        this.displayName = displayName;
-        this.wave = wave;
-        this.timeLeft = timeLeft;
-        this.zombieKills = zombieKills;
-        this.gameDifficulty = gameDifficulty;
-        this.zombieHPMultiplier = zombieHPMultiplier;
-        this.zombieDMGMultiplier = zombieDMGMultiplier;
-        this.playerHPMultiplier = playerHPMultiplier;
-        this.playerDMGMultiplier = playerDMGMultiplier;
-        this.playerAmmoMultiplier = playerAmmoMultiplier;
     }
 
     // GETTERS
@@ -53,11 +41,11 @@ public class GameInstance {
         return this.displayName;
     }
 
-    public List<UUID> getPlayerSpawnLocs() {
+    public List<Location> getPlayerSpawnLocs() {
         return this.playerSpawnLocs;
     }
 
-    public List<UUID> getZombieSpawnLocs() {
+    public List<Location> getZombieSpawnLocs() {
         return this.zombieSpawnLocs;
     }
 
@@ -112,7 +100,48 @@ public class GameInstance {
     public String getConcreteSelectedModifiers(String v) {
         return String.valueOf(this.selectedModifiers.get(v));
     }
+
     // SETTERS
+    public void setDisplayName(String s) {
+        this.displayName = s;
+    }
+
+    public void setWave(Integer i) {
+        this.wave = i;
+    }
+
+    public void setTimeLeft(Integer i) {
+        this.timeLeft = i;
+    }
+
+    public void setZombieKills(Integer i) {
+        this.zombieKills = i;
+    }
+
+    public void setGameDifficulty(Integer i) {
+        this.gameDifficulty = i;
+    }
+
+    public void setZombieHPMultiplier(Double d) {
+        this.zombieHPMultiplier = d;
+    }
+
+    public void setZombieDMGMultiplier(Double d) {
+        this.zombieDMGMultiplier = d;
+    }
+
+    public void setPlayerHPMultiplier(Double d) {
+        this.playerHPMultiplier = d;
+    }
+
+    public void setPlayerDMGMultiplier(Double d) {
+        this.playerDMGMultiplier = d;
+    }
+
+    public void setPlayerAmmoMultiplier(Double d) {
+        this.playerAmmoMultiplier = d;
+    }
+
     public void setGameState(GameState gameState) {
 
         if (this.gameState == GameState.LOBBY && gameState != GameState.COUNTDOWN) return;
@@ -125,7 +154,7 @@ public class GameInstance {
 
         this.gameState = gameState;
 
-        switch(gameState) {
+        switch (gameState) {
             case LOBBY:
                 Bukkit.broadcastMessage("Lobby");
                 break;
@@ -136,9 +165,5 @@ public class GameInstance {
                 Bukkit.broadcastMessage("Aktywna");
                 break;
         }
-    }
-
-    public void cleanUp() {
-
     }
 }
