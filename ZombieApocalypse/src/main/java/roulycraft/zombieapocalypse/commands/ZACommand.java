@@ -25,34 +25,36 @@ public class ZACommand implements CommandExecutor {
         if (command.getName().equalsIgnoreCase("za")) {
 
             if (args.length == 0) {
+                sender.sendMessage(missingArgumentsMessage);
                 return true;
             }
 
-            if (Objects.equals(args[0], "help")) {
-
-                if (cAIE.obtain(args, 1).equals("false")) {
-                    sender.sendMessage("§6== §eKomendy Podstawowe §aZombie Apocalypse §6==");
-                    sender.sendMessage("§6/za help §8- §ePomoc ogólna");
-                    sender.sendMessage("§6/za leave §8- §eWyjście z areny");
-                    if (sender.isOp() || sender.hasPermission("technik")) {
-                        sender.sendMessage("§6/za join <arena> §8- §eDołączenia na konkretną arenę");
-                        sender.sendMessage("§6/za help ct §8- §ePomoc tworzeniu aren");
-                        sender.sendMessage("§6/za help debug §8- §ePomoc w testowaniu lub debugowaniu aren");
-                        return true;
+            switch(args[0]) {
+                case "help": {
+                    if (cAIE.obtain(args, 1).equals("false")) {
+                        sender.sendMessage(" ");
+                        sender.sendMessage("§6== §eKomendy Podstawowe §aZombie Apocalypse §6==");
+                        sender.sendMessage("§6/za help §8- §ePomoc ogólna.");
+                        sender.sendMessage("§6/za leave §8- §eWyjście z areny.");
+                        if (sender.isOp() || sender.hasPermission("technik")) {
+                            sender.sendMessage("§6/za join <arena> §8- §eDołączenia na konkretną arenę.");
+                            sender.sendMessage("§6/za help ct §8- §ePomoc tworzeniu aren.");
+                            sender.sendMessage("§6/za help debug §8- §ePomoc w testowaniu lub debugowaniu aren.");
+                            return true;
+                        }
+                    } else {
+                        if (Objects.equals(args[1], "ct")) {
+                            sender.sendMessage(" ");
+                            sender.sendMessage("§6== §eKomendy Creation Tools §aZombie Apocalypse §6==");
+                            sender.sendMessage("§6/za ct <arena> create §8- §eStwarza instancję areny.");
+                            sender.sendMessage("§6/za ct <arena> lobby §8- §eUstawia lokacje lobby instancji areny.");
+                            sender.sendMessage("§6/za ct <arena> spawn add §8- §edodaje spawn graczy instancji areny.");
+                            return true;
+                        }
                     }
                 }
 
-                else {
-                    if (Objects.equals(args[1], "ct")) {
-                        sender.sendMessage("§6== §eKomendy Creation Tools §aZombie Apocalypse §6==");
-                        sender.sendMessage("§6/za ct <arena> create §8- §eStwarza instancję areny");
-                        sender.sendMessage("§6/za ct <arena> lobby §8- §eUstawia lokacje lobby instancji areny");
-                        sender.sendMessage("§6/za ct <arena> spawn add §8- §edodaje spawn graczy instancji areny");
-                        return true;
-                    }
-                }
-
-                if (Objects.equals(args[0], "ct")) {
+                case "ct":
 
                     if (!sender.isOp() || !sender.hasPermission("za.ct")) {
                         sender.sendMessage(missingPermissionMessage);
@@ -69,16 +71,14 @@ public class ZACommand implements CommandExecutor {
                         return true;
                     }
 
-                    if (Objects.equals(args[2], "create")) {
-                        GameManager.getManager().createArena((Player) sender, args[1]);
+                    switch (args[2]) {
+                        case "create":
+                            GameManager.getManager().createArena((Player) sender, args[1]);
                     }
 
-                    return true;
-                }
-
-                return false;
+                return true;
             }
-            return false;
+
         }
         return false;
     }

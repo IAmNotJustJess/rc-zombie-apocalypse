@@ -16,7 +16,7 @@ public final class ZombieApocalypse extends JavaPlugin {
     public void onEnable() {
 
         ConsoleCommandSender console = Bukkit.getConsoleSender();
-        console.sendMessage("§aZinicjalizowano plugin ZombieApocalypse!");
+        console.sendMessage("§6== §eZinicjalizowano plugin §aZombieApocalypse§e! §6==");
         // Tutaj dodać inicjalizowanie map zapisanych do pliku
         Objects.requireNonNull(getServer().getPluginCommand("za")).setExecutor(new ZACommand());
 //        getPlugin(ZombieApocalypse.class).saveDefaultConfig();

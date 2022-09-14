@@ -103,7 +103,7 @@ public class GameManager {
         for (GameInstance gameInstance1 : this.gameInstanceList) {
             if (gameInstance1.getName().equals(name)) {
                 p.sendMessage("§4BŁĄD! §cArena już istnieje!");
-                break;
+                return null;
             }
         }
 
@@ -111,7 +111,7 @@ public class GameManager {
         this.gameInstanceList.add(gameInstance);
 
 
-        p.sendMessage("§2SUKCES! §aArena " + name + " została utworzona!");
+        p.sendMessage("§2SUKCES! §aArena §f" + name + " §azostała utworzona!");
         return gameInstance;
     }
 
