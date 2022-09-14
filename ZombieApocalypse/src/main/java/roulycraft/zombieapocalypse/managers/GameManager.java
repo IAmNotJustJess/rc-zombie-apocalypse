@@ -18,15 +18,15 @@ public class GameManager {
     private final Map<UUID, ItemStack[]> lastPlayerInventories = new HashMap<>();
     private final Map<UUID, ItemStack[]> lastPlayerArmour = new HashMap<>();
 
-    private final List<GameInstance> gameInstanceList = new ArrayList<GameInstance>();
+    private final List<GameInstance> gameInstanceList = new ArrayList<>();
 
     private GameManager() {}
 
-    public GameManager getManager() {
-        if (this.gameManager == null) {
-            this.gameManager = new GameManager();
+    public static GameManager getManager() {
+        if (gameManager == null) {
+            gameManager = new GameManager();
         }
-        return this.gameManager;
+        return gameManager;
     }
 
     public GameInstance getGameInstance(String name){
@@ -110,6 +110,8 @@ public class GameManager {
         gameInstance = new GameInstance(name);
         this.gameInstanceList.add(gameInstance);
 
+
+        p.sendMessage("§2SUKCES! §aArena " + name + " została utworzona!");
         return gameInstance;
     }
 
