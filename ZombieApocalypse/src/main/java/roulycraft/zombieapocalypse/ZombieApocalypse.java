@@ -1,7 +1,6 @@
 package roulycraft.zombieapocalypse;
 
 import org.bukkit.Bukkit;
-import org.bukkit.command.CommandSender;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import roulycraft.zombieapocalypse.commands.ZACommand;
@@ -12,9 +11,13 @@ import java.util.Objects;
 public final class ZombieApocalypse extends JavaPlugin {
 
     private GameInstance gameInstance;
+    private GameManager gameManager;
+
     @Override
     public void onEnable() {
 
+        GameManager.injectPlugin(this);
+        this.saveDefaultConfig();
         ConsoleCommandSender console = Bukkit.getConsoleSender();
         console.sendMessage("§6== §eZinicjalizowano plugin §aZombieApocalypse§e! §6==");
         // Tutaj dodać inicjalizowanie map zapisanych do pliku
@@ -25,6 +28,7 @@ public final class ZombieApocalypse extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        this.saveDefaultConfig();
         // Funkcja przechodząca przez wszystkie pliki i zapisująca rzeczy do plików
     }
 

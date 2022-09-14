@@ -1,37 +1,45 @@
 package roulycraft.zombieapocalypse.commands;
 
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Cat;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
 import java.util.Objects;
 import roulycraft.zombieapocalypse.managers.GameInstance;
 import roulycraft.zombieapocalypse.managers.GameManager;
-import roulycraft.zombieapocalypse.utility.CatchArgumentIndexException;
 
 public class ZACommand implements CommandExecutor {
-
-    private final CatchArgumentIndexException cAIE = new CatchArgumentIndexException();
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
         String missingPermissionMessage = "§4BŁĄD! §cBrakuje uprawnień!";
         String missingArgumentsMessage = "§4BŁĄD! §cPodaj więcej argumentów!";
+        String noArgumentsMessage = "§4BŁĄD! §cWpisz /za help by wyświetlić listę argumentów!";
         String missingInstanceNameMessage = "§4BŁĄD! §cWprowadź nazwę areny!";
+
+        if (!(sender instanceof Player)) {
+
+            sender.sendMessage("§4BŁĄD §cDla bezpieczeństwa, tylko gracze mogą wykorzystywać tą komendę!");
+            return true;
+
+        }
+
+        Player p = (Player) sender;
 
         if (command.getName().equalsIgnoreCase("za")) {
 
             if (args.length == 0) {
-                sender.sendMessage(missingArgumentsMessage);
+
+                sender.sendMessage(noArgumentsMessage);
                 return true;
+
             }
 
             switch(args[0]) {
                 case "help": {
-                    if (cAIE.obtain(args, 1).equals("false")) {
+                    if (args.length == 1) {
                         sender.sendMessage(" ");
                         sender.sendMessage("§6== §eKomendy Podstawowe §aZombie Apocalypse §6==");
                         sender.sendMessage("§6/za help §8- §ePomoc ogólna.");
@@ -61,19 +69,31 @@ public class ZACommand implements CommandExecutor {
                         return true;
                     }
 
-                    if (Objects.isNull(args[1])) {
+                    if (args.length == 1) {
                         sender.sendMessage(missingInstanceNameMessage);
                         return true;
                     }
 
-                    if (Objects.isNull(args[2])) {
+                    if (args.length == 2) {
                         sender.sendMessage(missingArgumentsMessage);
                         return true;
                     }
 
                     switch (args[2]) {
                         case "create":
+
                             GameManager.getManager().createArena((Player) sender, args[1]);
+                            return true;
+
+                        case "lobby":
+
+                            GameManager.getManager().getGameInstance(args[1]).setLobby(p.getLocation());
+                            GameManager.getManager().getGameInstanceConfig(args[1]).set("lobby", p.getLocation());
+
+                            GameManager.getManager().saveGameInstanceConfig(args[1]);
+
+                            sender.sendMessage("§2SUKCES! §aLokacja Lobby areny §f" + args[1] + " §azostała ustawiona!");
+
                     }
 
                 return true;
