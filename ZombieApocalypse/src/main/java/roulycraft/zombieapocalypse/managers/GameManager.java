@@ -2,6 +2,9 @@ package roulycraft.zombieapocalypse.managers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.configuration.Configuration;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -10,11 +13,7 @@ import org.bukkit.command.ConsoleCommandSender;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 
 import roulycraft.zombieapocalypse.ZombieApocalypse;
@@ -116,7 +115,7 @@ public class GameManager {
 
         for (GameInstance gameInstance1 : this.gameInstanceList) {
             if (gameInstance1.getName().equals(name)) {
-                p.sendMessage("§4BŁĄD! §cArena §f" + name + "§cjuż istnieje!");
+                p.sendMessage("§4BŁĄD! §cArena §f" + name + " §cjuż istnieje!");
                 return null;
             }
         }
@@ -147,10 +146,11 @@ public class GameManager {
         }
 
         gameInstanceConfig = YamlConfiguration.loadConfiguration(gameInstanceFile);
+        gameInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances", (name + ".yml"));
     }
 
     public FileConfiguration getGameInstanceConfig(String name) {
-        if (gameInstanceFile == null) {
+        if (gameInstanceConfig == null) {
             reloadGameInstanceConfig(name);
         }
         return gameInstanceConfig;
@@ -168,5 +168,42 @@ public class GameManager {
             console.sendMessage("§4BŁĄD KRYTYCZNY §cNie można było zapisać konfiguracji instancji areny do §f" + gameInstanceFile);
             console.sendMessage(String.valueOf(ex));
         }
+    }
+
+    public boolean loadGameInstanceConfig(String name) {
+        reloadGameInstanceConfig(name);
+
+        if (!gameInstanceFile.exists()) {
+            return false;
+        }
+
+        if (!gameInstanceList.contains(this.getGameInstance(name))) {
+
+            GameInstance gameInstance = new GameInstance(name);
+            gameInstanceList.add(gameInstance);
+        }
+
+        if(gameInstanceConfig.getLocation("lobby") != null) {
+            getGameInstance(name).setLobby(gameInstanceConfig.getLocation("lobby"));
+        }
+
+        if(gameInstanceConfig.getString("displayName") != null || Objects.equals(gameInstanceConfig.getString("displayName"), "-")) {
+            getGameInstance(name).setDisplayName(gameInstanceConfig.getString("displayname"));
+        }
+
+        for (String path : gameInstanceConfig.getConfigurationSection("playerSpawnLocs").getKeys(false)) {
+
+            Location loc = gameInstanceConfig.getLocation("playerSpawnLocs."+path);
+            getGameInstance(name).getPlayerSpawnLocs().add(loc);
+
+        }
+
+        for (String path : gameInstanceConfig.getConfigurationSection("zombieSpawnLocs").getKeys(false)) {
+
+            Location loc = gameInstanceConfig.getLocation("zombieSpawnLocs."+path);
+            getGameInstance(name).getZombieSpawnLocs().add(loc);
+
+        }
+        return true;
     }
 }

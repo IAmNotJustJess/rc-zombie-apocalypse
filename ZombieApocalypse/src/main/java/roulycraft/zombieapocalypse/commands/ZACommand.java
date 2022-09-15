@@ -74,11 +74,6 @@ public class ZACommand implements CommandExecutor {
                         return true;
                     }
 
-                    if (args.length == 2) {
-                        sender.sendMessage(missingArgumentsMessage);
-                        return true;
-                    }
-
                     switch (args[2]) {
                         case "create":
 
@@ -93,10 +88,50 @@ public class ZACommand implements CommandExecutor {
                             GameManager.getManager().saveGameInstanceConfig(args[1]);
 
                             sender.sendMessage("§2SUKCES! §aLokacja Lobby areny §f" + args[1] + " §azostała ustawiona!");
+                            return true;
 
+                        case "spawn":
+
+                            if (args.length == 3) {
+                                sender.sendMessage(missingArgumentsMessage);
+                                return false;
+                            }
+
+                            switch (args[3]) {
+                                case "add":
+
+                                    GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().add(p.getLocation());
+                                    GameManager.getManager().getGameInstanceConfig(args[1]).set(("playerSpawnLocs." + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1)), p.getLocation());
+
+                                    GameManager.getManager().saveGameInstanceConfig(args[1]);
+
+                                    sender.sendMessage("§2SUKCES! §aDodano spawn graczy nr. §f" + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1) + "§a dla areny§f " + args[1] + "§a!");
+                                    return true;
+
+                                default:
+
+                                    sender.sendMessage(missingArgumentsMessage);
+                                    return true;
+                            }
+
+                        case "reloadFile":
+
+                            if (GameManager.getManager().loadGameInstanceConfig(args[1])) {
+
+                                sender.sendMessage("§2SUKCES! §aWczytano dane instancji §f" + args[1] + " §az pliku!");
+                                return true;
+                            }
+
+                            sender.sendMessage("§4BŁĄD! §cWczytanie pliku instancji §f" + args[1] + " §cnie powiodło się - plik nie istnieje!");
+                            sender.sendMessage(String.valueOf(args.length));
+                            return false;
+
+                        default:
+
+                            sender.sendMessage(missingArgumentsMessage);
+                            return true;
                     }
 
-                return true;
             }
 
         }
