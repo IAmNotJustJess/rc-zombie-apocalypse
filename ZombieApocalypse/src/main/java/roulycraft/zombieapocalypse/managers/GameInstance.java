@@ -12,8 +12,8 @@ public class GameInstance {
     private final List<UUID> players = new ArrayList<>();
     private String displayName;
     private Location lobby;
-    private final List<Location> playerSpawnLocs = new ArrayList<>();
-    private final List<Location> zombieSpawnLocs = new ArrayList<>();
+    private List<Location> playerSpawnLocs = new ArrayList<>();
+    private List<Location> zombieSpawnLocs = new ArrayList<>();
     public GameState gameState = GameState.LOBBY;
     private Integer wave;
     private Integer timeLeft;
@@ -24,7 +24,7 @@ public class GameInstance {
     private Double playerHPMultiplier;
     private Double playerDMGMultiplier;
     private Double playerAmmoMultiplier;
-    private final HashMap<String, Boolean> selectedModifiers = new HashMap<String, Boolean>();
+    private HashMap<String, Boolean> selectedModifiers = new HashMap<String, Boolean>();
 
     public GameInstance(String name) {
         this.name = name;
@@ -126,6 +126,14 @@ public class GameInstance {
 
     public void setLobby(Location l) {
         this.lobby = l;
+    }
+
+    public void setPlayerSpawnLocs(List<Location> list) {
+        this.playerSpawnLocs = list;
+    }
+
+    public void setZombieSpawnLocs(List<Location> list) {
+        this.zombieSpawnLocs = list;
     }
 
     public void setWave(Integer i) {

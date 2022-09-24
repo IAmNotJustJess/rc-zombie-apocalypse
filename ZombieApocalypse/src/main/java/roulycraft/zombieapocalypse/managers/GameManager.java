@@ -2,9 +2,6 @@ package roulycraft.zombieapocalypse.managers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.configuration.Configuration;
-import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -109,14 +106,26 @@ public class GameManager {
         p.setFireTicks(0);
     }
 
-    public GameInstance createArena(Player p, String name) {
+    public boolean checkIfGameInstanceExists(String name) {
+
+        GameInstance gameInstance = null;
+
+        for (GameInstance gameInstance1 : this.gameInstanceList) {
+            if (gameInstance1.getName().equals(name)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+    public void createGameInstance(Player p, String name) {
 
         GameInstance gameInstance = null;
 
         for (GameInstance gameInstance1 : this.gameInstanceList) {
             if (gameInstance1.getName().equals(name)) {
                 p.sendMessage("§4BŁĄD! §cArena §f" + name + " §cjuż istnieje!");
-                return null;
+                return;
             }
         }
 
@@ -130,7 +139,6 @@ public class GameManager {
         getGameInstanceConfig(name).set("playerSpawnLocs.0", "-");
         getGameInstanceConfig(name).set("zombieSpawnLocs.0", "-");
         saveGameInstanceConfig(name);
-        return gameInstance;
     }
 
     public Boolean isInGame(Player p) {
@@ -160,7 +168,7 @@ public class GameManager {
         if (gameInstanceConfig == null || gameInstanceFile == null) {
             return;
         }
-        try {;
+        try {
             getGameInstanceConfig(name).save(gameInstanceFile);
         }
         catch (IOException ex) {

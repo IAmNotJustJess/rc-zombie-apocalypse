@@ -1,15 +1,34 @@
 package roulycraft.zombieapocalypse.commands;
 
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.attribute.AttributeInstance;
+import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.*;
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
-import java.util.Objects;
-import roulycraft.zombieapocalypse.managers.GameInstance;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+
+import org.bukkit.entity.Zombie;
+import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.plugin.Plugin;
+import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.managers.GameManager;
+import roulycraft.zombieapocalypse.zombie.ZombieInstance;
+import roulycraft.zombieapocalypse.zombie.ZombieManager;
 
 public class ZACommand implements CommandExecutor {
+
+    private static ZombieApocalypse plugin;
+
+    public static void injectPlugin(ZombieApocalypse p) {
+        plugin = p;
+    }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
@@ -18,6 +37,7 @@ public class ZACommand implements CommandExecutor {
         String missingArgumentsMessage = "§4BŁĄD! §cPodaj więcej argumentów!";
         String noArgumentsMessage = "§4BŁĄD! §cWpisz /za help by wyświetlić listę argumentów!";
         String missingInstanceNameMessage = "§4BŁĄD! §cWprowadź nazwę areny!";
+        String missingZombieMessage = "§4BŁĄD! §cWprowadź nazwę zombie!";
 
         if (!(sender instanceof Player)) {
 
@@ -37,7 +57,7 @@ public class ZACommand implements CommandExecutor {
 
             }
 
-            switch(args[0]) {
+            switch(args[0].toLowerCase()) {
                 case "help": {
                     if (args.length == 1) {
                         sender.sendMessage(" ");
@@ -45,18 +65,28 @@ public class ZACommand implements CommandExecutor {
                         sender.sendMessage("§6/za help §8- §ePomoc ogólna.");
                         sender.sendMessage("§6/za leave §8- §eWyjście z areny.");
                         if (sender.isOp() || sender.hasPermission("technik")) {
-                            sender.sendMessage("§6/za join <arena> §8- §eDołączenia na konkretną arenę.");
+                            sender.sendMessage("§6/za join <instancja> §8- §eDołączenia na konkretną arenę.");
                             sender.sendMessage("§6/za help ct §8- §ePomoc tworzeniu aren.");
                             sender.sendMessage("§6/za help debug §8- §ePomoc w testowaniu lub debugowaniu aren.");
                             return true;
                         }
                     } else {
-                        if (Objects.equals(args[1], "ct")) {
+                        if ("ct".equalsIgnoreCase(args[1])) {
                             sender.sendMessage(" ");
                             sender.sendMessage("§6== §eKomendy Creation Tools §aZombie Apocalypse §6==");
-                            sender.sendMessage("§6/za ct <arena> create §8- §eStwarza instancję areny.");
-                            sender.sendMessage("§6/za ct <arena> lobby §8- §eUstawia lokacje lobby instancji areny.");
-                            sender.sendMessage("§6/za ct <arena> spawn add §8- §edodaje spawn graczy instancji areny.");
+                            sender.sendMessage("§6/za ct <instancja> create §8- §eStwarza instancję.");
+                            sender.sendMessage("§6/za ct <instancja> lobby §8- §eUstawia lokacje lobby instancji.");
+                            sender.sendMessage("§6/za ct <instancja> spawn add §8- §edodaje spawn graczy instancji");
+                            sender.sendMessage("§6/za ct <instancja> spawn remove <number> §8- §eusuwa spawn graczy instancji (przesuwa spawny z wyższym numerem w dół).");
+                            sender.sendMessage("§6/za ct <instancja> zombie add §8- §edodaje spawn zombie instancji.");
+                            sender.sendMessage("§6/za ct <instancja> zombie remove <number> §8- §eusuwa spawn zombie instancji (przesuwa spawny z wyższym numerem w dół).");
+                            return true;
+                        }
+
+                        if ("debug".equalsIgnoreCase(args[1])) {
+                            sender.sendMessage(" ");
+                            sender.sendMessage("§6== §eKomendy Creation Tools §aZombie Apocalypse §6==");
+                            sender.sendMessage("§6/za debug spawnZombie <nazwa> §8- §eRespi zombiaka na twojej lokacji.");
                             return true;
                         }
                     }
@@ -74,67 +104,211 @@ public class ZACommand implements CommandExecutor {
                         return true;
                     }
 
-                    switch (args[2]) {
-                        case "create":
+                    if("create".equalsIgnoreCase(args[2])) {
 
-                            GameManager.getManager().createArena((Player) sender, args[1]);
-                            return true;
+                        GameManager.getManager().createGameInstance((Player) sender, args[1]);
+                        return true;
+                    }
+                    else {
 
-                        case "lobby":
+                        if (!GameManager.getManager().checkIfGameInstanceExists(args[1])) {
 
-                            GameManager.getManager().getGameInstance(args[1]).setLobby(p.getLocation());
-                            GameManager.getManager().getGameInstanceConfig(args[1]).set("lobby", p.getLocation());
+                            sender.sendMessage("§4BŁĄD! §cArena §f" + args[1] + " §cjuż istnieje!");
 
-                            GameManager.getManager().saveGameInstanceConfig(args[1]);
+                        }
 
-                            sender.sendMessage("§2SUKCES! §aLokacja Lobby areny §f" + args[1] + " §azostała ustawiona!");
-                            return true;
+                        switch (args[2].toLowerCase()) {
 
-                        case "spawn":
+                            case "lobby":
 
-                            if (args.length == 3) {
-                                sender.sendMessage(missingArgumentsMessage);
-                                return false;
-                            }
+                                GameManager.getManager().checkIfGameInstanceExists(args[1]);
 
-                            switch (args[3]) {
-                                case "add":
+                                GameManager.getManager().getGameInstance(args[1]).setLobby(p.getLocation());
+                                GameManager.getManager().getGameInstanceConfig(args[1]).set("lobby", p.getLocation());
 
-                                    GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().add(p.getLocation());
-                                    GameManager.getManager().getGameInstanceConfig(args[1]).set(("playerSpawnLocs." + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1)), p.getLocation());
+                                GameManager.getManager().saveGameInstanceConfig(args[1]);
 
-                                    GameManager.getManager().saveGameInstanceConfig(args[1]);
-
-                                    sender.sendMessage("§2SUKCES! §aDodano spawn graczy nr. §f" + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1) + "§a dla areny§f " + args[1] + "§a!");
-                                    return true;
-
-                                default:
-
-                                    sender.sendMessage(missingArgumentsMessage);
-                                    return true;
-                            }
-
-                        case "reloadFile":
-
-                            if (GameManager.getManager().loadGameInstanceConfig(args[1])) {
-
-                                sender.sendMessage("§2SUKCES! §aWczytano dane instancji §f" + args[1] + " §az pliku!");
+                                sender.sendMessage("§2SUKCES! §aLokacja Lobby areny §f" + args[1] + " §azostała ustawiona!");
                                 return true;
-                            }
 
-                            sender.sendMessage("§4BŁĄD! §cWczytanie pliku instancji §f" + args[1] + " §cnie powiodło się - plik nie istnieje!");
-                            sender.sendMessage(String.valueOf(args.length));
-                            return false;
+                            case "spawn":
 
-                        default:
+                                switch (args[3].toLowerCase()) {
+                                    case "add":
 
-                            sender.sendMessage(missingArgumentsMessage);
-                            return true;
+                                        GameManager.getManager().getGameInstance(args[1]).getPlayerSpawnLocs().add(p.getLocation());
+                                        GameManager.getManager().getGameInstanceConfig(args[1]).set(("playerSpawnLocs." + (GameManager.getManager().getGameInstance(args[1]).getPlayerSpawnLocs().size() - 1)), p.getLocation());
+
+                                        GameManager.getManager().saveGameInstanceConfig(args[1]);
+
+                                        sender.sendMessage("§2SUKCES! §aDodano spawn graczy nr. §f" + (GameManager.getManager().getGameInstance(args[1]).getPlayerSpawnLocs().size() - 1) + "§a na instancji§f " + args[1] + "§a!");
+                                        return true;
+
+                                    case "remove":
+
+                                        if (args[4] != null) {
+
+                                            try {
+
+                                                Location loc = GameManager.getManager().getGameInstance(args[1]).getPlayerSpawnLocs().get(Integer.parseInt(args[4]));
+
+                                                for (Integer i = 0; i < GameManager.getManager().getGameInstance(args[1]).getPlayerSpawnLocs().size(); i++) {
+                                                    GameManager.getManager().getGameInstanceConfig(args[1]).set("playerSpawnLocs." + i, null);
+                                                }
+
+                                                List<Location> tempArray = new ArrayList<>();
+                                                for (Location loc1 : GameManager.getManager().getGameInstance(args[1]).getPlayerSpawnLocs()) {
+                                                    if (loc1 != loc) {
+                                                        tempArray.add(loc1);
+                                                    }
+                                                }
+
+                                                for (Integer i = 0; i < tempArray.size(); i++) {
+                                                    GameManager.getManager().getGameInstanceConfig(args[1]).set("playerSpawnLocs." + i, GameManager.getManager().getGameInstance(args[1]).getPlayerSpawnLocs().get(i));
+                                                }
+
+                                                GameManager.getManager().getGameInstance(args[1]).setPlayerSpawnLocs(tempArray);
+                                                GameManager.getManager().saveGameInstanceConfig(args[1]);
+
+                                                sender.sendMessage("§2SUKCES! §aUsunięto spawn graczy nr. §f" + (args[4]) + "§a na instancji§f " + args[1] + "§a!");
+
+                                                return true;
+
+                                            } catch (IndexOutOfBoundsException e) {
+
+                                                sender.sendMessage("§4BŁĄD! §cSpawn graczy nr. §f" + (args[4]) + "§c na instancji§f " + args[1] + " §cnie istnieje!");
+                                                return true;
+
+                                            }
+
+                                        }
+
+                                    default:
+
+                                        sender.sendMessage(missingArgumentsMessage);
+                                        return true;
+                                }
+
+                            case "zombie":
+
+                                switch (args[3].toLowerCase()) {
+                                    case "add":
+
+                                        GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().add(p.getLocation());
+                                        GameManager.getManager().getGameInstanceConfig(args[1]).set(("playerSpawnLocs." + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1)), p.getLocation());
+
+                                        GameManager.getManager().saveGameInstanceConfig(args[1]);
+
+                                        sender.sendMessage("§2SUKCES! §aDodano spawn zombie nr. §f" + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1) + "§a na instancji§f " + args[1] + "§a!");
+                                        return true;
+
+                                    case "remove":
+
+                                        if (args[4] != null) {
+
+                                            try {
+
+                                                Location loc = GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().get(Integer.parseInt(args[4]));
+
+                                                for (Integer i = 0; i < GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size(); i++) {
+                                                    GameManager.getManager().getGameInstanceConfig(args[1]).set("playerSpawnLocs." + i, null);
+                                                }
+
+                                                List<Location> tempArray = new ArrayList<>();
+                                                for (Location loc1 : GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs()) {
+                                                    if (loc1 != loc) {
+                                                        tempArray.add(loc1);
+                                                    }
+                                                }
+
+                                                for (Integer i = 0; i < tempArray.size(); i++) {
+                                                    GameManager.getManager().getGameInstanceConfig(args[1]).set("playerSpawnLocs." + i, GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().get(i));
+                                                }
+
+                                                GameManager.getManager().getGameInstance(args[1]).setZombieSpawnLocs(tempArray);
+                                                GameManager.getManager().saveGameInstanceConfig(args[1]);
+
+                                                sender.sendMessage("§2SUKCES! §aUsunięto spawn zombie nr. §f" + (args[4]) + "§a na instancji§f " + args[1] + "§a!");
+
+                                                return true;
+
+                                            } catch (IndexOutOfBoundsException e) {
+
+                                                sender.sendMessage("§4BŁĄD! §cSpawn zombie nr. §f" + (args[4]) + "§c na instancji§f " + args[1] + " §cnie istnieje!");
+                                                return true;
+
+                                            }
+
+                                        }
+
+                                    default:
+
+                                        sender.sendMessage(missingArgumentsMessage);
+                                        return true;
+                                }
+
+                            case "loadfile":
+
+                                if (GameManager.getManager().loadGameInstanceConfig(args[1])) {
+
+                                    sender.sendMessage("§2SUKCES! §aWczytano dane instancji §f" + args[1] + " §az pliku!");
+                                    return true;
+                                }
+
+                                sender.sendMessage("§4BŁĄD! §cWczytanie pliku instancji §f" + args[1] + " §cnie powiodło się - plik nie istnieje!");
+                                sender.sendMessage(String.valueOf(args.length));
+                                return true;
+
+                            default:
+
+                                sender.sendMessage(missingArgumentsMessage);
+                                return true;
+                    }
+                }
+                case "debug":
+
+                    if (!sender.isOp() || !sender.hasPermission("za.ct")) {
+                        sender.sendMessage(missingPermissionMessage);
+                        return true;
                     }
 
+                    if (args.length == 1) {
+                        sender.sendMessage(missingInstanceNameMessage);
+                        return true;
+                    }
+
+                    if("spawnzombie".equalsIgnoreCase(args[1])) {
+
+                        if (args[2] == null) {
+                            sender.sendMessage(missingZombieMessage);
+                            return true;
+                        }
+
+                        boolean exists = false;
+
+                        for (ZombieInstance checkIfExists : ZombieManager.getManager().zombieInstanceList) {
+                            if (checkIfExists.getName().equals(args[2])) {
+                                exists = true;
+                            }
+                        }
+
+                        if(!exists) {
+                            sender.sendMessage(missingZombieMessage);
+                            return true;
+                        }
+
+                        Entity zombie = ((Player) sender).getWorld().spawnEntity(((Player) sender).getLocation(), EntityType.ZOMBIE);
+                        zombie.setCustomName(ZombieManager.getManager().getZombieInstance(args[2]).getDisplayName());
+                        zombie.setCustomNameVisible(true);
+                        zombie.setMetadata("health", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(args[2]).getHealth()));
+                        zombie.setMetadata("damage", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(args[2]).getDamage()));
+                        ((Zombie) zombie).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(ZombieManager.getManager().getZombieInstance(args[2]).getSpeed()/10);;
+
+                        return true;
+                    }
             }
 
         }
-        return false;
+        return true;
     }
 }
