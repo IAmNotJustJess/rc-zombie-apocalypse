@@ -1,6 +1,14 @@
 package roulycraft.zombieapocalypse.zombie;
 
+import org.bukkit.Bukkit;
+import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
+
+import java.io.Console;
+import java.util.Objects;
+
+import static org.bukkit.Material.AIR;
 
 public class ZombieInstance {
     private final String name;
@@ -13,8 +21,9 @@ public class ZombieInstance {
     private ItemStack chestplate;
     private ItemStack leggings;
     private ItemStack boots;
+    private Integer xpReward;
 
-    public ZombieInstance(String name, String displayName, Integer health, Integer damage, Float speed, String special, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
+    public ZombieInstance(String name, String displayName, Integer health, Integer damage, Float speed, String special, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, Integer xpReward) {
         this.name = name;
         this.displayName = displayName;
         this.health = health;
@@ -25,6 +34,7 @@ public class ZombieInstance {
         this.chestplate = chestplate;
         this.leggings = leggings;
         this.boots = boots;
+        this.xpReward = xpReward;
     }
 
     public String getName() {
@@ -52,19 +62,47 @@ public class ZombieInstance {
     }
 
     public ItemStack getHelmet() {
-        return this.helmet;
+        ItemStack i = this.helmet;
+        ItemMeta im = i.getItemMeta();
+        if (im != null) {
+            im.setUnbreakable(true);
+            i.setItemMeta(im);
+        }
+        return i;
     }
 
     public ItemStack getChestplate() {
-        return this.chestplate;
+        ItemStack i = this.chestplate;
+        ItemMeta im = i.getItemMeta();
+        if (im != null) {
+            im.setUnbreakable(true);
+            i.setItemMeta(im);
+        }
+        return i;
     }
 
     public ItemStack getLeggings() {
-        return this.leggings;
+        ItemStack i = this.leggings;
+        ItemMeta im = i.getItemMeta();
+        if (im != null) {
+            im.setUnbreakable(true);
+            i.setItemMeta(im);
+        }
+        return i;
     }
 
     public ItemStack getBoots() {
-        return this.boots;
+        ItemStack i = this.boots;
+        ItemMeta im = i.getItemMeta();
+        if (im != null) {
+            im.setUnbreakable(true);
+            i.setItemMeta(im);
+        }
+        return i;
+    }
+
+    public Integer getXPReward() {
+        return this.xpReward;
     }
 
     public void setDisplayName(String displayName) {
@@ -101,5 +139,9 @@ public class ZombieInstance {
 
     public void setBoots(ItemStack boots) {
         this.boots = boots;
+    }
+
+    public void setXPReward(Integer xpReward) {
+        this.xpReward = xpReward;
     }
 }

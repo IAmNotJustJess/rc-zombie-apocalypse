@@ -1,19 +1,25 @@
 package roulycraft.zombieapocalypse.zombie;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.attribute.Attribute;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
+import org.bukkit.entity.Entity;
+import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
+import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.metadata.FixedMetadataValue;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
 public class ZombieManager {
     private static ZombieManager zombieManager;
@@ -35,7 +41,7 @@ public class ZombieManager {
         return zombieManager;
     }
 
-    public void createZombieInstance(String name, String displayName, Integer health, Integer damage, Float speed, String special, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots) {
+    public void createZombieInstance(String name, String displayName, Integer health, Integer damage, Float speed, String special, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, Integer xpReward) {
 
         ZombieInstance zombieInstance = null;
 
@@ -45,7 +51,7 @@ public class ZombieManager {
             }
         }
 
-        zombieInstance = new ZombieInstance(name, displayName, health, damage, speed, special, helmet, chestplate, leggings, boots);
+        zombieInstance = new ZombieInstance(name, displayName, health, damage, speed, special, helmet, chestplate, leggings, boots, xpReward);
         this.zombieInstanceList.add(zombieInstance);
 
         reloadZombieInstanceConfig();
@@ -58,6 +64,7 @@ public class ZombieManager {
         getZombieInstanceConfig().set(("zombies." + name + ".chestplate"), chestplate);
         getZombieInstanceConfig().set(("zombies." + name + ".leggings"), leggings);
         getZombieInstanceConfig().set(("zombies." + name + ".boots"), boots);
+        getZombieInstanceConfig().set(("zombies." + name + ".xpReward"), xpReward);
         saveZombieInstanceConfig();
     }
 
@@ -115,6 +122,7 @@ public class ZombieManager {
                     getZombieInstance(path).setChestplate(zombieInstanceConfig.getItemStack("zombies."+path+".chestplate"));
                     getZombieInstance(path).setLeggings(zombieInstanceConfig.getItemStack("zombies."+path+".leggings"));
                     getZombieInstance(path).setBoots(zombieInstanceConfig.getItemStack("zombies."+path+".boots"));
+                    getZombieInstance(path).setXPReward(zombieInstanceConfig.getInt("zombies."+path+".xpReward"));
 
                     console.sendMessage("§2SUKCES! §aPoprawnie zinicjonowano zombie §f" + path + "§a!");
 
@@ -130,12 +138,39 @@ public class ZombieManager {
                     zombieInstanceConfig.getItemStack("zombies."+path+".helmet"),
                     zombieInstanceConfig.getItemStack("zombies."+path+".chestplate"),
                     zombieInstanceConfig.getItemStack("zombies."+path+".leggings"),
-                    zombieInstanceConfig.getItemStack("zombies."+path+".boots")
+                    zombieInstanceConfig.getItemStack("zombies."+path+".boots"),
+                    zombieInstanceConfig.getInt("zombies."+path+".xpReward")
                     );
 
             console.sendMessage("§2SUKCES! §aPoprawnie zinicjonowano zombie §f" + path + "§a!");
         }
 
+    }
+
+    public void spawnZombie(Location loc, String name) {
+        Entity zombie = loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
+
+        zombie.setCustomName(ZombieManager.getManager().getZombieInstance(name).getDisplayName());
+        zombie.setCustomNameVisible(true);
+
+        zombie.setMetadata("ZA", new FixedMetadataValue(plugin, true));
+        zombie.setMetadata("health", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
+        zombie.setMetadata("damage", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getDamage()));
+        zombie.setMetadata("xpReward", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getXPReward()));
+
+        ((Zombie) zombie).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(ZombieManager.getManager().getZombieInstance(name).getSpeed()/10);
+
+        ((Zombie) zombie).setAdult();
+
+        ((Zombie) zombie).getEquipment().setHelmet(ZombieManager.getManager().getZombieInstance(name).getHelmet());
+        ((Zombie) zombie).getEquipment().setChestplate(ZombieManager.getManager().getZombieInstance(name).getChestplate());
+        ((Zombie) zombie).getEquipment().setLeggings(ZombieManager.getManager().getZombieInstance(name).getLeggings());
+        ((Zombie) zombie).getEquipment().setBoots(ZombieManager.getManager().getZombieInstance(name).getBoots());
+
+        ((Zombie) zombie).getEquipment().setBootsDropChance(0f);
+        ((Zombie) zombie).getEquipment().setChestplateDropChance(0f);
+        ((Zombie) zombie).getEquipment().setLeggingsDropChance(0f);
+        ((Zombie) zombie).getEquipment().setBootsDropChance(0f);
     }
 }
 

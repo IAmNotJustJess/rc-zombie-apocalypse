@@ -1,9 +1,11 @@
 package roulycraft.zombieapocalypse;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import roulycraft.zombieapocalypse.commands.ZACommand;
@@ -38,10 +40,33 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         if(!zombieFile.exists()) {
             console.sendMessage("§6INFO! §eNie znaleziono pliku! Tworzę domyślną konfigurację pliku §fzombie.yml§e...");
+
+            ItemStack helmet = new ItemStack(LEATHER_HELMET);
+            ItemStack chestplate = new ItemStack(LEATHER_CHESTPLATE);
+            ItemStack leggings = new ItemStack(LEATHER_LEGGINGS);
+            ItemStack boots = new ItemStack(LEATHER_BOOTS);
+
+            LeatherArmorMeta helmetMeta = (LeatherArmorMeta) helmet.getItemMeta();
+            LeatherArmorMeta chestplateMeta = (LeatherArmorMeta) chestplate.getItemMeta();
+            LeatherArmorMeta leggingsMeta = (LeatherArmorMeta) leggings.getItemMeta();
+            LeatherArmorMeta bootsMeta = (LeatherArmorMeta) boots.getItemMeta();
+
             ZombieManager.getManager().saveZombieInstanceConfig();
-            ZombieManager.getManager().createZombieInstance("Default", "Test", 20, 4, 3f, "", new ItemStack(AIR, 1), new ItemStack(AIR, 1), new ItemStack(AIR, 1), new ItemStack(AIR, 1));
-            ZombieManager.getManager().createZombieInstance("Iron", "Testowiron", 55, 6, 3f, "", new ItemStack(AIR, 1), new ItemStack(AIR, 1), new ItemStack(AIR, 1), new ItemStack(AIR, 1));
-            ZombieManager.getManager().createZombieInstance("Gold", "Testowiron", 55, 6, 3f, "", new ItemStack(AIR, 1), new ItemStack(AIR, 1), new ItemStack(AIR, 1), new ItemStack(AIR, 1));
+            ZombieManager.getManager().createZombieInstance("default", "§2Zwykły", 20, 10, 3.4f, "", new ItemStack(AIR, 1), new ItemStack(AIR, 1), new ItemStack(AIR, 1), new ItemStack(AIR, 1), 15);
+
+            Color color = Color.fromRGB(255, 255, 255);
+
+            helmetMeta.setColor(color);
+            chestplateMeta.setColor(color);
+            leggingsMeta.setColor(color);
+            bootsMeta.setColor(color);
+            helmet.setItemMeta(helmetMeta);
+            chestplate.setItemMeta(chestplateMeta);
+            leggings.setItemMeta(leggingsMeta);
+            boots.setItemMeta(bootsMeta);
+
+            ZombieManager.getManager().createZombieInstance("iron", "§7Żelazny", 40, 12, 3.4f, "", new ItemStack(IRON_BLOCK, 1), chestplate, leggings, boots, 25);
+            ZombieManager.getManager().createZombieInstance("gold", "§eZłoty", 90, 15, 3.4f, "", new ItemStack(GOLD_BLOCK, 1), new ItemStack(GOLDEN_CHESTPLATE, 1), new ItemStack(GOLDEN_LEGGINGS, 1), new ItemStack(GOLDEN_BOOTS, 1), 40);
             ZombieManager.getManager().saveZombieInstanceConfig();
         }
 

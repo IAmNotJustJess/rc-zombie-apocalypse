@@ -1,22 +1,12 @@
 package roulycraft.zombieapocalypse.commands;
 
 import org.bukkit.Location;
-import org.bukkit.World;
-import org.bukkit.attribute.Attribute;
-import org.bukkit.attribute.AttributeInstance;
-import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.command.*;
-import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.UUID;
 
-import org.bukkit.entity.Zombie;
-import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.plugin.Plugin;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.managers.GameManager;
 import roulycraft.zombieapocalypse.zombie.ZombieInstance;
@@ -297,12 +287,8 @@ public class ZACommand implements CommandExecutor {
                             return true;
                         }
 
-                        Entity zombie = ((Player) sender).getWorld().spawnEntity(((Player) sender).getLocation(), EntityType.ZOMBIE);
-                        zombie.setCustomName(ZombieManager.getManager().getZombieInstance(args[2]).getDisplayName());
-                        zombie.setCustomNameVisible(true);
-                        zombie.setMetadata("health", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(args[2]).getHealth()));
-                        zombie.setMetadata("damage", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(args[2]).getDamage()));
-                        ((Zombie) zombie).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(ZombieManager.getManager().getZombieInstance(args[2]).getSpeed()/10);;
+                        Location loc = ((Player) sender).getLocation();
+                        ZombieManager.getManager().spawnZombie(loc, args[2]);
 
                         return true;
                     }
