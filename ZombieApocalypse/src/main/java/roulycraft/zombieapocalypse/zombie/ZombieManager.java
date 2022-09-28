@@ -2,7 +2,10 @@ package roulycraft.zombieapocalypse.zombie;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -15,6 +18,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 
+import javax.xml.stream.events.Namespace;
 import java.awt.*;
 import java.io.File;
 import java.io.IOException;
@@ -147,7 +151,7 @@ public class ZombieManager {
 
     }
 
-    public void spawnZombie(Location loc, String name) {
+    public void spawnZombie(Location loc, String name, Boolean countTowardsKills) {
         Entity zombie = loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
 
         zombie.setCustomName(ZombieManager.getManager().getZombieInstance(name).getDisplayName());
@@ -155,8 +159,24 @@ public class ZombieManager {
 
         zombie.setMetadata("ZA", new FixedMetadataValue(plugin, true));
         zombie.setMetadata("health", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
+        zombie.setMetadata("maxHealth", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
         zombie.setMetadata("damage", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getDamage()));
         zombie.setMetadata("xpReward", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getXPReward()));
+
+        NamespacedKey key = new NamespacedKey(plugin, "zabossbar" + zombie.getEntityId());
+        zombie.setMetadata("bossbarKey", new FixedMetadataValue(plugin, ("zabossbar" + zombie.getEntityId())));
+
+        Bukkit.getServer().createBossBar(key, "", BarColor.GREEN, BarStyle.SOLID);
+        Bukkit.getServer().getBossBar(key).setProgress(1.0);
+
+
+        if(countTowardsKills) {
+            zombie.setMetadata("countTowardKills", new FixedMetadataValue(plugin, 1));
+        }
+
+        else {
+            zombie.setMetadata("countTowardKills", new FixedMetadataValue(plugin, 0));
+        }
 
         ((Zombie) zombie).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(ZombieManager.getManager().getZombieInstance(name).getSpeed()/10);
 
@@ -167,7 +187,7 @@ public class ZombieManager {
         ((Zombie) zombie).getEquipment().setLeggings(ZombieManager.getManager().getZombieInstance(name).getLeggings());
         ((Zombie) zombie).getEquipment().setBoots(ZombieManager.getManager().getZombieInstance(name).getBoots());
 
-        ((Zombie) zombie).getEquipment().setBootsDropChance(0f);
+        ((Zombie) zombie).getEquipment().setHelmetDropChance(0f);
         ((Zombie) zombie).getEquipment().setChestplateDropChance(0f);
         ((Zombie) zombie).getEquipment().setLeggingsDropChance(0f);
         ((Zombie) zombie).getEquipment().setBootsDropChance(0f);

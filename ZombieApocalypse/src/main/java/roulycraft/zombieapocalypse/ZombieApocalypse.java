@@ -28,7 +28,12 @@ public final class ZombieApocalypse extends JavaPlugin {
         GameManager.injectPlugin(this);
         ZombieManager.injectPlugin(this);
         ZACommand.injectPlugin(this);
+        ZombieListener.injectPlugin(this);
+
         this.saveDefaultConfig();
+
+        getServer().getPluginManager().registerEvents(new ZombieListener(), this);
+
         ConsoleCommandSender console = Bukkit.getConsoleSender();
         console.sendMessage("§6==== §eTrwa proces inicjacji §aZombieApocalypse§e! §6====");
 

@@ -6,6 +6,7 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.managers.GameManager;
@@ -269,9 +270,15 @@ public class ZACommand implements CommandExecutor {
 
                     if("spawnzombie".equalsIgnoreCase(args[1])) {
 
+                        boolean count = false;
+
                         if (args[2] == null) {
                             sender.sendMessage(missingZombieMessage);
                             return true;
+                        }
+
+                        if (Objects.equals(args[3], "true")) {
+                            count = true;
                         }
 
                         boolean exists = false;
@@ -288,7 +295,7 @@ public class ZACommand implements CommandExecutor {
                         }
 
                         Location loc = ((Player) sender).getLocation();
-                        ZombieManager.getManager().spawnZombie(loc, args[2]);
+                        ZombieManager.getManager().spawnZombie(loc, args[2], count);
 
                         return true;
                     }
