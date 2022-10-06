@@ -3,7 +3,6 @@ package roulycraft.zombieapocalypse;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.command.ConsoleCommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.java.JavaPlugin;

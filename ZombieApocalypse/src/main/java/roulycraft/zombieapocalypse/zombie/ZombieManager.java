@@ -191,6 +191,8 @@ public class ZombieManager {
         ((Zombie) zombie).getEquipment().setChestplateDropChance(0f);
         ((Zombie) zombie).getEquipment().setLeggingsDropChance(0f);
         ((Zombie) zombie).getEquipment().setBootsDropChance(0f);
+
+        ZombieListener.insertMap(NamespacedKey.fromString(zombie.getMetadata("bossbarKey").get(0).asString(), plugin));
     }
 }
 
