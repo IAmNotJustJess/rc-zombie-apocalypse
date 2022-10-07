@@ -57,17 +57,26 @@ public class ZombieListener implements Listener {
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-                    if (!Objects.equals(detectChange[0], bossbarList.get(key).get(p)) || bossbarList.get(key).get(p) == null) {
+                    if (!Objects.equals(detectChange[0], bossbarList.get(key).get(p)) || Objects.isNull(bossbarList.get(key).get(p))) {
                         bar.removePlayer(p);
                         timer.cancel();
                         timer.purge();
+                        return;
                     }
 
                     if (bossbarList.get(key).get(p) > 0) {
 
-                        bar.addPlayer(p);
-                        bossbarList.get(key).put(p, (bossbarList.get(key).get(p) - 1));
-                        detectChange[0] -= 1;
+                        if(Objects.isNull(bossbarList.get(key).get(p))) {
+                            bar.removePlayer(p);
+                            timer.cancel();
+                            timer.purge();
+                        }
+
+                        else {
+                            bar.addPlayer(p);
+                            bossbarList.get(key).put(p, (bossbarList.get(key).get(p) - 1));
+                            detectChange[0] -= 1;
+                        }
                     }
 
                     else {

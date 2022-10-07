@@ -137,7 +137,7 @@ public class ZACommand implements CommandExecutor {
 
                                     case "remove":
 
-                                        if (args[4] != null) {
+                                        if (!Objects.isNull(args[4])) {
 
                                             try {
 
@@ -195,7 +195,7 @@ public class ZACommand implements CommandExecutor {
 
                                     case "remove":
 
-                                        if (args[4] != null) {
+                                        if (!Objects.isNull(args[4])) {
 
                                             try {
 
@@ -272,13 +272,15 @@ public class ZACommand implements CommandExecutor {
 
                         boolean count = false;
 
-                        if (args[2] == null) {
+                        if (Objects.isNull(args[2])) {
                             sender.sendMessage(missingZombieMessage);
                             return true;
                         }
 
-                        if (Objects.equals(args[3], "true")) {
-                            count = true;
+                        if (4 >= args.length) {
+                            if (Objects.equals(args[3], "true")) {
+                                count = true;
+                            }
                         }
 
                         boolean exists = false;

@@ -12,14 +12,11 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 
-import javax.xml.stream.events.Namespace;
-import java.awt.*;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -29,7 +26,7 @@ public class ZombieManager {
     private static ZombieManager zombieManager;
     private static ZombieApocalypse plugin;
     private FileConfiguration zombieInstanceConfig = null;
-    private File zombieInstanceFile = zombieInstanceFile = new File(plugin.getDataFolder() + File.separator + "zombie.yml");
+    private final File zombieInstanceFile = new File(plugin.getDataFolder() + File.separator + "zombie.yml");
     public final List<ZombieInstance> zombieInstanceList = new ArrayList<>();
 
     public static void injectPlugin(ZombieApocalypse p) {
