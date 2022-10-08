@@ -1,5 +1,6 @@
 package roulycraft.zombieapocalypse.commands;
 
+import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Location;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -277,10 +278,13 @@ public class ZACommand implements CommandExecutor {
                             return true;
                         }
 
-                        if (4 >= args.length) {
+                        try {
                             if (Objects.equals(args[3], "true")) {
                                 count = true;
                             }
+                        }
+                        catch (ArrayIndexOutOfBoundsException e) {
+                            count = false;
                         }
 
                         boolean exists = false;

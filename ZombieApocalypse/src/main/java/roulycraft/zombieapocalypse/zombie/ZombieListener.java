@@ -34,11 +34,9 @@ public class ZombieListener implements Listener {
 
         BossBar bar = Bukkit.getServer().getBossBar(key);
 
-        boolean isIn = false;
         assert bar != null;
         for (Player p2 : bar.getPlayers()) {
             if (p2 == p) {
-                isIn = true;
                 break;
             }
         }
@@ -57,34 +55,33 @@ public class ZombieListener implements Listener {
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-                    if (!Objects.equals(detectChange[0], bossbarList.get(key).get(p)) || Objects.isNull(bossbarList.get(key).get(p))) {
+                if (!Objects.equals(detectChange[0], bossbarList.get(key).get(p)) || Objects.isNull(bossbarList.get(key).get(p))) {
+                    timer.cancel();
+                    timer.purge();
+                    return;
+                }
+
+                if (bossbarList.get(key).get(p) > 0) {
+
+                    if(Objects.isNull(bossbarList.get(key).get(p))) {
                         bar.removePlayer(p);
                         timer.cancel();
                         timer.purge();
-                        return;
-                    }
-
-                    if (bossbarList.get(key).get(p) > 0) {
-
-                        if(Objects.isNull(bossbarList.get(key).get(p))) {
-                            bar.removePlayer(p);
-                            timer.cancel();
-                            timer.purge();
-                        }
-
-                        else {
-                            bar.addPlayer(p);
-                            bossbarList.get(key).put(p, (bossbarList.get(key).get(p) - 1));
-                            detectChange[0] -= 1;
-                        }
                     }
 
                     else {
-
-                        bar.removePlayer(p);
-                        timer.cancel();
-                        timer.purge();
+                        bar.addPlayer(p);
+                        bossbarList.get(key).put(p, (bossbarList.get(key).get(p) - 1));
+                        detectChange[0] -= 1;
                     }
+                }
+
+                else {
+
+                    bar.removePlayer(p);
+                    timer.cancel();
+                    timer.purge();
+                }
 
                 }
             };
@@ -133,9 +130,9 @@ public class ZombieListener implements Listener {
             TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-                    bar.removeAll();
-                    bossbarList.get(NamespacedKey.fromString(key, plugin)).clear();
-                    Bukkit.removeBossBar(NamespacedKey.fromString(key, plugin));
+                bar.removeAll();
+                bossbarList.get(NamespacedKey.fromString(key, plugin)).clear();
+                Bukkit.removeBossBar(NamespacedKey.fromString(key, plugin));
 
                 }
             };
