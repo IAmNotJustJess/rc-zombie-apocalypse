@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import roulycraft.zombieapocalypse.commands.ZACommand;
 import roulycraft.zombieapocalypse.managers.*;
+import roulycraft.zombieapocalypse.weapons.ranged.RangedWeaponInterpreter;
 import roulycraft.zombieapocalypse.zombie.*;
 
 import java.io.File;
@@ -28,10 +29,12 @@ public final class ZombieApocalypse extends JavaPlugin {
         ZombieManager.injectPlugin(this);
         ZACommand.injectPlugin(this);
         ZombieListener.injectPlugin(this);
+        RangedWeaponInterpreter.injectPlugin(this);
 
         this.saveDefaultConfig();
 
         getServer().getPluginManager().registerEvents(new ZombieListener(), this);
+        getServer().getPluginManager().registerEvents(new RangedWeaponInterpreter(), this);
 
         ConsoleCommandSender console = Bukkit.getConsoleSender();
         console.sendMessage("§6==== §eTrwa proces inicjacji §aZombieApocalypse§e! §6====");

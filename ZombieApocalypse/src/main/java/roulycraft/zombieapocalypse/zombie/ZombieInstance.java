@@ -1,14 +1,7 @@
 package roulycraft.zombieapocalypse.zombie;
 
-import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-
-import java.io.Console;
-import java.util.Objects;
-
-import static org.bukkit.Material.AIR;
 
 public class ZombieInstance {
     private final String name;
