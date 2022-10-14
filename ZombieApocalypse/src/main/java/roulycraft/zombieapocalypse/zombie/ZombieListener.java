@@ -100,12 +100,25 @@ public class ZombieListener implements Listener {
             return;
         }
 
-        if(event.getDamager().getType() != EntityType.PLAYER) {
+        if(event.getDamager().getType() != EntityType.PLAYER || event.getDamager().getType() != EntityType.SNOWBALL || event.getDamager().getType() != EntityType.EGG || event.getDamager().getType() != EntityType.ARROW) {
             return;
         }
 
         if(!entity.getMetadata("ZA").get(0).asBoolean()) {
             return;
+        }
+
+        if(event.getDamager().getType() == EntityType.SNOWBALL || event.getDamager().getType() == EntityType.EGG || event.getDamager().getType() == EntityType.ARROW) {
+            if(event.getDamager().getMetadata("ZAProjectile").get(0).asBoolean()) {
+                int minDMG = entity.getMetadata("minDMG").get(0).asInt();
+                int maxDMG = entity.getMetadata("maxDMG").get(0).asInt();
+
+                Random rng = new Random();
+
+                int damage = rng.nextInt(maxDMG - minDMG) + minDMG;
+
+                event.setDamage(damage);
+            }
         }
 
         int maxHP = entity.getMetadata("maxHealth").get(0).asInt();

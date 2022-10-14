@@ -11,7 +11,10 @@ public class RangedInstance {
     private Integer minDmg = 1;
     private Integer maxDmg = 1;
     private Integer projectileType = 0;
+    private Float projectileSpeed = 4f;
     private Integer pellets = 1;
+    private Float bulletSpread = 2.0f;
+    private Integer spreadPercentage = 25;
     private Float delayBetweenShots = 0.2f;
     private Integer clipSize = 10;
     private Float reloadSpeed = 1.6f;
@@ -22,14 +25,17 @@ public class RangedInstance {
         this.id = id;
     }
 
-    public RangedInstance(Integer id, String name, Integer level, Integer minDmg, Integer maxDmg, Integer projectileType, Integer pellets, Float delayBetweenShots, Integer clipSize, Float reloadSpeed, String reloadType, String actionType) {
+    public RangedInstance(Integer id, String name, Integer level, Integer minDmg, Integer maxDmg, Integer projectileType, Float projectileSpeed, Integer pellets, Float bulletSpread, Integer spreadPercentage, Float delayBetweenShots, Integer clipSize, Float reloadSpeed, String reloadType, String actionType) {
         this.id = id;
         this.name = name;
         this.level = level;
         this.minDmg = minDmg;
         this.maxDmg = maxDmg;
         this.projectileType = projectileType;
+        this.projectileSpeed = projectileSpeed;
         this.pellets = pellets;
+        this.bulletSpread = bulletSpread;
+        this.spreadPercentage = spreadPercentage;
         this.delayBetweenShots = delayBetweenShots;
         this.clipSize = clipSize;
         this.reloadSpeed = reloadSpeed;

@@ -79,6 +79,7 @@ public class ZACommand implements CommandExecutor {
                             sender.sendMessage(" ");
                             sender.sendMessage("§6== §eKomendy Creation Tools §aZombie Apocalypse §6==");
                             sender.sendMessage("§6/za debug spawnZombie <nazwa> §8- §eRespi zombiaka na twojej lokacji.");
+                            sender.sendMessage("§6/za debug giveRanged <gracz> <id> §8- §eDaje graczu broń palną.");
                             return true;
                         }
                     }
