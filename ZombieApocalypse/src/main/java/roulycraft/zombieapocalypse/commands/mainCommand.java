@@ -1,6 +1,5 @@
 package roulycraft.zombieapocalypse.commands;
 
-import org.apache.commons.lang.ObjectUtils;
 import org.bukkit.Location;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -14,7 +13,7 @@ import roulycraft.zombieapocalypse.managers.GameManager;
 import roulycraft.zombieapocalypse.zombie.ZombieInstance;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
 
-public class ZACommand implements CommandExecutor {
+public class mainCommand implements CommandExecutor {
 
     private static ZombieApocalypse plugin;
 

@@ -150,11 +150,11 @@ public class GameManager {
     }
     public void reloadGameInstanceConfig(String name) {
         if (gameInstanceFile == null) {
-            gameInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances", (name + ".yml"));
+            gameInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "arenas", (name + ".yml"));
         }
 
         gameInstanceConfig = YamlConfiguration.loadConfiguration(gameInstanceFile);
-        gameInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances", (name + ".yml"));
+        gameInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "arenas", (name + ".yml"));
     }
 
     public FileConfiguration getGameInstanceConfig(String name) {
@@ -196,7 +196,7 @@ public class GameManager {
         }
 
         if(gameInstanceConfig.getString("displayName") != null || Objects.equals(gameInstanceConfig.getString("displayName"), "-")) {
-            getGameInstance(name).setDisplayName(gameInstanceConfig.getString("displayname"));
+            getGameInstance(name).setDisplayName(gameInstanceConfig.getString("displayName"));
         }
 
         for (String path : gameInstanceConfig.getConfigurationSection("playerSpawnLocs").getKeys(false)) {

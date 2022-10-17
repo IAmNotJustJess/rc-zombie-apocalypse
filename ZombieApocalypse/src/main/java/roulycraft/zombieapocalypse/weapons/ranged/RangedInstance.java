@@ -25,10 +25,11 @@ public class RangedInstance {
         this.id = id;
     }
 
-    public RangedInstance(Integer id, String name, Integer level, Integer minDmg, Integer maxDmg, Integer projectileType, Float projectileSpeed, Integer pellets, Float bulletSpread, Integer spreadPercentage, Float delayBetweenShots, Integer clipSize, Float reloadSpeed, String reloadType, String actionType) {
+    public RangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Float projectileSpeed, Integer pellets, Float bulletSpread, Integer spreadPercentage, Float delayBetweenShots, Integer clipSize, Float reloadSpeed, String reloadType, String actionType) {
         this.id = id;
         this.name = name;
         this.level = level;
+        this.item = item;
         this.minDmg = minDmg;
         this.maxDmg = maxDmg;
         this.projectileType = projectileType;
@@ -70,9 +71,18 @@ public class RangedInstance {
     public Integer getProjectileType() {
         return this.projectileType;
     }
+    public Float getProjectileSpeed() {
+        return projectileSpeed;
+    }
 
     public Integer getPellets() {
         return this.pellets;
+    }
+    public Float getBulletSpread() {
+        return this.bulletSpread;
+    }
+    public Integer getSpreadPercentage() {
+        return spreadPercentage;
     }
 
     public Float getDelayBetweenShots() {
@@ -118,9 +128,18 @@ public class RangedInstance {
     public void setProjectileType (Integer projectileType) {
         this.projectileType = projectileType;
     }
+    public void setProjectileSpeed (Float projectileSpeed) {
+        this.projectileSpeed = projectileSpeed;
+    }
 
     public void setPellets (Integer pellets) {
         this.pellets = pellets;
+    }
+    public void setBulletSpread(Float bulletSpread) {
+        this.bulletSpread = bulletSpread;
+    }
+    public void setSpreadPercentage(Integer spreadPercentage) {
+        this.spreadPercentage = spreadPercentage;
     }
 
     public void setDelayBetweenShots (Float delayBetweenShots) {
@@ -142,4 +161,5 @@ public class RangedInstance {
     public void setActionType(String actionType) {
         this.actionType = actionType;
     }
+
 }
