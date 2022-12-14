@@ -40,7 +40,7 @@ public class RangedManager {
         return rangedManager;
     }
 
-    public void createDefaultRangedZombieInstance() {
+    public void createDefaultRangedInstance() {
 
         int nextFreeID = rangedInstanceList.size();
 
@@ -52,7 +52,7 @@ public class RangedManager {
         }
     }
 
-    public void createRangedZombieInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Float projectileSpeed, Integer pellets, Float bulletSpread, Integer spreadPercentage, Float delayBetweenShots, Integer clipSize, Float reloadSpeed, String reloadType, String actionType) {
+    public void createRangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Float projectileSpeed, Integer pellets, Float bulletSpread, Integer spreadPercentage, Float delayBetweenShots, Integer clipSize, Float reloadSpeed, String reloadType, String actionType) {
 
         if (level < 0 || level > 3) {
             return;

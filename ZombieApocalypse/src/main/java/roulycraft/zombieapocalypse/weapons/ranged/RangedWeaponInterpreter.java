@@ -24,8 +24,13 @@ public class RangedWeaponInterpreter implements Listener {
 
             NamespacedKey key = new NamespacedKey(plugin, "zaGun");
 
+            if (event.getItem().getItemMeta() == null || event.getItem().getItemMeta().getPersistentDataContainer() == null) {
+                return;
+            }
+
             PersistentDataContainer container = event.getItem().getItemMeta().getPersistentDataContainer();
-            if (container.get(key, PersistentDataType.INTEGER) == null && container.get(key, PersistentDataType.INTEGER) != 1) {
+
+            if (container.get(key, PersistentDataType.INTEGER) == null || container.get(key, PersistentDataType.INTEGER) != 1) {
                 return;
             }
 
@@ -38,19 +43,29 @@ public class RangedWeaponInterpreter implements Listener {
             Entity entity;
 
             for (int i = 0; i < pellets; i++) {
+
                 switch (projectileType) {
+
                     case 0:
+
                         entity = event.getPlayer().launchProjectile(Snowball.class, event.getPlayer().getVelocity().multiply(projectileSpeed));
                         break;
+
                     case 1:
+
                         entity = event.getPlayer().launchProjectile(Egg.class, event.getPlayer().getVelocity().multiply(projectileSpeed));
                         break;
+
                     case 2:
+
                         entity = event.getPlayer().launchProjectile(Arrow.class, event.getPlayer().getVelocity().multiply(projectileSpeed));
                         break;
+
                     default:
+
                         entity = event.getPlayer().launchProjectile(Snowball.class, event.getPlayer().getVelocity().multiply(projectileSpeed));
                         break;
+
                 }
 
                 entity.setMetadata("ZAProjectile", new FixedMetadataValue(plugin, 1));

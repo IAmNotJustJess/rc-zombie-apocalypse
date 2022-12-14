@@ -130,18 +130,19 @@ public class ZombieManager {
                     continue ZP;
                 }
             }
-            createZombieInstance(path,
-                    zombieInstanceConfig.getString("zombies."+path+".displayName"),
-                    zombieInstanceConfig.getInt("zombies."+path+".health"),
-                    zombieInstanceConfig.getInt("zombies."+path+".damage"),
-                    (float) zombieInstanceConfig.getDouble("zombies."+path+".speed"),
-                    zombieInstanceConfig.getString("zombies."+path+".special"),
-                    zombieInstanceConfig.getItemStack("zombies."+path+".helmet"),
-                    zombieInstanceConfig.getItemStack("zombies."+path+".chestplate"),
-                    zombieInstanceConfig.getItemStack("zombies."+path+".leggings"),
-                    zombieInstanceConfig.getItemStack("zombies."+path+".boots"),
-                    zombieInstanceConfig.getInt("zombies."+path+".xpReward")
-                    );
+            createZombieInstance(
+                path,
+                zombieInstanceConfig.getString("zombies."+path+".displayName"),
+                zombieInstanceConfig.getInt("zombies."+path+".health"),
+                zombieInstanceConfig.getInt("zombies."+path+".damage"),
+                (float) zombieInstanceConfig.getDouble("zombies."+path+".speed"),
+                zombieInstanceConfig.getString("zombies."+path+".special"),
+                zombieInstanceConfig.getItemStack("zombies."+path+".helmet"),
+                zombieInstanceConfig.getItemStack("zombies."+path+".chestplate"),
+                zombieInstanceConfig.getItemStack("zombies."+path+".leggings"),
+                zombieInstanceConfig.getItemStack("zombies."+path+".boots"),
+                zombieInstanceConfig.getInt("zombies."+path+".xpReward")
+            );
 
             console.sendMessage("§2SUKCES! §aPoprawnie zinicjonowano zombie §f" + path + "§a!");
         }
@@ -149,6 +150,7 @@ public class ZombieManager {
     }
 
     public void spawnZombie(Location loc, String name, Boolean countTowardsKills) {
+
         Entity zombie = loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
 
         zombie.setCustomName(ZombieManager.getManager().getZombieInstance(name).getDisplayName());

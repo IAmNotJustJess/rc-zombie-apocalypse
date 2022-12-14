@@ -17,6 +17,8 @@ import roulycraft.zombieapocalypse.ZombieApocalypse;
 import java.util.*;
 import java.util.Timer;
 
+import static org.bukkit.entity.EntityType.PLAYER;
+
 public class ZombieListener implements Listener {
 
     private static ZombieApocalypse plugin;
@@ -96,17 +98,31 @@ public class ZombieListener implements Listener {
     public void onZombieDamage(EntityDamageByEntityEvent event) {
 
         Entity entity = event.getEntity();
+
         if(entity.getType() != EntityType.ZOMBIE) {
             return;
         }
 
-        if(event.getDamager().getType() != EntityType.PLAYER || event.getDamager().getType() != EntityType.SNOWBALL || event.getDamager().getType() != EntityType.EGG || event.getDamager().getType() != EntityType.ARROW) {
+        int doesItReturn = 0;
+
+        if(event.getDamager().getType() != EntityType.SNOWBALL && event.getDamager().getType() != EntityType.EGG && event.getDamager().getType() != EntityType.ARROW) {
+            doesItReturn = 1;
+        }
+
+        if(event.getDamager().getType() == PLAYER) {
+            doesItReturn = 0;
+        }
+
+        if(doesItReturn == 1) {
             return;
         }
 
         if(!entity.getMetadata("ZA").get(0).asBoolean()) {
             return;
         }
+        int damage;
+
+        damage = (int) Math.round(event.getDamage());
 
         if(event.getDamager().getType() == EntityType.SNOWBALL || event.getDamager().getType() == EntityType.EGG || event.getDamager().getType() == EntityType.ARROW) {
             if(event.getDamager().getMetadata("ZAProjectile").get(0).asBoolean()) {
@@ -115,7 +131,7 @@ public class ZombieListener implements Listener {
 
                 Random rng = new Random();
 
-                int damage = rng.nextInt(maxDMG - minDMG) + minDMG;
+                damage = rng.nextInt(maxDMG - minDMG) + minDMG;
 
                 event.setDamage(damage);
             }
@@ -125,11 +141,12 @@ public class ZombieListener implements Listener {
         int HP = entity.getMetadata("health").get(0).asInt();
         String key = entity.getMetadata("bossbarKey").get(0).asString();
 
-        HP -= event.getDamage();
+        HP -= damage;
 
         entity.setMetadata("health", new FixedMetadataValue(plugin, HP));
 
         if(HP <= 0) {
+
             event.setDamage(50);
 
             KeyedBossBar bar = Bukkit.getServer().getBossBar(NamespacedKey.fromString(key, plugin));
@@ -151,10 +168,14 @@ public class ZombieListener implements Listener {
             };
 
             timer.schedule(task, 1000);
+
         }
+
         else {
+
             event.setDamage(0);
             zombieBossBar((Player) event.getDamager(), NamespacedKey.fromString(key, plugin), entity.getCustomName(), maxHP, HP);
+
         }
     }
 }
