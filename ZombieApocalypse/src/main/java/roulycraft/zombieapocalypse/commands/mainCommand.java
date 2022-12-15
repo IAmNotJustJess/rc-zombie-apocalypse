@@ -13,7 +13,7 @@ import roulycraft.zombieapocalypse.managers.GameManager;
 import roulycraft.zombieapocalypse.zombie.ZombieInstance;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
 
-public class mainCommand implements CommandExecutor {
+public class MainCommand implements CommandExecutor {
 
     private static ZombieApocalypse plugin;
 

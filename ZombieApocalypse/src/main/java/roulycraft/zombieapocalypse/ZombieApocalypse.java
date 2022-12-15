@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import roulycraft.zombieapocalypse.commands.mainCommand;
+import roulycraft.zombieapocalypse.commands.MainCommand;
 import roulycraft.zombieapocalypse.managers.*;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedWeaponInterpreter;
 import roulycraft.zombieapocalypse.zombie.*;
@@ -27,7 +27,7 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         GameManager.injectPlugin(this);
         ZombieManager.injectPlugin(this);
-        mainCommand.injectPlugin(this);
+        MainCommand.injectPlugin(this);
         ZombieListener.injectPlugin(this);
         RangedWeaponInterpreter.injectPlugin(this);
 
@@ -707,7 +707,7 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         }
         // Tutaj dodać inicjalizowanie map zapisanych do pliku
-        Objects.requireNonNull(getServer().getPluginCommand("za")).setExecutor(new mainCommand());
+        Objects.requireNonNull(getServer().getPluginCommand("za")).setExecutor(new MainCommand());
 
         console.sendMessage("§6==== §ePoprawnie zinicjowano §aZombieApocalypse§e! §6====");
 //        getPlugin(ZombieApocalypse.class).saveDefaultConfig();
