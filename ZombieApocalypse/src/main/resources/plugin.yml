@@ -1,0 +1,11 @@
+name: ZombieApocalypse
+version: '${project.version}'
+main: roulycraft.zombieapocalypse.ZombieApocalypse
+api-version: 1.16
+authors: [ justJess ]
+description:
+  A RoulyCraft minigame - Zombie Apocalypse
+commands:
+  za:
+    description: Komenda bazowa do trybu Zombie Apocalypse.
+    usage: §4BŁĄD! §cPodaj więcej argumentów!
