@@ -9,18 +9,14 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import roulycraft.zombieapocalypse.commands.MainCommand;
 import roulycraft.zombieapocalypse.managers.*;
+import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedWeaponInterpreter;
 import roulycraft.zombieapocalypse.zombie.*;
 
 import java.io.File;
 import java.util.Objects;
 
-import static org.bukkit.Material.*;
-
 public final class ZombieApocalypse extends JavaPlugin {
-
-    private GameInstance gameInstance;
-    private GameManager gameManager;
 
     @Override
     public void onEnable() {
@@ -30,6 +26,7 @@ public final class ZombieApocalypse extends JavaPlugin {
         MainCommand.injectPlugin(this);
         ZombieListener.injectPlugin(this);
         RangedWeaponInterpreter.injectPlugin(this);
+        RangedManager.injectPlugin(this);
 
         this.saveDefaultConfig();
 

@@ -13,7 +13,8 @@ public class RangedInstance {
     private Integer projectileType = 0; // 0 - Snowball, 1 - Egg, 2 - Arrow
     private Double projectileSpeed = 4.0;
     private Integer pellets = 1;
-    private Double bulletSpread = 2.0;
+    private Double bulletSpread = 1.0;
+    private Double bulletAdditiveSpread = 2.0;
     private Integer spreadPercentage = 25;
     private Double delayBetweenShots = 0.2;
     private Integer clipSize = 10;
@@ -26,7 +27,7 @@ public class RangedInstance {
         this.id = id;
     }
 
-    public RangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Integer spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
+    public RangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Double bulletAdditiveSpread, Integer spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
         this.id = id;
         this.name = name;
         this.level = level;
@@ -37,6 +38,7 @@ public class RangedInstance {
         this.projectileSpeed = projectileSpeed;
         this.pellets = pellets;
         this.bulletSpread = bulletSpread;
+        this.bulletAdditiveSpread = bulletAdditiveSpread;
         this.spreadPercentage = spreadPercentage;
         this.delayBetweenShots = delayBetweenShots;
         this.clipSize = clipSize;
@@ -83,6 +85,10 @@ public class RangedInstance {
     }
 
     public Double getBulletSpread() {
+        return this.bulletSpread;
+    }
+
+    public Double getBulletAdditiveSpread() {
         return this.bulletSpread;
     }
 
@@ -148,6 +154,10 @@ public class RangedInstance {
 
     public void setBulletSpread(Double bulletSpread) {
         this.bulletSpread = bulletSpread;
+    }
+
+    public void setBulletAdditiveSpread(Double bulletAdditiveSpread) {
+        this.bulletSpread = bulletAdditiveSpread;
     }
 
     public void setSpreadPercentage(Integer spreadPercentage) {

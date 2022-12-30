@@ -1,18 +1,21 @@
 package roulycraft.zombieapocalypse.weapons.ranged;
 
 import org.bukkit.Bukkit;
+import org.bukkit.NamespacedKey;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.persistence.PersistentDataAdapterContext;
+import org.bukkit.persistence.PersistentDataContainer;
+import org.bukkit.persistence.PersistentDataType;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
-import roulycraft.zombieapocalypse.zombie.ZombieInstance;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
+import java.util.Set;
 
 public class RangedManager {
     private static RangedManager rangedManager;
@@ -20,6 +23,7 @@ public class RangedManager {
     private FileConfiguration rangedInstanceConfig = null;
     private File rangedInstanceFile = null;
     public final List<RangedInstance> rangedInstanceList = new ArrayList<>();
+    public final List<ItemStack> rangedInstanceItemList = new ArrayList<>();
 
     public static void injectPlugin(ZombieApocalypse p) {
         plugin = p;
@@ -48,7 +52,7 @@ public class RangedManager {
 
         return null;
     }
-    public void createRangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Float projectileSpeed, Integer pellets, Float bulletSpread, Integer spreadPercentage, Float delayBetweenShots, Integer clipSize, Float reloadSpeed, String reloadType, String actionType) {
+    public void createRangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Double bulletAdditiveSpread, Integer spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
 
         if (level < 0 || level > 3) {
             return;
@@ -61,7 +65,7 @@ public class RangedManager {
             }
         }
 
-        RangedInstance rangedInstance = new RangedInstance(id, name, level, item, minDmg, maxDmg, projectileType, projectileSpeed, pellets, bulletSpread, spreadPercentage, delayBetweenShots, clipSize, reloadSpeed, reloadType, actionType);
+        RangedInstance rangedInstance = new RangedInstance(id, name, level, item, minDmg, maxDmg, projectileType, projectileSpeed, pellets, bulletSpread, bulletAdditiveSpread, spreadPercentage, delayBetweenShots, clipSize, reloadSpeed, reloadType, actionType, actionDelay);
 
         reloadRangedInstanceConfig(id);
         getRangedInstanceConfig(id).set(level+".name", name);
@@ -72,12 +76,14 @@ public class RangedManager {
         getRangedInstanceConfig(id).set(level+".projectileSpeed", projectileSpeed);
         getRangedInstanceConfig(id).set(level+".pellets", pellets);
         getRangedInstanceConfig(id).set(level+".bulletSpread", bulletSpread);
+        getRangedInstanceConfig(id).set(level+".bulletAdditiveSpread", bulletAdditiveSpread);
         getRangedInstanceConfig(id).set(level+".spreadPercentage", spreadPercentage);
         getRangedInstanceConfig(id).set(level+".delayBetweenShots", delayBetweenShots);
         getRangedInstanceConfig(id).set(level+".clipSize", clipSize);
         getRangedInstanceConfig(id).set(level+".reloadSpeed", reloadSpeed);
         getRangedInstanceConfig(id).set(level+".reloadType", reloadType);
         getRangedInstanceConfig(id).set(level+".actionType", actionType);
+        getRangedInstanceConfig(id).set(level+".actionDelay", actionType);
         saveGameInstanceConfig(id);
 
         this.rangedInstanceList.add(rangedInstance);
@@ -155,6 +161,7 @@ public class RangedManager {
                         rangedInstanceConfig.getDouble(i+".projectileSpeed"),
                         rangedInstanceConfig.getInt(i+".pellets"),
                         rangedInstanceConfig.getDouble(i+".bulletSpread"),
+                        rangedInstanceConfig.getDouble(i+".bulletAdditiveSpread"),
                         rangedInstanceConfig.getInt(i+".spreadPercentage"),
                         rangedInstanceConfig.getDouble(i+".delayBetweenShots"),
                         rangedInstanceConfig.getInt(i+".clipSize"),
@@ -172,6 +179,47 @@ public class RangedManager {
         }
 
         return true;
+    }
+
+    public void parseRangedInstancesAsItems() {
+
+        rangedInstanceItemList.clear();
+
+        ItemStack item;
+
+        for (RangedInstance rangedInstance : this.rangedInstanceList) {
+
+            item = new ItemStack(rangedInstance.getItem());
+
+            item.getItemMeta().setDisplayName(rangedInstance.getName());
+
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "zaGun"), PersistentDataType.INTEGER, 1);
+
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "minDmg"), PersistentDataType.INTEGER, rangedInstance.getMinDmg());
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "maxDmg"), PersistentDataType.INTEGER, rangedInstance.getMaxDmg());
+
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "projectileType"), PersistentDataType.INTEGER, rangedInstance.getProjectileType());
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "projectileSpeed"), PersistentDataType.DOUBLE, rangedInstance.getProjectileSpeed());
+
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "pellets"), PersistentDataType.INTEGER, rangedInstance.getPellets());
+
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "bulletSpread"), PersistentDataType.DOUBLE, rangedInstance.getBulletSpread());
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "bulletAdditiveSpread"), PersistentDataType.DOUBLE, rangedInstance.getBulletAdditiveSpread());
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "spreadPercentage"), PersistentDataType.INTEGER, rangedInstance.getSpreadPercentage());
+
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "delayBetweenShots"), PersistentDataType.DOUBLE, rangedInstance.getDelayBetweenShots());
+
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER, rangedInstance.getClipSize());
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "reloadSpeed"), PersistentDataType.DOUBLE, rangedInstance.getReloadSpeed());
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "reloadType"), PersistentDataType.STRING, rangedInstance.getReloadType());
+
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING, rangedInstance.getActionType());
+            item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE, rangedInstance.getActionDelay());
+
+            rangedInstanceItemList.add(item);
+
+        }
+
     }
 
 }
