@@ -33,24 +33,37 @@ public class RangedManager {
     }
 
     public void reloadRangedInstanceConfig() {
+
         rangedInstanceConfig = YamlConfiguration.loadConfiguration(rangedInstanceFile);
+
     }
 
     public static RangedManager getManager() {
+
         if (rangedManager == null) {
+
             rangedManager = new RangedManager();
+
         }
+
         return rangedManager;
+
     }
 
     public RangedInstance getInstance(Integer id, Integer level) {
+
         for (RangedInstance rangedInstance : this.rangedInstanceList) {
+
             if (rangedInstance.getId().equals(id) && rangedInstance.getLevel().equals(level)) {
+
                 return rangedInstance;
+
             }
+
         }
 
         return null;
+
     }
     public void createRangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Double bulletAdditiveSpread, Integer spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
 
@@ -89,7 +102,8 @@ public class RangedManager {
         this.rangedInstanceList.add(rangedInstance);
     }
 
-    public RangedInstance getRangedInstance(Integer id, Integer level){
+    public RangedInstance getRangedInstance(Integer id, Integer level) {
+
         for (RangedInstance instance : this.rangedInstanceList) {
             if (instance.getId().equals(id) && instance.getLevel().equals(level)) {
                 return instance;
@@ -100,6 +114,7 @@ public class RangedManager {
     }
 
     public void reloadRangedInstanceConfig(Integer id) {
+
         if (rangedInstanceFile == null) {
             rangedInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "weapons" + File.separator + "ranged", (id + ".yml"));
         }
@@ -109,10 +124,15 @@ public class RangedManager {
     }
 
     public FileConfiguration getRangedInstanceConfig(Integer id) {
+
         if (rangedInstanceConfig == null) {
+
             reloadRangedInstanceConfig(id);
+
         }
+
         return rangedInstanceConfig;
+
     }
 
     public void saveGameInstanceConfig(Integer id) {
@@ -176,6 +196,12 @@ public class RangedManager {
 
             }
 
+            else {
+
+
+
+            }
+
         }
 
         return true;
@@ -215,6 +241,10 @@ public class RangedManager {
 
             item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING, rangedInstance.getActionType());
             item.getItemMeta().getPersistentDataContainer().set(new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE, rangedInstance.getActionDelay());
+
+            item.getItemMeta().setUnbreakable(true);
+
+            // Add lore setter here later
 
             rangedInstanceItemList.add(item);
 
