@@ -1,13 +1,12 @@
 package roulycraft.zombieapocalypse.weapons.ranged;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Location;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
-import roulycraft.zombieapocalypse.managers.GameInstance;
+import roulycraft.zombieapocalypse.zombie.ZombieInstance;
 
 import java.io.File;
 import java.io.IOException;
@@ -29,7 +28,7 @@ public class RangedManager {
     private RangedManager() {
     }
 
-    public void reloadZombieInstanceConfig() {
+    public void reloadRangedInstanceConfig() {
         rangedInstanceConfig = YamlConfiguration.loadConfiguration(rangedInstanceFile);
     }
 
@@ -40,18 +39,15 @@ public class RangedManager {
         return rangedManager;
     }
 
-    public void createDefaultRangedInstance() {
-
-        int nextFreeID = rangedInstanceList.size();
-
-        for (RangedInstance checkIfExists : this.rangedInstanceList) {
-            if (checkIfExists.getId().equals(nextFreeID)) {
-                if (checkIfExists.getLevel().equals(1))
-                    return;
+    public RangedInstance getInstance(Integer id, Integer level) {
+        for (RangedInstance rangedInstance : this.rangedInstanceList) {
+            if (rangedInstance.getId().equals(id) && rangedInstance.getLevel().equals(level)) {
+                return rangedInstance;
             }
         }
-    }
 
+        return null;
+    }
     public void createRangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Float projectileSpeed, Integer pellets, Float bulletSpread, Integer spreadPercentage, Float delayBetweenShots, Integer clipSize, Float reloadSpeed, String reloadType, String actionType) {
 
         if (level < 0 || level > 3) {
@@ -68,20 +64,20 @@ public class RangedManager {
         RangedInstance rangedInstance = new RangedInstance(id, name, level, item, minDmg, maxDmg, projectileType, projectileSpeed, pellets, bulletSpread, spreadPercentage, delayBetweenShots, clipSize, reloadSpeed, reloadType, actionType);
 
         reloadRangedInstanceConfig(id);
-        getGameInstanceConfig(id).set(level+".name", name);
-        getGameInstanceConfig(id).set(level+".item", item);
-        getGameInstanceConfig(id).set(level+".minDmg", minDmg);
-        getGameInstanceConfig(id).set(level+".maxDmg", maxDmg);
-        getGameInstanceConfig(id).set(level+".projectileType", projectileType);
-        getGameInstanceConfig(id).set(level+".projectileSpeed", projectileSpeed);
-        getGameInstanceConfig(id).set(level+".pellets", pellets);
-        getGameInstanceConfig(id).set(level+".bulletSpread", bulletSpread);
-        getGameInstanceConfig(id).set(level+".spreadPercentage", spreadPercentage);
-        getGameInstanceConfig(id).set(level+".delayBetweenShots", delayBetweenShots);
-        getGameInstanceConfig(id).set(level+".clipSize", clipSize);
-        getGameInstanceConfig(id).set(level+".reloadSpeed", reloadSpeed);
-        getGameInstanceConfig(id).set(level+".reloadType", reloadType);
-        getGameInstanceConfig(id).set(level+".actionType", actionType);
+        getRangedInstanceConfig(id).set(level+".name", name);
+        getRangedInstanceConfig(id).set(level+".item", item);
+        getRangedInstanceConfig(id).set(level+".minDmg", minDmg);
+        getRangedInstanceConfig(id).set(level+".maxDmg", maxDmg);
+        getRangedInstanceConfig(id).set(level+".projectileType", projectileType);
+        getRangedInstanceConfig(id).set(level+".projectileSpeed", projectileSpeed);
+        getRangedInstanceConfig(id).set(level+".pellets", pellets);
+        getRangedInstanceConfig(id).set(level+".bulletSpread", bulletSpread);
+        getRangedInstanceConfig(id).set(level+".spreadPercentage", spreadPercentage);
+        getRangedInstanceConfig(id).set(level+".delayBetweenShots", delayBetweenShots);
+        getRangedInstanceConfig(id).set(level+".clipSize", clipSize);
+        getRangedInstanceConfig(id).set(level+".reloadSpeed", reloadSpeed);
+        getRangedInstanceConfig(id).set(level+".reloadType", reloadType);
+        getRangedInstanceConfig(id).set(level+".actionType", actionType);
         saveGameInstanceConfig(id);
 
         this.rangedInstanceList.add(rangedInstance);
@@ -106,7 +102,7 @@ public class RangedManager {
         rangedInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "weapons" + File.separator + "ranged", (id + ".yml"));
     }
 
-    public FileConfiguration getGameInstanceConfig(Integer id) {
+    public FileConfiguration getRangedInstanceConfig(Integer id) {
         if (rangedInstanceConfig == null) {
             reloadRangedInstanceConfig(id);
         }
@@ -114,20 +110,30 @@ public class RangedManager {
     }
 
     public void saveGameInstanceConfig(Integer id) {
+
         if (rangedInstanceConfig == null || rangedInstanceFile == null) {
+
             return;
+
         }
+
         try {
-            getGameInstanceConfig(id).save(rangedInstanceFile);
+
+            getRangedInstanceConfig(id).save(rangedInstanceFile);
+
         }
+
         catch (IOException ex) {
             ConsoleCommandSender console = Bukkit.getConsoleSender();
             console.sendMessage("§4BŁĄD KRYTYCZNY §cNie można było zapisać konfiguracji instancji broni do §f" + rangedInstanceFile);
             console.sendMessage(String.valueOf(ex));
+
         }
+
     }
 
     public boolean loadRangedInstanceConfig(Integer id) {
+
         reloadRangedInstanceConfig(id);
 
         if (!rangedInstanceFile.exists()) {
@@ -137,68 +143,35 @@ public class RangedManager {
         for (int i = 0; i < 4; i++) {
             if (!rangedInstanceList.contains(this.getRangedInstance(id, i))) {
 
-                RangedInstance rangedInstance = new RangedInstance(id);
+                RangedInstance rangedInstance = new RangedInstance(
+
+                        id,
+                        rangedInstanceConfig.getString(i+".name"),
+                        i,
+                        rangedInstanceConfig.getItemStack(i+".item"),
+                        rangedInstanceConfig.getInt(i+".minDmg"),
+                        rangedInstanceConfig.getInt(i+".maxDmg"),
+                        rangedInstanceConfig.getInt(i+".projectileType"),
+                        rangedInstanceConfig.getDouble(i+".projectileSpeed"),
+                        rangedInstanceConfig.getInt(i+".pellets"),
+                        rangedInstanceConfig.getDouble(i+".bulletSpread"),
+                        rangedInstanceConfig.getInt(i+".spreadPercentage"),
+                        rangedInstanceConfig.getDouble(i+".delayBetweenShots"),
+                        rangedInstanceConfig.getInt(i+".clipSize"),
+                        rangedInstanceConfig.getDouble(i+"reloadSpeed"),
+                        rangedInstanceConfig.getString(i+".reloadType"),
+                        rangedInstanceConfig.getString(i+".actionType"),
+                        rangedInstanceConfig.getDouble(i+".actionDelay")
+
+                );
                 rangedInstance.setLevel(i);
-                rangedInstanceList.add(rangedInstance); // może nie działać :shrug:
+                rangedInstanceList.add(rangedInstance);
+
             }
 
-            if (rangedInstanceConfig.getString(i+".name") != null) {
-                getRangedInstance(id, i).setName(rangedInstanceConfig.getString("name"));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".item") != null) {
-                getRangedInstance(id, i).setItem(rangedInstanceConfig.getItemStack("item"));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".minDmg") != null) {
-                getRangedInstance(id, i).setMinDmg(rangedInstanceConfig.getInt("minDmg"));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".maxDmg") != null) {
-                getRangedInstance(id, i).setMaxDmg(rangedInstanceConfig.getInt("maxDmg"));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".projectileType") != null) {
-                getRangedInstance(id, i).setProjectileType(rangedInstanceConfig.getInt("projectileType"));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".projectileSpeed") != null) {
-                getRangedInstance(id, i).setProjectileSpeed(Float.valueOf(Objects.requireNonNull(rangedInstanceConfig.getString("projectileSpeed"))));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".pellets") != null) {
-                getRangedInstance(id, i).setPellets(rangedInstanceConfig.getInt("pellets"));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".bulletSpread") != null) {
-                getRangedInstance(id, i).setBulletSpread(Float.valueOf(Objects.requireNonNull(rangedInstanceConfig.getString("bulletSpread"))));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".spreadPercentage") != null) {
-                getRangedInstance(id, i).setSpreadPercentage(rangedInstanceConfig.getInt("spreadPercentage"));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".delayBetweenShots") != null) {
-                getRangedInstance(id, i).setDelayBetweenShots(Float.valueOf(Objects.requireNonNull(rangedInstanceConfig.getString("delayBetweenShots"))));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".clipSize") != null) {
-                getRangedInstance(id, i).setClipSize(rangedInstanceConfig.getInt("clipSize"));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".reloadSpeed") != null) {
-                getRangedInstance(id, i).setReloadSpeed(Float.valueOf(Objects.requireNonNull(rangedInstanceConfig.getString("reloadSpeed"))));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".reloadType") != null) {
-                getRangedInstance(id, i).setReloadType(rangedInstanceConfig.getString("reloadType"));
-            }
-
-            if (rangedInstanceConfig.getItemStack(i+".actionType") != null) {
-                getRangedInstance(id, i).setActionType(rangedInstanceConfig.getString("actionType"));
-            }
         }
 
         return true;
     }
+
 }

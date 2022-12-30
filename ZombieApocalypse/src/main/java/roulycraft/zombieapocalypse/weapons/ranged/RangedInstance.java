@@ -7,25 +7,26 @@ public class RangedInstance {
     private final Integer id;
     private String name = "Broń";
     private ItemStack item = new ItemStack(Material.IRON_HORSE_ARMOR, 1);
-    private Integer level = 1;
+    private Integer level = 0;
     private Integer minDmg = 1;
     private Integer maxDmg = 1;
-    private Integer projectileType = 0;
-    private Float projectileSpeed = 4f;
+    private Integer projectileType = 0; // 0 - Snowball, 1 - Egg, 2 - Arrow
+    private Double projectileSpeed = 4.0;
     private Integer pellets = 1;
-    private Float bulletSpread = 2.0f;
+    private Double bulletSpread = 2.0;
     private Integer spreadPercentage = 25;
-    private Float delayBetweenShots = 0.2f;
+    private Double delayBetweenShots = 0.2;
     private Integer clipSize = 10;
-    private Float reloadSpeed = 1.6f;
+    private Double reloadSpeed = 1.6;
     private String reloadType = "clip";
     private String actionType = "fullAuto";
+    private Double actionDelay = 0.0;
 
     public RangedInstance(Integer id) {
         this.id = id;
     }
 
-    public RangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Float projectileSpeed, Integer pellets, Float bulletSpread, Integer spreadPercentage, Float delayBetweenShots, Integer clipSize, Float reloadSpeed, String reloadType, String actionType) {
+    public RangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Integer spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
         this.id = id;
         this.name = name;
         this.level = level;
@@ -42,6 +43,7 @@ public class RangedInstance {
         this.reloadSpeed = reloadSpeed;
         this.reloadType = reloadType;
         this.actionType = actionType;
+        this.actionDelay = actionDelay;
     }
 
     public Integer getId() {
@@ -71,21 +73,24 @@ public class RangedInstance {
     public Integer getProjectileType() {
         return this.projectileType;
     }
-    public Float getProjectileSpeed() {
+
+    public Double getProjectileSpeed() {
         return projectileSpeed;
     }
 
     public Integer getPellets() {
         return this.pellets;
     }
-    public Float getBulletSpread() {
+
+    public Double getBulletSpread() {
         return this.bulletSpread;
     }
+
     public Integer getSpreadPercentage() {
         return spreadPercentage;
     }
 
-    public Float getDelayBetweenShots() {
+    public Double getDelayBetweenShots() {
         return delayBetweenShots;
     }
 
@@ -93,7 +98,7 @@ public class RangedInstance {
         return clipSize;
     }
 
-    public Float getReloadSpeed() {
+    public Double getReloadSpeed() {
         return reloadSpeed;
     }
 
@@ -103,6 +108,10 @@ public class RangedInstance {
 
     public String getActionType() {
         return actionType;
+    }
+
+    public Double getActionDelay() {
+        return actionDelay;
     }
 
     public void setName (String name) {
@@ -128,21 +137,24 @@ public class RangedInstance {
     public void setProjectileType (Integer projectileType) {
         this.projectileType = projectileType;
     }
-    public void setProjectileSpeed (Float projectileSpeed) {
+
+    public void setProjectileSpeed (Double projectileSpeed) {
         this.projectileSpeed = projectileSpeed;
     }
 
     public void setPellets (Integer pellets) {
         this.pellets = pellets;
     }
-    public void setBulletSpread(Float bulletSpread) {
+
+    public void setBulletSpread(Double bulletSpread) {
         this.bulletSpread = bulletSpread;
     }
+
     public void setSpreadPercentage(Integer spreadPercentage) {
         this.spreadPercentage = spreadPercentage;
     }
 
-    public void setDelayBetweenShots (Float delayBetweenShots) {
+    public void setDelayBetweenShots (Double delayBetweenShots) {
         this.delayBetweenShots = delayBetweenShots;
     }
 
@@ -150,7 +162,7 @@ public class RangedInstance {
         this.clipSize = clipSize;
     }
 
-    public void setReloadSpeed(Float reloadSpeed) {
+    public void setReloadSpeed(Double reloadSpeed) {
         this.reloadSpeed = reloadSpeed;
     }
 
@@ -160,6 +172,10 @@ public class RangedInstance {
 
     public void setActionType(String actionType) {
         this.actionType = actionType;
+    }
+
+    public void setActionDelay(Double actionDelay) {
+        this.actionDelay = actionDelay;
     }
 
 }
