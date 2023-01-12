@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.managers.GameManager;
+import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.zombie.ZombieInstance;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
 
@@ -272,41 +273,61 @@ public class MainCommand implements CommandExecutor {
                         return true;
                     }
 
-                    if("spawnzombie".equalsIgnoreCase(args[1])) {
+                    switch(args[1].toLowerCase()) {
 
-                        boolean count = false;
+                        case "getgun":
 
-                        if (Objects.isNull(args[2])) {
-                            sender.sendMessage(missingZombieMessage);
-                            return true;
-                        }
+                            Integer.valueOf(args[2]);
+                            Integer.valueOf(args[3]);
 
-                        try {
-                            if (Objects.equals(args[3], "true")) {
-                                count = true;
+                            if (RangedManager.getManager().getGun(Integer.valueOf(args[2]), Integer.valueOf(args[3])) == null) {
+
+                                sender.sendMessage("§4BŁĄD! §cBroń o ID: §f" + args[2] + " §ci poziomie  §f" + args[3] + " §c nie istnieje!");
+                                return true;
+
                             }
-                        }
-                        catch (ArrayIndexOutOfBoundsException e) {
-                            count = false;
-                        }
 
-                        boolean exists = false;
+                            ((Player) sender).getInventory().addItem(RangedManager.getManager().getGun(Integer.valueOf(args[2]), Integer.valueOf(args[3])));
+                            sender.sendMessage("§2SUKCES! §aOtrzymano broń o ID: §f" + args[2] + " §ai poziomie §f" + args[3] + "§a!");
 
-                        for (ZombieInstance checkIfExists : ZombieManager.getManager().zombieInstanceList) {
-                            if (checkIfExists.getName().equals(args[2])) {
-                                exists = true;
-                            }
-                        }
-
-                        if(!exists) {
-                            sender.sendMessage(missingZombieMessage);
                             return true;
-                        }
 
-                        Location loc = ((Player) sender).getLocation();
-                        ZombieManager.getManager().spawnZombie(loc, args[2], count);
+                        case "spawnzombie":
 
-                        return true;
+                            boolean count = false;
+
+                            if (Objects.isNull(args[2])) {
+                                sender.sendMessage(missingZombieMessage);
+                                return true;
+                            }
+
+                            try {
+                                if (Objects.equals(args[3], "true")) {
+                                    count = true;
+                                }
+                            }
+                            catch (ArrayIndexOutOfBoundsException e) {
+                                count = false;
+                            }
+
+                            boolean exists = false;
+
+                            for (ZombieInstance checkIfExists : ZombieManager.getManager().zombieInstanceList) {
+                                if (checkIfExists.getName().equals(args[2])) {
+                                    exists = true;
+                                }
+                            }
+
+                            if(!exists) {
+                                sender.sendMessage(missingZombieMessage);
+                                return true;
+                            }
+
+                            Location loc = ((Player) sender).getLocation();
+                            ZombieManager.getManager().spawnZombie(loc, args[2], count);
+
+                            return true;
+
                     }
             }
 

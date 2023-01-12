@@ -34,7 +34,7 @@ public class RangedWeaponInterpreter implements Listener {
             }
 
             Integer projectileType = container.get(new NamespacedKey(plugin, "projectileType"), PersistentDataType.INTEGER);
-            Float projectileSpeed = container.get(new NamespacedKey(plugin, "projectileSpeed"), PersistentDataType.FLOAT);
+            Double projectileSpeed = container.get(new NamespacedKey(plugin, "projectileSpeed"), PersistentDataType.DOUBLE);
             Integer pellets = container.get(new NamespacedKey(plugin, "pellets"), PersistentDataType.INTEGER);
             Integer minDMG = container.get(new NamespacedKey(plugin, "minDMG"), PersistentDataType.INTEGER);
             Integer maxDMG = container.get(new NamespacedKey(plugin, "maxDMG"), PersistentDataType.INTEGER);

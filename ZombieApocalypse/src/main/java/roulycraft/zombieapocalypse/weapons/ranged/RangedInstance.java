@@ -28,6 +28,7 @@ public class RangedInstance {
     }
 
     public RangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Double bulletAdditiveSpread, Integer spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
+
         this.id = id;
         this.name = name;
         this.level = level;
@@ -46,6 +47,7 @@ public class RangedInstance {
         this.reloadType = reloadType;
         this.actionType = actionType;
         this.actionDelay = actionDelay;
+
     }
 
     public Integer getId() {
