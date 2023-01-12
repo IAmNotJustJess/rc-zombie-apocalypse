@@ -45,6 +45,7 @@ public final class ZombieApocalypse extends JavaPlugin {
         if(!zombieFile.exists()) {
 
             console.sendMessage("§6INFO! §eNie znaleziono pliku! Tworzę domyślną konfigurację pliku §fzombie.yml§e...");
+            console.sendMessage("");
 
             ZombieManager.getManager().createDefaultZombieInstances();
 
