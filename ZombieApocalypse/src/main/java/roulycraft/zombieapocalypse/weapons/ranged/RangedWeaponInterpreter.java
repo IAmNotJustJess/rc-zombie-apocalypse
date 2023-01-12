@@ -13,6 +13,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.metadata.Metadatable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
+import org.bukkit.util.Vector;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 
 public class RangedWeaponInterpreter implements Listener {
@@ -42,31 +43,35 @@ public class RangedWeaponInterpreter implements Listener {
 
             Entity entity;
 
+            Vector vector = event.getPlayer().getLocation().getDirection();
+
+            System.out.println(vector);
+
             for (int i = 0; i < pellets; i++) {
 
                 switch (projectileType) {
 
                     case 0:
 
-                        entity = event.getPlayer().launchProjectile(Snowball.class);
+                        entity = event.getPlayer().launchProjectile(Snowball.class, vector);
                         entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                     case 1:
 
-                        entity = event.getPlayer().launchProjectile(Egg.class);
+                        entity = event.getPlayer().launchProjectile(Egg.class, vector);
                         entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                     case 2:
 
-                        entity = event.getPlayer().launchProjectile(Arrow.class);
+                        entity = event.getPlayer().launchProjectile(Arrow.class, vector);
                         entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                     default:
 
-                        entity = event.getPlayer().launchProjectile(Snowball.class);
+                        entity = event.getPlayer().launchProjectile(Snowball.class, vector);
                         entity.getVelocity().multiply(projectileSpeed);
                         break;
 
@@ -76,10 +81,6 @@ public class RangedWeaponInterpreter implements Listener {
                 entity.setMetadata("minDMG", new FixedMetadataValue(plugin, minDMG));
                 entity.setMetadata("maxDMG", new FixedMetadataValue(plugin, maxDMG));
                 entity.setMetadata("shooter", new FixedMetadataValue(plugin, event.getPlayer().getName()));
-
-                System.out.println(entity.getVelocity().getX());
-                System.out.println(entity.getVelocity().getY());
-                System.out.println(entity.getVelocity().getZ());
 
             }
         }
