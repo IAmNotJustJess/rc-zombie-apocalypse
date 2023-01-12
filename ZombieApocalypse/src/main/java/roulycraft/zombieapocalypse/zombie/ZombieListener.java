@@ -7,11 +7,13 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.util.Vector;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 
 import java.util.*;
@@ -98,10 +100,8 @@ public class ZombieListener implements Listener {
     public void onZombieDamage(EntityDamageByEntityEvent event) {
 
         Entity entity = event.getEntity();
-
-        if(entity.getType() != EntityType.ZOMBIE) {
-            return;
-        }
+        LivingEntity lentity = (LivingEntity) event.getEntity();
+        Player player = null;
 
         int doesItReturn = 0;
 
@@ -113,28 +113,45 @@ public class ZombieListener implements Listener {
             doesItReturn = 0;
         }
 
-        if(doesItReturn == 1) {
+        if(doesItReturn == 1 || entity.getType() != EntityType.ZOMBIE || !entity.getMetadata("ZA").get(0).asBoolean()) {
             return;
         }
 
-        if(!entity.getMetadata("ZA").get(0).asBoolean()) {
+        if(!event.getDamager().getMetadata("ZAProjectile").get(0).asBoolean()) {
             return;
         }
+
         int damage;
 
         damage = (int) Math.round(event.getDamage());
 
         if(event.getDamager().getType() == EntityType.SNOWBALL || event.getDamager().getType() == EntityType.EGG || event.getDamager().getType() == EntityType.ARROW) {
+
             if(event.getDamager().getMetadata("ZAProjectile").get(0).asBoolean()) {
-                int minDMG = entity.getMetadata("minDMG").get(0).asInt();
-                int maxDMG = entity.getMetadata("maxDMG").get(0).asInt();
+
+                int minDMG = event.getDamager().getMetadata("minDMG").get(0).asInt();
+                int maxDMG = event.getDamager().getMetadata("maxDMG").get(0).asInt();
+
+                player = Bukkit.getPlayer(event.getDamager().getMetadata("shooter").get(0).asString());
 
                 Random rng = new Random();
 
                 damage = rng.nextInt(maxDMG - minDMG) + minDMG;
 
+                lentity.setNoDamageTicks(0);
+                lentity.setMaximumNoDamageTicks(0);
+
                 event.setDamage(damage);
             }
+        }
+        
+        else {
+            
+            player = (Player) event.getDamager();
+
+            lentity.setNoDamageTicks(20);
+            lentity.setMaximumNoDamageTicks(20);
+
         }
 
         int maxHP = entity.getMetadata("maxHealth").get(0).asInt();
@@ -144,6 +161,9 @@ public class ZombieListener implements Listener {
         HP -= damage;
 
         entity.setMetadata("health", new FixedMetadataValue(plugin, HP));
+
+        final org.bukkit.util.Vector v = new Vector();
+        Bukkit.getScheduler().runTaskLater(plugin, () -> entity.setVelocity(v), 1l);
 
         if(HP <= 0) {
 
@@ -174,7 +194,7 @@ public class ZombieListener implements Listener {
         else {
 
             event.setDamage(0);
-            zombieBossBar((Player) event.getDamager(), NamespacedKey.fromString(key, plugin), entity.getCustomName(), maxHP, HP);
+            zombieBossBar(player, NamespacedKey.fromString(key, plugin), entity.getCustomName(), maxHP, HP);
 
         }
     }

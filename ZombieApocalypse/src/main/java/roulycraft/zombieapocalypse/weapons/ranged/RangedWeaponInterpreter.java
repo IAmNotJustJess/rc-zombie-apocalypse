@@ -10,6 +10,7 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.metadata.Metadatable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
@@ -19,11 +20,11 @@ public class RangedWeaponInterpreter implements Listener {
 
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
-        if(event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) {
+        if((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && event.hasItem()) {
 
             NamespacedKey key = new NamespacedKey(plugin, "zaGun");
 
-            if (event.getItem().getItemMeta() == null || event.getItem().getItemMeta().getPersistentDataContainer() == null) {
+            if (event.getItem().getItemMeta() == null) {
                 return;
             }
 
@@ -47,22 +48,26 @@ public class RangedWeaponInterpreter implements Listener {
 
                     case 0:
 
-                        entity = event.getPlayer().launchProjectile(Snowball.class, event.getPlayer().getVelocity().multiply(projectileSpeed));
+                        entity = event.getPlayer().launchProjectile(Snowball.class);
+                        entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                     case 1:
 
-                        entity = event.getPlayer().launchProjectile(Egg.class, event.getPlayer().getVelocity().multiply(projectileSpeed));
+                        entity = event.getPlayer().launchProjectile(Egg.class);
+                        entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                     case 2:
 
-                        entity = event.getPlayer().launchProjectile(Arrow.class, event.getPlayer().getVelocity().multiply(projectileSpeed));
+                        entity = event.getPlayer().launchProjectile(Arrow.class);
+                        entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                     default:
 
-                        entity = event.getPlayer().launchProjectile(Snowball.class, event.getPlayer().getVelocity().multiply(projectileSpeed));
+                        entity = event.getPlayer().launchProjectile(Snowball.class);
+                        entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                 }
@@ -70,6 +75,12 @@ public class RangedWeaponInterpreter implements Listener {
                 entity.setMetadata("ZAProjectile", new FixedMetadataValue(plugin, 1));
                 entity.setMetadata("minDMG", new FixedMetadataValue(plugin, minDMG));
                 entity.setMetadata("maxDMG", new FixedMetadataValue(plugin, maxDMG));
+                entity.setMetadata("shooter", new FixedMetadataValue(plugin, event.getPlayer().getName()));
+
+                System.out.println(entity.getVelocity().getX());
+                System.out.println(entity.getVelocity().getY());
+                System.out.println(entity.getVelocity().getZ());
+
             }
         }
     }
