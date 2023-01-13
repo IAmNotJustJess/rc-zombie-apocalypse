@@ -10,7 +10,6 @@ import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.metadata.Metadatable;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
@@ -56,22 +55,13 @@ public class RangedWeaponInterpreter implements Listener {
 
                 Random random = new Random();
 
-                double xModifier = random.nextDouble() * bulletSpread * 2 - bulletSpread;
-                double yModifier = random.nextDouble() * bulletSpread * 2 - bulletSpread;
-                double zModifier = random.nextDouble() * bulletSpread * 2 - bulletSpread;
-
-                vector.rotateAroundX(xModifier);
-                vector.rotateAroundY(yModifier);
-                vector.rotateAroundZ(zModifier);
+                vector.rotateAroundX(random.nextDouble() * bulletSpread * 2 - bulletSpread);
+                vector.rotateAroundY(random.nextDouble() * bulletSpread * 2 - bulletSpread);
+                vector.rotateAroundZ(random.nextDouble() * bulletSpread * 2 - bulletSpread);
 
                 vector.multiply(projectileSpeed);
 
                 switch (projectileType) {
-
-                    case 0:
-
-                        entity = event.getPlayer().launchProjectile(Snowball.class, vector);
-                        break;
 
                     case 1:
 
