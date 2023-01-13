@@ -16,6 +16,8 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.util.Vector;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 
+import java.util.Random;
+
 public class RangedWeaponInterpreter implements Listener {
     private static ZombieApocalypse plugin;
 
@@ -37,42 +39,53 @@ public class RangedWeaponInterpreter implements Listener {
 
             Integer projectileType = container.get(new NamespacedKey(plugin, "projectileType"), PersistentDataType.INTEGER);
             Double projectileSpeed = container.get(new NamespacedKey(plugin, "projectileSpeed"), PersistentDataType.DOUBLE);
+            Double bulletSpread = container.get(new NamespacedKey(plugin, "bulletSpread"), PersistentDataType.DOUBLE)/10;
             Integer pellets = container.get(new NamespacedKey(plugin, "pellets"), PersistentDataType.INTEGER);
             Integer minDMG = container.get(new NamespacedKey(plugin, "minDMG"), PersistentDataType.INTEGER);
             Integer maxDMG = container.get(new NamespacedKey(plugin, "maxDMG"), PersistentDataType.INTEGER);
 
+            System.out.println(bulletSpread);
+
             Entity entity;
 
-            Vector vector = event.getPlayer().getLocation().getDirection();
-
-            System.out.println(vector);
+            Vector vector;
 
             for (int i = 0; i < pellets; i++) {
+
+                vector = event.getPlayer().getLocation().getDirection();
+
+                Random random = new Random();
+
+                double xModifier = random.nextDouble() * bulletSpread * 2 - bulletSpread;
+                double yModifier = random.nextDouble() * bulletSpread * 2 - bulletSpread;
+                double zModifier = random.nextDouble() * bulletSpread * 2 - bulletSpread;
+
+                vector.rotateAroundX(xModifier);
+                vector.rotateAroundY(yModifier);
+                vector.rotateAroundZ(zModifier);
+
+                vector.multiply(projectileSpeed);
 
                 switch (projectileType) {
 
                     case 0:
 
                         entity = event.getPlayer().launchProjectile(Snowball.class, vector);
-                        entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                     case 1:
 
                         entity = event.getPlayer().launchProjectile(Egg.class, vector);
-                        entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                     case 2:
 
                         entity = event.getPlayer().launchProjectile(Arrow.class, vector);
-                        entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                     default:
 
                         entity = event.getPlayer().launchProjectile(Snowball.class, vector);
-                        entity.getVelocity().multiply(projectileSpeed);
                         break;
 
                 }

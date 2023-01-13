@@ -91,7 +91,7 @@ public class RangedInstance {
     }
 
     public Double getBulletAdditiveSpread() {
-        return this.bulletSpread;
+        return this.bulletAdditiveSpread;
     }
 
     public Integer getSpreadPercentage() {
@@ -159,7 +159,7 @@ public class RangedInstance {
     }
 
     public void setBulletAdditiveSpread(Double bulletAdditiveSpread) {
-        this.bulletSpread = bulletAdditiveSpread;
+        this.bulletAdditiveSpread = bulletAdditiveSpread;
     }
 
     public void setSpreadPercentage(Integer spreadPercentage) {
