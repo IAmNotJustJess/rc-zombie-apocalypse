@@ -14,8 +14,8 @@ public class RangedInstance {
     private Double projectileSpeed = 4.0;
     private Integer pellets = 1;
     private Double bulletSpread = 1.0;
-    private Double bulletAdditiveSpread = 2.0;
-    private Integer spreadPercentage = 25;
+    private Double additiveBulletSpread = 2.0;
+    private Double spreadPercentage = 25.0;
     private Double delayBetweenShots = 0.2;
     private Integer clipSize = 10;
     private Double reloadSpeed = 1.6;
@@ -27,7 +27,7 @@ public class RangedInstance {
         this.id = id;
     }
 
-    public RangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Double bulletAdditiveSpread, Integer spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
+    public RangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Double additiveBulletSpread, Double spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
 
         this.id = id;
         this.name = name;
@@ -39,7 +39,7 @@ public class RangedInstance {
         this.projectileSpeed = projectileSpeed;
         this.pellets = pellets;
         this.bulletSpread = bulletSpread;
-        this.bulletAdditiveSpread = bulletAdditiveSpread;
+        this.additiveBulletSpread = additiveBulletSpread;
         this.spreadPercentage = spreadPercentage;
         this.delayBetweenShots = delayBetweenShots;
         this.clipSize = clipSize;
@@ -90,11 +90,11 @@ public class RangedInstance {
         return this.bulletSpread;
     }
 
-    public Double getBulletAdditiveSpread() {
-        return this.bulletAdditiveSpread;
+    public Double getAdditiveBulletSpread() {
+        return this.additiveBulletSpread;
     }
 
-    public Integer getSpreadPercentage() {
+    public Double getSpreadPercentage() {
         return spreadPercentage;
     }
 
@@ -158,11 +158,11 @@ public class RangedInstance {
         this.bulletSpread = bulletSpread;
     }
 
-    public void setBulletAdditiveSpread(Double bulletAdditiveSpread) {
-        this.bulletAdditiveSpread = bulletAdditiveSpread;
+    public void setAdditiveBulletSpread(Double additiveBulletSpread) {
+        this.additiveBulletSpread = additiveBulletSpread;
     }
 
-    public void setSpreadPercentage(Integer spreadPercentage) {
+    public void setSpreadPercentage(Double spreadPercentage) {
         this.spreadPercentage = spreadPercentage;
     }
 

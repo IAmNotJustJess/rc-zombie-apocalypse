@@ -8,8 +8,6 @@ import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
-import org.bukkit.persistence.PersistentDataAdapterContext;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 
@@ -18,7 +16,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class RangedManager {
     private static RangedManager rangedManager;
@@ -55,7 +52,7 @@ public class RangedManager {
                 1,
                 0.2,
                 2.3,
-                25,
+                25.0,
                 0.2,
                 8,
                 2.2,
@@ -78,7 +75,7 @@ public class RangedManager {
                 1,
                 0.2,
                 2.3,
-                25,
+                25.0,
                 0.2,
                 8,
                 2.2,
@@ -101,7 +98,7 @@ public class RangedManager {
                 1,
                 0.2,
                 2.3,
-                20,
+                20.0,
                 0.2,
                 12,
                 2.2,
@@ -124,7 +121,7 @@ public class RangedManager {
                 1,
                 0.2,
                 1.7,
-                15,
+                15.0,
                 0.2,
                 12,
                 2.2,
@@ -185,7 +182,7 @@ public class RangedManager {
         return null;
 
     }
-    public void createRangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Double bulletAdditiveSpread, Integer spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
+    public void createRangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Double bulletAdditiveSpread, Double spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
 
         if (level < 0 || level >= 4) {
             return;
@@ -305,7 +302,7 @@ public class RangedManager {
                         rangedInstanceConfig.getInt(i+".pellets"),
                         rangedInstanceConfig.getDouble(i+".bulletSpread"),
                         rangedInstanceConfig.getDouble(i+".bulletAdditiveSpread"),
-                        rangedInstanceConfig.getInt(i+".spreadPercentage"),
+                        rangedInstanceConfig.getDouble(i+".spreadPercentage"),
                         rangedInstanceConfig.getDouble(i+".delayBetweenShots"),
                         rangedInstanceConfig.getInt(i+".clipSize"),
                         rangedInstanceConfig.getDouble(i+"reloadSpeed"),
@@ -330,8 +327,8 @@ public class RangedManager {
             getInstance(id, i).setProjectileSpeed(rangedInstanceConfig.getDouble(i+".projectileSpeed"));
             getInstance(id, i).setPellets(rangedInstanceConfig.getInt(i+".pellets"));
             getInstance(id, i).setBulletSpread(rangedInstanceConfig.getDouble(i+".bulletSpread"));
-            getInstance(id, i).setBulletAdditiveSpread(rangedInstanceConfig.getDouble(i+".bulletAdditiveSpread"));
-            getInstance(id, i).setSpreadPercentage(rangedInstanceConfig.getInt(i+".spreadPercentage"));
+            getInstance(id, i).setAdditiveBulletSpread(rangedInstanceConfig.getDouble(i+".bulletAdditiveSpread"));
+            getInstance(id, i).setSpreadPercentage(rangedInstanceConfig.getDouble(i+".spreadPercentage"));
             getInstance(id, i).setDelayBetweenShots(rangedInstanceConfig.getDouble(i+".delayBetweenShots"));
             getInstance(id, i).setClipSize(rangedInstanceConfig.getInt(i+".clipSize"));
             getInstance(id, i).setReloadSpeed(rangedInstanceConfig.getDouble(i+".reloadSpeed"));
@@ -371,8 +368,8 @@ public class RangedManager {
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "pellets"), PersistentDataType.INTEGER, rangedInstance.getPellets());
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "bulletSpread"), PersistentDataType.DOUBLE, rangedInstance.getBulletSpread());
-            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "bulletAdditiveSpread"), PersistentDataType.DOUBLE, rangedInstance.getBulletAdditiveSpread());
-            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "spreadPercentage"), PersistentDataType.INTEGER, rangedInstance.getSpreadPercentage());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "additiveBulletSpread"), PersistentDataType.DOUBLE, rangedInstance.getAdditiveBulletSpread());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "spreadPercentage"), PersistentDataType.DOUBLE, rangedInstance.getSpreadPercentage());
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "delayBetweenShots"), PersistentDataType.DOUBLE, rangedInstance.getDelayBetweenShots());
 
