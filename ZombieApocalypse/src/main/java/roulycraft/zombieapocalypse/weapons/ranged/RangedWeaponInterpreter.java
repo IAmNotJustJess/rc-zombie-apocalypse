@@ -1,5 +1,6 @@
 package roulycraft.zombieapocalypse.weapons.ranged;
 
+import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
@@ -114,52 +115,186 @@ public class RangedWeaponInterpreter implements Listener {
     }
 
 
-    private void shootProjectile(Player player, Integer projectileType, Integer pellets, Double bulletSpread, Double additiveBulletSpread, Double projectileSpeed, Integer minDMG, Integer maxDMG) {
+    private void shootProjectile(
+            Player player,
+            Integer projectileType,
+            Integer pellets,
+            Double bulletSpread,
+            Double additiveBulletSpread,
+            Double projectileSpeed,
+            Integer minDMG,
+            Integer maxDMG,
+            Integer shootingPatternType,
+            Double shootingPatternOffset) {
 
-        Vector vector = player.getLocation().getDirection();
+        Location playerEyeLocation = player.getEyeLocation().clone();
+        Location playerEyeLocationRotationUp = playerEyeLocation.clone();
+        playerEyeLocationRotationUp.setPitch(playerEyeLocation.getPitch() + 90F);
+
+        Vector playerVector = playerEyeLocation.getDirection().multiply(projectileSpeed);
 
         Entity entity;
 
         double spread = (bulletSpread + (additiveBulletSpread * delayBeforeSpreadNullification.get(player) / 100));
 
-        for (int i = 0; i < pellets; i++) {
+        switch(shootingPatternType) {
 
-            Random random = new Random();
+            default: {
 
-            vector.rotateAroundX(random.nextDouble() * spread * 2 - spread);
-            vector.rotateAroundY(random.nextDouble() * spread * 2 - spread);
-            vector.rotateAroundZ(random.nextDouble() * spread * 2 - spread);
+                for (int i = 0; i < pellets; i++) {
 
-            vector.multiply(projectileSpeed);
+                    Random random = new Random();
 
-            switch (projectileType) {
+                    Vector offsetPitch = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
+                    Vector offsetYaw = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
 
-                case 1:
+                    Vector vector = playerVector.clone().add(offsetPitch).
+                        add(offsetYaw.clone().rotateAroundAxis(playerVector, Math.PI / 2)).
+                        multiply(projectileSpeed);
 
-                    entity = player.launchProjectile(Egg.class, vector);
-                    break;
+                    switch (projectileType) {
 
-                case 2:
+                        case 1:
 
-                    entity = player.launchProjectile(Arrow.class, vector); // Make sure that eggs don't chickens
-                    break;
+                            entity = player.launchProjectile(Egg.class, vector);
+                            break;
 
-                default:
+                        case 2:
 
-                    entity = player.launchProjectile(Snowball.class, vector);
-                    break;
+                            entity = player.launchProjectile(Arrow.class, vector); // Make sure that eggs don't chickens
+                            break;
+
+                        default:
+
+                            entity = player.launchProjectile(Snowball.class, vector);
+                            break;
+
+                    }
+
+                    entity.setMetadata("ZAProjectile", new FixedMetadataValue(plugin, 1));
+                    entity.setMetadata("minDMG", new FixedMetadataValue(plugin, minDMG));
+                    entity.setMetadata("maxDMG", new FixedMetadataValue(plugin, maxDMG));
+                    entity.setMetadata("shooter", new FixedMetadataValue(plugin, player.getName()));
+                }
+
+                break;
 
             }
 
-            entity.setMetadata("ZAProjectile", new FixedMetadataValue(plugin, 1));
-            entity.setMetadata("minDMG", new FixedMetadataValue(plugin, minDMG));
-            entity.setMetadata("maxDMG", new FixedMetadataValue(plugin, maxDMG));
-            entity.setMetadata("shooter", new FixedMetadataValue(plugin, player.getName()));
-        }
+            case 1: {
 
+                Random random = new Random();
+
+                Vector offsetPitch = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
+                Vector offsetYaw = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
+
+                double offsetPerPellet = shootingPatternOffset / pellets;
+                double currentOffset = (shootingPatternOffset - offsetPerPellet) * 0.5;
+
+                for (int i = 0; i < pellets; i++) {
+
+                    Vector offsetPatternYaw = playerEyeLocationRotationUp.getDirection().multiply(currentOffset);
+
+                    Vector vector = playerVector.clone().
+                        add(offsetPatternYaw.clone().rotateAroundAxis(playerVector, Math.PI / 2)).
+                        add(offsetPitch).
+                        add(offsetYaw.clone().rotateAroundAxis(playerVector, Math.PI / 2)).
+                        multiply(projectileSpeed);
+
+                    switch (projectileType) {
+
+                        case 1:
+
+                            entity = player.launchProjectile(Egg.class, vector);
+                            break;
+
+                        case 2:
+
+                            entity = player.launchProjectile(Arrow.class, vector); // Make sure that eggs don't chickens
+                            break;
+
+                        default:
+
+                            entity = player.launchProjectile(Snowball.class, vector);
+                            break;
+
+                    }
+
+                    entity.setMetadata("ZAProjectile", new FixedMetadataValue(plugin, 1));
+                    entity.setMetadata("minDMG", new FixedMetadataValue(plugin, minDMG));
+                    entity.setMetadata("maxDMG", new FixedMetadataValue(plugin, maxDMG));
+                    entity.setMetadata("shooter", new FixedMetadataValue(plugin, player.getName()));
+
+                    currentOffset -= offsetPerPellet;
+
+                }
+
+                break;
+
+            }
+
+            case 2: {
+
+                Random random = new Random();
+
+                Vector offsetPitch = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
+                Vector offsetYaw = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
+
+                for (int i = 0; i < pellets; i++) {
+
+                    Vector offsetPatternYaw = playerEyeLocationRotationUp.getDirection().multiply(shootingPatternOffset);
+
+                    Vector vector = playerVector.clone().
+                            add(offsetPatternYaw.clone().rotateAroundAxis(playerVector, Math.PI / pellets * 2 * i - Math.PI)).
+                            add(offsetPitch).
+                            add(offsetYaw.clone().rotateAroundAxis(playerVector, Math.PI / 2)).
+                            multiply(projectileSpeed);
+
+                    switch (projectileType) {
+
+                        case 1:
+
+                            entity = player.launchProjectile(Egg.class, vector);
+                            break;
+
+                        case 2:
+
+                            entity = player.launchProjectile(Arrow.class, vector); // Make sure that eggs don't chickens
+                            break;
+
+                        default:
+
+                            entity = player.launchProjectile(Snowball.class, vector);
+                            break;
+
+                    }
+
+                    entity.setMetadata("ZAProjectile", new FixedMetadataValue(plugin, 1));
+                    entity.setMetadata("minDMG", new FixedMetadataValue(plugin, minDMG));
+                    entity.setMetadata("maxDMG", new FixedMetadataValue(plugin, maxDMG));
+                    entity.setMetadata("shooter", new FixedMetadataValue(plugin, player.getName()));
+
+                }
+
+                break;
+
+            }
+        }
     }
 
-    private void shootProjectile(Player player, Integer projectileType, Integer pellets, Double bulletSpread, Double additiveBulletSpread, Double projectileSpeed, Integer minDMG, Integer maxDMG, Integer burstAmount, Integer delayBetweenBurst) {
+    private void shootProjectile(
+            Player player,
+            Integer projectileType,
+            Integer pellets,
+            Double bulletSpread,
+            Double additiveBulletSpread,
+            Double projectileSpeed,
+            Integer minDMG,
+            Integer maxDMG,
+            Integer shootingPattern,
+            Double patternOffset,
+            Integer burstAmount,
+            Integer delayBetweenBurst) {
 
         for (int i = 0; i < burstAmount; i++) {
 
@@ -168,7 +303,7 @@ public class RangedWeaponInterpreter implements Listener {
                 @Override
                 public void run() {
 
-                    shootProjectile(player, projectileType, pellets, bulletSpread, additiveBulletSpread, projectileSpeed, minDMG, maxDMG);
+                    shootProjectile(player, projectileType, pellets, bulletSpread, additiveBulletSpread, projectileSpeed, minDMG, maxDMG, shootingPattern, patternOffset);
 
                 }
 
@@ -216,6 +351,9 @@ public class RangedWeaponInterpreter implements Listener {
             Integer minDMG = container.get(new NamespacedKey(plugin, "minDMG"), PersistentDataType.INTEGER);
             Integer maxDMG = container.get(new NamespacedKey(plugin, "maxDMG"), PersistentDataType.INTEGER);
 
+            Integer shootingPatternType = container.get(new NamespacedKey(plugin, "shootingPatternType"), PersistentDataType.INTEGER);
+            Double shootingPatternOffset = container.get(new NamespacedKey(plugin, "shootingPatternOffset"), PersistentDataType.DOUBLE);
+
             delayBetweenShotsList.put(event.getPlayer(), delayBetweenShots);
 
             delayDecay(event.getPlayer());
@@ -252,7 +390,7 @@ public class RangedWeaponInterpreter implements Listener {
 
             }
 
-            shootProjectile(event.getPlayer(), projectileType, pellets, bulletSpread, additiveBulletSpread, projectileSpeed, minDMG, maxDMG);
+            shootProjectile(event.getPlayer(), projectileType, pellets, bulletSpread, additiveBulletSpread, projectileSpeed, minDMG, maxDMG, shootingPatternType, shootingPatternOffset);
 
         }
     }

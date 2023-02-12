@@ -58,7 +58,11 @@ public class RangedManager {
                 2.2,
                 "clip",
                 "slide",
-                0.1
+                0.1,
+                0,
+                0.0,
+                "",
+                ""
 
         );
 
@@ -81,7 +85,11 @@ public class RangedManager {
                 2.2,
                 "clip",
                 "slide",
-                0.0
+                0.0,
+                0,
+                0.0,
+                "",
+                ""
 
         );
 
@@ -104,7 +112,11 @@ public class RangedManager {
                 2.2,
                 "clip",
                 "slide",
-                0.0
+                0.0,
+                0,
+                0.0,
+                "",
+                ""
 
         );
 
@@ -127,7 +139,11 @@ public class RangedManager {
                 2.2,
                 "clip",
                 "slide",
-                0.0
+                0.0,
+                0,
+                0.0,
+                "",
+                ""
 
         );
 
@@ -182,7 +198,29 @@ public class RangedManager {
         return null;
 
     }
-    public void createRangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Double bulletSpread, Double bulletAdditiveSpread, Double spreadPercentage, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay) {
+    public void createRangedInstance(
+            Integer id,
+            String name,
+            Integer level,
+            ItemStack item,
+            Integer minDmg,
+            Integer maxDmg,
+            Integer projectileType,
+            Double projectileSpeed,
+            Integer pellets,
+            Double bulletSpread,
+            Double bulletAdditiveSpread,
+            Double spreadPercentage,
+            Double delayBetweenShots,
+            Integer clipSize,
+            Double reloadSpeed,
+            String reloadType,
+            String actionType,
+            Double actionDelay,
+            Integer shootingPatternType,
+            Double shootingPatternOffset,
+            String shootingSound,
+            String reloadingSound) {
 
         if (level < 0 || level >= 4) {
             return;
@@ -195,7 +233,30 @@ public class RangedManager {
             }
         }
 
-        RangedInstance rangedInstance = new RangedInstance(id, name, level, item, minDmg, maxDmg, projectileType, projectileSpeed, pellets, bulletSpread, bulletAdditiveSpread, spreadPercentage, delayBetweenShots, clipSize, reloadSpeed, reloadType, actionType, actionDelay);
+        RangedInstance rangedInstance = new RangedInstance(
+                id,
+                name,
+                level,
+                item,
+                minDmg,
+                maxDmg,
+                projectileType,
+                projectileSpeed,
+                pellets,
+                bulletSpread,
+                bulletAdditiveSpread,
+                spreadPercentage,
+                delayBetweenShots,
+                clipSize,
+                reloadSpeed,
+                reloadType,
+                actionType,
+                actionDelay,
+                shootingPatternType,
+                shootingPatternOffset,
+                shootingSound,
+                reloadingSound
+                );
 
         reloadRangedInstanceConfig(id);
         getRangedInstanceConfig(id).set((level+".name"), name);
@@ -214,6 +275,10 @@ public class RangedManager {
         getRangedInstanceConfig(id).set((level+".reloadType"), reloadType);
         getRangedInstanceConfig(id).set((level+".actionType"), actionType);
         getRangedInstanceConfig(id).set((level+".actionDelay"), actionDelay);
+        getRangedInstanceConfig(id).set((level+".shootingPatternType"), shootingPatternType);
+        getRangedInstanceConfig(id).set((level+".shootingPatternOffset"), shootingPatternOffset);
+        getRangedInstanceConfig(id).set((level+".shootingSound"), shootingSound);
+        getRangedInstanceConfig(id).set((level+".reloadingSound"), reloadingSound);
         saveRangedInstanceConfig(id);
 
         this.rangedInstanceList.add(rangedInstance);
@@ -308,7 +373,11 @@ public class RangedManager {
                         rangedInstanceConfig.getDouble(i+"reloadSpeed"),
                         rangedInstanceConfig.getString(i+".reloadType"),
                         rangedInstanceConfig.getString(i+".actionType"),
-                        rangedInstanceConfig.getDouble(i+".actionDelay")
+                        rangedInstanceConfig.getDouble(i+".actionDelay"),
+                        rangedInstanceConfig.getInt(i+".shootingPatternType"),
+                        rangedInstanceConfig.getDouble(i+".shootingPatternOffset"),
+                        rangedInstanceConfig.getString(i+".shootingSound"),
+                        rangedInstanceConfig.getString(i+".reloadingSound")
 
                 );
 
@@ -335,6 +404,10 @@ public class RangedManager {
             getInstance(id, i).setReloadType(rangedInstanceConfig.getString(i+".reloadType"));
             getInstance(id, i).setActionType(rangedInstanceConfig.getString(i+".actionType"));
             getInstance(id, i).setActionDelay(rangedInstanceConfig.getDouble(i+".actionDelay"));
+            getInstance(id, i).setShootingPatternType(rangedInstanceConfig.getInt(i+".shootingPatternType"));
+            getInstance(id, i).setShootingPatternOffset(rangedInstanceConfig.getDouble(i+".shootingPatternOffset"));
+            getInstance(id, i).setShootingSound(rangedInstanceConfig.getString(i+".shootingSound"));
+            getInstance(id, i).setReloadingSound(rangedInstanceConfig.getString(i+".reloadingSound"));
 
         }
 
@@ -379,6 +452,12 @@ public class RangedManager {
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING, rangedInstance.getActionType());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE, rangedInstance.getActionDelay());
+
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingPatternType"), PersistentDataType.INTEGER, rangedInstance.getShootingPatternType());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingPatternOffset"), PersistentDataType.DOUBLE, rangedInstance.getShootingPatternOffset());
+
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingSound"), PersistentDataType.STRING, rangedInstance.getShootingSound());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "reloadingSound"), PersistentDataType.STRING, rangedInstance.getReloadingSound());
 
             im.setUnbreakable(true);
 
