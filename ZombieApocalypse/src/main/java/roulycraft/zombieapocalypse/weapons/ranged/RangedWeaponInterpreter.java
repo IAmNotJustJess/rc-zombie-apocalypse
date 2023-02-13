@@ -146,9 +146,10 @@ public class RangedWeaponInterpreter implements Listener {
                     Random random = new Random();
 
                     Vector spreadOffset = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
+                    double angle = random.nextDouble() * 360 * Math.PI / 180;
 
                     Vector vector = playerVector.clone().
-                        add(spreadOffset.clone().rotateAroundAxis(playerVector, (random.nextDouble() * 360 * Math.PI / 180))).
+                        add(spreadOffset.clone().rotateAroundAxis(playerVector, angle)).
                         multiply(projectileSpeed);
 
                     switch (projectileType) {
@@ -185,6 +186,7 @@ public class RangedWeaponInterpreter implements Listener {
                 Random random = new Random();
 
                 Vector spreadOffset = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
+                double angle = random.nextDouble() * 360 * Math.PI / 180;
 
                 double offsetPerPellet = shootingPatternOffset / pellets;
                 double currentOffset = (shootingPatternOffset - offsetPerPellet) * 0.5;
@@ -195,7 +197,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                     Vector vector = playerVector.clone().
                         add(offsetPatternYaw.clone().rotateAroundAxis(playerVector, Math.PI / 2)).
-                        add(spreadOffset.clone().rotateAroundAxis(playerVector, (random.nextDouble() * 360 * Math.PI / 180))).
+                        add(spreadOffset.clone().rotateAroundAxis(playerVector, angle)).
                         multiply(projectileSpeed);
 
                     switch (projectileType) {
@@ -235,6 +237,7 @@ public class RangedWeaponInterpreter implements Listener {
                 Random random = new Random();
 
                 Vector spreadOffset = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
+                double angle = random.nextDouble() * 360 * Math.PI / 180;
 
                 for (int i = 0; i < pellets; i++) {
 
@@ -242,7 +245,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                     Vector vector = playerVector.clone().
                             add(offsetPatternYaw.clone().rotateAroundAxis(playerVector, Math.PI / pellets * 2 * i - Math.PI)).
-                            add(spreadOffset.clone().rotateAroundAxis(playerVector, (random.nextDouble() * 360 * Math.PI / 180))).
+                            add(spreadOffset.clone().rotateAroundAxis(playerVector, angle)).
                             multiply(projectileSpeed);
 
                     switch (projectileType) {
