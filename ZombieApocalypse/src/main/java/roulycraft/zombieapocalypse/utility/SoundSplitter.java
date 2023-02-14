@@ -36,7 +36,7 @@ public class SoundSplitter {
 
             String[] soundInfo = sound.split("\\|");
 
-            if(soundInfo[0] == null || soundInfo[1] == null || soundInfo[2] == null || soundInfo[3] == null) {
+            if(soundInfo.length != 4) {
 
                 continue;
 
