@@ -17,7 +17,7 @@ public class SoundSplitter {
         plugin = p;
 
     }
-    public static void playSplitSound(Player player, String normalizedSoundString) {
+    public static void playSplitSound(Player player, String normalisedSoundString) {
 
         Location playerLocation = player.getLocation();
         World playerWorld = player.getWorld();
@@ -28,27 +28,33 @@ public class SoundSplitter {
         // 3: Pitch - Wysokość dźwięku
         // 4: Delay - Opóźnienie wypuszczenia dźwięku
 
-        String example = "ENTITY_SHULKER_HURT|1|1|0;ENTITY_VINDICATOR_HURT|1|2|5";
+        // normalisedSoundString = "ENTITY_SHULKER_HURT|1|1|0;ENTITY_VINDICATOR_HURT|1|2|5";
 
-        String[] split = example.split(";");
+        String[] split = normalisedSoundString.split(";");
 
         for (String sound : split) {
 
             String[] soundInfo = sound.split("\\|");
 
+            if(soundInfo[0] == null || soundInfo[1] == null || soundInfo[2] == null || soundInfo[3] == null) {
+
+                continue;
+
+            }
+
             new BukkitRunnable() {
                 @Override
                 public void run() {
 
-                    playerWorld.playSound(playerLocation,
-                            Sound.valueOf(soundInfo[0]),
-                            SoundCategory.PLAYERS,
-                            Float.parseFloat(soundInfo[1]),
-                            Float.parseFloat(soundInfo[2]));
+                    playerWorld.playSound(
+                        playerLocation,
+                        Sound.valueOf(soundInfo[0]),
+                        SoundCategory.PLAYERS,
+                        Float.parseFloat(soundInfo[1]),
+                        Float.parseFloat(soundInfo[2])
+                    );
                 }
             }.runTaskLater(plugin, Long.parseLong(soundInfo[3]));
-
-
 
         }
 

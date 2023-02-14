@@ -355,6 +355,8 @@ public class RangedWeaponInterpreter implements Listener {
             Integer shootingPatternType = container.get(new NamespacedKey(plugin, "shootingPatternType"), PersistentDataType.INTEGER);
             Double shootingPatternOffset = container.get(new NamespacedKey(plugin, "shootingPatternOffset"), PersistentDataType.DOUBLE);
 
+            String shootingSound = container.get(new NamespacedKey(plugin, "shootingSound"), PersistentDataType.STRING);
+
             delayBetweenShotsList.put(event.getPlayer(), delayBetweenShots);
 
             delayDecay(event.getPlayer());
@@ -391,7 +393,7 @@ public class RangedWeaponInterpreter implements Listener {
 
             }
 
-            SoundSplitter.playSplitSound(event.getPlayer(), "");
+            SoundSplitter.playSplitSound(event.getPlayer(), shootingSound);
 
             shootProjectile(event.getPlayer(), projectileType, pellets, bulletSpread, additiveBulletSpread, projectileSpeed, minDMG, maxDMG, shootingPatternType, shootingPatternOffset);
 

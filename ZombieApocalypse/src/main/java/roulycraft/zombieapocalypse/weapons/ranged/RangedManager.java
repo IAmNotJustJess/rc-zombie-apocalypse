@@ -61,7 +61,7 @@ public class RangedManager {
                 0.1,
                 0,
                 0.0,
-                "",
+                "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
                 ""
 
         );
@@ -88,7 +88,7 @@ public class RangedManager {
                 0.0,
                 0,
                 0.0,
-                "",
+                "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
                 ""
 
         );
@@ -115,7 +115,7 @@ public class RangedManager {
                 0.0,
                 0,
                 0.0,
-                "",
+                "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
                 ""
 
         );
@@ -142,7 +142,7 @@ public class RangedManager {
                 0.0,
                 0,
                 0.0,
-                "",
+                "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
                 ""
 
         );
