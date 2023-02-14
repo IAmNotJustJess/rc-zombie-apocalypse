@@ -2,7 +2,7 @@ package roulycraft.zombieapocalypse.utility;
 
 import com.google.common.base.Splitter;
 
-public class configColourParser {
+public class ConfigColourParser {
 
     public static String getColour(String input) {
 

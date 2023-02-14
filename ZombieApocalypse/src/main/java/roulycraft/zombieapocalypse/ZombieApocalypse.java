@@ -9,6 +9,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 
 import roulycraft.zombieapocalypse.commands.MainCommand;
 import roulycraft.zombieapocalypse.managers.*;
+import roulycraft.zombieapocalypse.utility.SoundSplitter;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedWeaponInterpreter;
 import roulycraft.zombieapocalypse.zombie.*;
@@ -27,6 +28,7 @@ public final class ZombieApocalypse extends JavaPlugin {
         ZombieListener.injectPlugin(this);
         RangedWeaponInterpreter.injectPlugin(this);
         RangedManager.injectPlugin(this);
+        SoundSplitter.injectPlugin(this);
 
         this.saveDefaultConfig();
 

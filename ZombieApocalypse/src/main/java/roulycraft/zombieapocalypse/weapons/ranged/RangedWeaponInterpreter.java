@@ -17,6 +17,7 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
+import roulycraft.zombieapocalypse.utility.SoundSplitter;
 
 import java.util.*;
 
@@ -224,6 +225,8 @@ public class RangedWeaponInterpreter implements Listener {
                     entity.setMetadata("maxDMG", new FixedMetadataValue(plugin, maxDMG));
                     entity.setMetadata("shooter", new FixedMetadataValue(plugin, player.getName()));
 
+
+
                     currentOffset -= offsetPerPellet;
 
                 }
@@ -387,6 +390,8 @@ public class RangedWeaponInterpreter implements Listener {
                 }
 
             }
+
+            SoundSplitter.playSplitSound(event.getPlayer(), "");
 
             shootProjectile(event.getPlayer(), projectileType, pellets, bulletSpread, additiveBulletSpread, projectileSpeed, minDMG, maxDMG, shootingPatternType, shootingPatternOffset);
 
