@@ -2,6 +2,7 @@ package roulycraft.zombieapocalypse.weapons.ranged;
 
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
+import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
@@ -11,6 +12,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
@@ -117,22 +119,26 @@ public class RangedWeaponInterpreter implements Listener {
 
 
     private void shootProjectile(
-            Player player,
-            Integer projectileType,
-            Integer pellets,
-            Double bulletSpread,
-            Double additiveBulletSpread,
-            Double projectileSpeed,
-            Integer minDMG,
-            Integer maxDMG,
-            Integer shootingPatternType,
-            Double shootingPatternOffset) {
+        Player player,
+        Integer projectileType,
+        Integer pellets,
+        Double bulletSpread,
+        Double additiveBulletSpread,
+        Double projectileSpeed,
+        Integer minDMG,
+        Integer maxDMG,
+        Integer shootingPatternType,
+        Double shootingPatternOffset)
+
+    {
+
+        projectileSpeed *= 2;
 
         Location playerEyeLocation = player.getEyeLocation().clone();
         Location playerEyeLocationRotationUp = playerEyeLocation.clone();
         playerEyeLocationRotationUp.setPitch(playerEyeLocation.getPitch() + 90F);
 
-        Vector playerVector = playerEyeLocation.getDirection().multiply(projectileSpeed);
+        Vector playerVector = playerEyeLocation.getDirection();
 
         Entity entity;
 
@@ -330,32 +336,47 @@ public class RangedWeaponInterpreter implements Listener {
                 return;
             }
 
-            PersistentDataContainer container = event.getItem().getItemMeta().getPersistentDataContainer();
+            ItemMeta itemMeta = event.getItem().getItemMeta();
 
-            if (container.get(key, PersistentDataType.INTEGER) == null || container.get(key, PersistentDataType.INTEGER) != 1) {
+            if (itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER) == null || itemMeta.getPersistentDataContainer().get(key, PersistentDataType.INTEGER) != 1) {
 
                 return;
 
             }
 
-            Integer projectileType = container.get(new NamespacedKey(plugin, "projectileType"), PersistentDataType.INTEGER);
+            Integer currentAmmo = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER);
 
-            Double projectileSpeed = container.get(new NamespacedKey(plugin, "projectileSpeed"), PersistentDataType.DOUBLE);
+            if(currentAmmo <= 0) {
 
-            Double bulletSpread = container.get(new NamespacedKey(plugin, "bulletSpread"), PersistentDataType.DOUBLE)/10;
-            Double additiveBulletSpread = container.get(new NamespacedKey(plugin, "additiveBulletSpread"), PersistentDataType.DOUBLE)/10;
-            Double spreadPercentage = container.get(new NamespacedKey(plugin, "spreadPercentage"), PersistentDataType.DOUBLE);
+                event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.valueOf("BLOCK_NOTE_BLOCK_HAT"), 1, 2);
+                return;
 
-            Integer delayBetweenShots = (int) Math.round(container.get(new NamespacedKey(plugin, "delayBetweenShots"), PersistentDataType.DOUBLE)*20);
+            }
 
-            Integer pellets = container.get(new NamespacedKey(plugin, "pellets"), PersistentDataType.INTEGER);
-            Integer minDMG = container.get(new NamespacedKey(plugin, "minDMG"), PersistentDataType.INTEGER);
-            Integer maxDMG = container.get(new NamespacedKey(plugin, "maxDMG"), PersistentDataType.INTEGER);
+            currentAmmo -= 1;
 
-            Integer shootingPatternType = container.get(new NamespacedKey(plugin, "shootingPatternType"), PersistentDataType.INTEGER);
-            Double shootingPatternOffset = container.get(new NamespacedKey(plugin, "shootingPatternOffset"), PersistentDataType.DOUBLE);
+            itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER, currentAmmo);
 
-            String shootingSound = container.get(new NamespacedKey(plugin, "shootingSound"), PersistentDataType.STRING);
+            event.getItem().setItemMeta(itemMeta);
+
+            Integer projectileType = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "projectileType"), PersistentDataType.INTEGER);
+
+            Double projectileSpeed = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "projectileSpeed"), PersistentDataType.DOUBLE);
+
+            Double bulletSpread = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "bulletSpread"), PersistentDataType.DOUBLE)/10;
+            Double additiveBulletSpread = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "additiveBulletSpread"), PersistentDataType.DOUBLE)/10;
+            Double spreadPercentage = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "spreadPercentage"), PersistentDataType.DOUBLE);
+
+            Integer delayBetweenShots = (int) Math.round(itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "delayBetweenShots"), PersistentDataType.DOUBLE)*20);
+
+            Integer pellets = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "pellets"), PersistentDataType.INTEGER);
+            Integer minDMG = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "minDMG"), PersistentDataType.INTEGER);
+            Integer maxDMG = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "maxDMG"), PersistentDataType.INTEGER);
+
+            Integer shootingPatternType = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "shootingPatternType"), PersistentDataType.INTEGER);
+            Double shootingPatternOffset = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "shootingPatternOffset"), PersistentDataType.DOUBLE);
+
+            String shootingSound = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "shootingSound"), PersistentDataType.STRING);
 
             delayBetweenShotsList.put(event.getPlayer(), delayBetweenShots);
 

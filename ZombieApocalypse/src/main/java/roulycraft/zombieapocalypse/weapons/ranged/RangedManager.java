@@ -34,10 +34,10 @@ public class RangedManager {
 
     public void createDefaultRangedeInstances() {
 
-        String rangedLvl0 = "§f";
-        String rangedLvl1 = "§7Wzmocniony ";
-        String rangedLvl2 = "§bNiepowstrzymany ";
-        String rangedLvl3 = "§dOstateczny ";
+        String rangedLvl0 = "§7";
+        String rangedLvl1 = "§bWzmocniony ";
+        String rangedLvl2 = "§dNiepowstrzymany ";
+        String rangedLvl3 = "§6Ostateczny ";
 
         createRangedInstance(
 
@@ -62,6 +62,8 @@ public class RangedManager {
                 0,
                 0.0,
                 "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
+                "",
+                "",
                 ""
 
         );
@@ -89,6 +91,8 @@ public class RangedManager {
                 0,
                 0.0,
                 "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
+                "",
+                "",
                 ""
 
         );
@@ -116,6 +120,8 @@ public class RangedManager {
                 0,
                 0.0,
                 "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
+                "",
+                "",
                 ""
 
         );
@@ -143,6 +149,8 @@ public class RangedManager {
                 0,
                 0.0,
                 "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
+                "",
+                "",
                 ""
 
         );
@@ -220,7 +228,10 @@ public class RangedManager {
             Integer shootingPatternType,
             Double shootingPatternOffset,
             String shootingSound,
-            String reloadingSound) {
+            String reloadingSound,
+            String actionOpenSound,
+            String actionCloseSound
+    ) {
 
         if (level < 0 || level >= 4) {
             return;
@@ -255,7 +266,9 @@ public class RangedManager {
                 shootingPatternType,
                 shootingPatternOffset,
                 shootingSound,
-                reloadingSound
+                reloadingSound,
+                actionOpenSound,
+                actionCloseSound
                 );
 
         reloadRangedInstanceConfig(id);
@@ -279,6 +292,8 @@ public class RangedManager {
         getRangedInstanceConfig(id).set((level+".shootingPatternOffset"), shootingPatternOffset);
         getRangedInstanceConfig(id).set((level+".shootingSound"), shootingSound);
         getRangedInstanceConfig(id).set((level+".reloadingSound"), reloadingSound);
+        getRangedInstanceConfig(id).set((level+".actionOpenSound"), actionOpenSound);
+        getRangedInstanceConfig(id).set((level+".actionCloseSound"), actionCloseSound);
         saveRangedInstanceConfig(id);
 
         this.rangedInstanceList.add(rangedInstance);
@@ -377,7 +392,9 @@ public class RangedManager {
                         rangedInstanceConfig.getInt(i+".shootingPatternType"),
                         rangedInstanceConfig.getDouble(i+".shootingPatternOffset"),
                         rangedInstanceConfig.getString(i+".shootingSound"),
-                        rangedInstanceConfig.getString(i+".reloadingSound")
+                        rangedInstanceConfig.getString(i+".reloadingSound"),
+                        rangedInstanceConfig.getString(i+".actionOpenSound"),
+                        rangedInstanceConfig.getString(i+".actionCloseSound")
 
                 );
 
@@ -408,6 +425,8 @@ public class RangedManager {
             getInstance(id, i).setShootingPatternOffset(rangedInstanceConfig.getDouble(i+".shootingPatternOffset"));
             getInstance(id, i).setShootingSound(rangedInstanceConfig.getString(i+".shootingSound"));
             getInstance(id, i).setReloadingSound(rangedInstanceConfig.getString(i+".reloadingSound"));
+            getInstance(id, i).setActionOpenSound(rangedInstanceConfig.getString(i+".actionOpenSound"));
+            getInstance(id, i).setActionCloseSound(rangedInstanceConfig.getString(i+".actionCloseSound"));
 
         }
 
@@ -446,6 +465,7 @@ public class RangedManager {
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "delayBetweenShots"), PersistentDataType.DOUBLE, rangedInstance.getDelayBetweenShots());
 
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER, rangedInstance.getClipSize());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER, rangedInstance.getClipSize());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "reloadSpeed"), PersistentDataType.DOUBLE, rangedInstance.getReloadSpeed());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "reloadType"), PersistentDataType.STRING, rangedInstance.getReloadType());
@@ -458,6 +478,8 @@ public class RangedManager {
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingSound"), PersistentDataType.STRING, rangedInstance.getShootingSound());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "reloadingSound"), PersistentDataType.STRING, rangedInstance.getReloadingSound());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionOpenSound"), PersistentDataType.STRING, rangedInstance.getActionOpenSound());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionCloseSound"), PersistentDataType.STRING, rangedInstance.getActionCloseSound());
 
             im.setUnbreakable(true);
 
