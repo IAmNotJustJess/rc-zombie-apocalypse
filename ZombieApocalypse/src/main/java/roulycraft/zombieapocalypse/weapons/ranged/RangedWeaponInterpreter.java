@@ -2,7 +2,6 @@ package roulycraft.zombieapocalypse.weapons.ranged;
 
 import org.bukkit.Location;
 import org.bukkit.NamespacedKey;
-import org.bukkit.Sound;
 import org.bukkit.entity.Arrow;
 import org.bukkit.entity.Egg;
 import org.bukkit.entity.Entity;
@@ -12,9 +11,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
-import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
@@ -30,6 +29,66 @@ public class RangedWeaponInterpreter implements Listener {
     private Map<Player, Double> delayBeforeSpreadNullification = new WeakHashMap<>();
     private Map<Player, Integer> delayBeforeSpreadDecay = new WeakHashMap<>();
 
+    private void reloadGun(Player player, ItemStack item, Integer reloadSpeed, String reloadingSound, Integer actionDelay, String actionSound) {
+
+        System.out.println(actionSound);
+        System.out.println(actionDelay);
+
+        reloadGun(player, item, reloadSpeed, reloadingSound);
+        gunAction(player, actionDelay, actionSound, reloadSpeed);
+
+    }
+
+    private void gunAction(Player player, Integer actionDelay, String actionSound, Integer delayBeforeSound) {
+
+        if(delayBetweenShotsList.containsKey(player)) {
+
+            delayBetweenShotsList.put(player, delayBetweenShotsList.get(player) + actionDelay);
+
+        }
+
+        else {
+
+            delayBetweenShotsList.put(player, actionDelay);
+
+            delayDecay(player);
+
+        }
+
+        new BukkitRunnable() {
+
+            @Override
+            public void run() {
+
+                SoundSplitter.playSplitSound(player, actionSound);
+            }
+        }.runTaskLater(plugin, (long) delayBeforeSound);
+
+    }
+    private void reloadGun(Player player, ItemStack item, Integer reloadSpeed, String reloadingSound) {
+
+        SoundSplitter.playSplitSound(player, reloadingSound);
+
+        delayBetweenShotsList.put(player, reloadSpeed);
+
+        delayDecay(player);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                ItemMeta itemMeta = item.getItemMeta();
+
+                itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"),
+                        PersistentDataType.INTEGER,
+                        itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER));
+
+                item.setItemMeta(itemMeta);
+
+            }
+        }.runTaskLater(plugin, (long) reloadSpeed);
+
+    }
     private void delayDecay(Player player) {
 
         new BukkitRunnable() {
@@ -153,7 +212,7 @@ public class RangedWeaponInterpreter implements Listener {
                     Random random = new Random();
 
                     Vector spreadOffset = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
-                    double angle = random.nextDouble() * 360 * Math.PI / 180;
+                    double angle = random.nextDouble() * 2 * Math.PI;
 
                     Vector vector = playerVector.clone().
                         add(spreadOffset.clone().rotateAroundAxis(playerVector, angle)).
@@ -193,7 +252,7 @@ public class RangedWeaponInterpreter implements Listener {
                 Random random = new Random();
 
                 Vector spreadOffset = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
-                double angle = random.nextDouble() * 360 * Math.PI / 180;
+                double angle = random.nextDouble() * 2 * Math.PI;
 
                 double offsetPerPellet = shootingPatternOffset / pellets;
                 double currentOffset = (shootingPatternOffset - offsetPerPellet) * 0.5;
@@ -246,7 +305,7 @@ public class RangedWeaponInterpreter implements Listener {
                 Random random = new Random();
 
                 Vector spreadOffset = playerEyeLocationRotationUp.getDirection().multiply((random.nextDouble() * spread * 2 - spread));
-                double angle = random.nextDouble() * 360 * Math.PI / 180;
+                double angle = random.nextDouble() * 2 * Math.PI;
 
                 for (int i = 0; i < pellets; i++) {
 
@@ -346,9 +405,18 @@ public class RangedWeaponInterpreter implements Listener {
 
             Integer currentAmmo = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER);
 
-            if(currentAmmo <= 0) {
+            if(currentAmmo <= 0) { // reloading
 
-                event.getPlayer().playSound(event.getPlayer().getLocation(), Sound.valueOf("BLOCK_NOTE_BLOCK_HAT"), 1, 2);
+                Integer reloadSpeed = (int) Math.round(itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "reloadSpeed"), PersistentDataType.DOUBLE)*20);
+
+                Integer actionDelay = (int) Math.round(itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE)*20);
+
+                String reloadingSound = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "reloadingSound"), PersistentDataType.STRING);
+
+                String actionSound = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionSound"), PersistentDataType.STRING);
+
+                reloadGun(event.getPlayer(), event.getItem(), reloadSpeed, reloadingSound, actionDelay, actionSound);
+
                 return;
 
             }

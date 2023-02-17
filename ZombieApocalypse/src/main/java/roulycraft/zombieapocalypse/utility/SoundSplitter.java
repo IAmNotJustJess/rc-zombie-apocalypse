@@ -19,7 +19,6 @@ public class SoundSplitter {
     }
     public static void playSplitSound(Player player, String normalisedSoundString) {
 
-        Location playerLocation = player.getLocation();
         World playerWorld = player.getWorld();
 
         // 1|2|3|4;1|2|3|4
@@ -47,7 +46,7 @@ public class SoundSplitter {
                 public void run() {
 
                     playerWorld.playSound(
-                        playerLocation,
+                        player.getLocation(),
                         Sound.valueOf(soundInfo[0]),
                         SoundCategory.PLAYERS,
                         Float.parseFloat(soundInfo[1]),

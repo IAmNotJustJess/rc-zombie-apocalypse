@@ -26,8 +26,7 @@ public class RangedInstance {
     private Double shootingPatternOffset = 0.0;
     private String shootingSound = "";
     private String reloadingSound = "";
-    private String actionOpenSound = "";
-    private String actionCloseSound = "";
+    private String actionSound = "";
 
     public RangedInstance(Integer id) {
         this.id = id;
@@ -56,8 +55,7 @@ public class RangedInstance {
             Double shootingPatternOffset,
             String shootingSound,
             String reloadingSound,
-            String actionOpenSound,
-            String actionCloseSound
+            String actionSound
     ) {
 
         this.id = id;
@@ -82,8 +80,7 @@ public class RangedInstance {
         this.shootingPatternOffset = shootingPatternOffset;
         this.shootingSound = shootingSound;
         this.reloadingSound = reloadingSound;
-        this.actionOpenSound = actionOpenSound;
-        this.actionCloseSound = actionCloseSound;
+        this.actionSound = actionSound;
 
     }
 
@@ -175,12 +172,8 @@ public class RangedInstance {
         return reloadingSound;
     }
 
-    public String getActionOpenSound() {
-        return actionOpenSound;
-    }
-
-    public String getActionCloseSound() {
-        return actionCloseSound;
+    public String getActionSound() {
+        return actionSound;
     }
 
     public void setName (String name) {
@@ -267,11 +260,7 @@ public class RangedInstance {
         this.reloadingSound = reloadingSound;
     }
 
-    public void setActionOpenSound(String actionOpenSound) {
-        this.actionOpenSound = actionOpenSound;
-    }
-
-    public void setActionCloseSound(String actionCloseSound) {
-        this.actionCloseSound = actionCloseSound;
+    public void setActionSound(String actionSound) {
+        this.actionSound = actionSound;
     }
 }

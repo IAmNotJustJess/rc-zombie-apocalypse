@@ -55,16 +55,15 @@ public class RangedManager {
                 25.0,
                 0.2,
                 8,
-                2.2,
+                1.6,
                 "clip",
                 "slide",
-                0.1,
+                0.5,
                 0,
                 0.0,
-                "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
-                "",
-                "",
-                ""
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0",
+                "BLOCK_IRON_TRAPDOOR_OPEN|1|2|4;BLOCK_IRON_TRAPDOOR_CLOSE|1|2|28",
+                "BLOCK_PISTON_EXTEND|0.25|2|4"
 
         );
 
@@ -84,16 +83,15 @@ public class RangedManager {
                 25.0,
                 0.2,
                 8,
-                2.2,
+                1.6,
                 "clip",
                 "slide",
-                0.0,
+                0.5,
                 0,
                 0.0,
-                "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
-                "",
-                "",
-                ""
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0",
+                "BLOCK_IRON_TRAPDOOR_OPEN|1|2|4;BLOCK_IRON_TRAPDOOR_CLOSE|1|2|28",
+                "BLOCK_PISTON_EXTEND|0.25|2|4"
 
         );
 
@@ -113,16 +111,15 @@ public class RangedManager {
                 20.0,
                 0.2,
                 12,
-                2.2,
+                1.6,
                 "clip",
                 "slide",
-                0.0,
+                0.5,
                 0,
                 0.0,
-                "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
-                "",
-                "",
-                ""
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0",
+                "BLOCK_IRON_TRAPDOOR_OPEN|1|2|4;BLOCK_IRON_TRAPDOOR_CLOSE|1|2|28",
+                "BLOCK_PISTON_EXTEND|0.25|2|4"
 
         );
 
@@ -142,17 +139,15 @@ public class RangedManager {
                 15.0,
                 0.2,
                 12,
-                2.2,
+                1.6,
                 "clip",
                 "slide",
-                0.0,
+                0.5,
                 0,
                 0.0,
-                "ENTITY_BLAZE_HURT|1|2|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
-                "",
-                "",
-                ""
-
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0",
+                "BLOCK_IRON_TRAPDOOR_OPEN|1|2|4;BLOCK_IRON_TRAPDOOR_CLOSE|1|2|28",
+                "BLOCK_PISTON_EXTEND|0.25|2|4"
         );
 
     }
@@ -172,12 +167,6 @@ public class RangedManager {
     public ItemStack getGun(Integer id, Integer level) {
 
         for (ItemStack item : this.rangedInstanceItemList) {
-
-            System.out.println(item);
-            System.out.println(item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "id"), PersistentDataType.INTEGER));
-            System.out.println(item.getItemMeta().getPersistentDataContainer().isEmpty());
-            System.out.println(id);
-            System.out.println(level);
 
             if (Objects.equals(item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "id"), PersistentDataType.INTEGER), id) && Objects.equals(item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER), level)) {
 
@@ -229,8 +218,7 @@ public class RangedManager {
             Double shootingPatternOffset,
             String shootingSound,
             String reloadingSound,
-            String actionOpenSound,
-            String actionCloseSound
+            String actionSound
     ) {
 
         if (level < 0 || level >= 4) {
@@ -267,8 +255,7 @@ public class RangedManager {
                 shootingPatternOffset,
                 shootingSound,
                 reloadingSound,
-                actionOpenSound,
-                actionCloseSound
+                actionSound
                 );
 
         reloadRangedInstanceConfig(id);
@@ -292,8 +279,7 @@ public class RangedManager {
         getRangedInstanceConfig(id).set((level+".shootingPatternOffset"), shootingPatternOffset);
         getRangedInstanceConfig(id).set((level+".shootingSound"), shootingSound);
         getRangedInstanceConfig(id).set((level+".reloadingSound"), reloadingSound);
-        getRangedInstanceConfig(id).set((level+".actionOpenSound"), actionOpenSound);
-        getRangedInstanceConfig(id).set((level+".actionCloseSound"), actionCloseSound);
+        getRangedInstanceConfig(id).set((level+".actionSound"), actionSound);
         saveRangedInstanceConfig(id);
 
         this.rangedInstanceList.add(rangedInstance);
@@ -366,8 +352,9 @@ public class RangedManager {
 
         for (int i = 0; i < 4; i++) {
 
-            if (!rangedInstanceList.contains(this.getRangedInstance(id, i)) &&
+            if (!rangedInstanceList.contains(getRangedInstance(id, i)) &&
                 !rangedInstanceConfig.getString(i+".name").isEmpty()) {
+
 
                 RangedInstance rangedInstance = new RangedInstance(
 
@@ -385,7 +372,7 @@ public class RangedManager {
                         rangedInstanceConfig.getDouble(i+".spreadPercentage"),
                         rangedInstanceConfig.getDouble(i+".delayBetweenShots"),
                         rangedInstanceConfig.getInt(i+".clipSize"),
-                        rangedInstanceConfig.getDouble(i+"reloadSpeed"),
+                        rangedInstanceConfig.getDouble(i+".reloadSpeed"),
                         rangedInstanceConfig.getString(i+".reloadType"),
                         rangedInstanceConfig.getString(i+".actionType"),
                         rangedInstanceConfig.getDouble(i+".actionDelay"),
@@ -393,8 +380,7 @@ public class RangedManager {
                         rangedInstanceConfig.getDouble(i+".shootingPatternOffset"),
                         rangedInstanceConfig.getString(i+".shootingSound"),
                         rangedInstanceConfig.getString(i+".reloadingSound"),
-                        rangedInstanceConfig.getString(i+".actionOpenSound"),
-                        rangedInstanceConfig.getString(i+".actionCloseSound")
+                        rangedInstanceConfig.getString(i+".actionSound")
 
                 );
 
@@ -425,8 +411,7 @@ public class RangedManager {
             getInstance(id, i).setShootingPatternOffset(rangedInstanceConfig.getDouble(i+".shootingPatternOffset"));
             getInstance(id, i).setShootingSound(rangedInstanceConfig.getString(i+".shootingSound"));
             getInstance(id, i).setReloadingSound(rangedInstanceConfig.getString(i+".reloadingSound"));
-            getInstance(id, i).setActionOpenSound(rangedInstanceConfig.getString(i+".actionOpenSound"));
-            getInstance(id, i).setActionCloseSound(rangedInstanceConfig.getString(i+".actionCloseSound"));
+            getInstance(id, i).setActionSound(rangedInstanceConfig.getString(i+".actionSound"));
 
         }
 
@@ -478,8 +463,7 @@ public class RangedManager {
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingSound"), PersistentDataType.STRING, rangedInstance.getShootingSound());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "reloadingSound"), PersistentDataType.STRING, rangedInstance.getReloadingSound());
-            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionOpenSound"), PersistentDataType.STRING, rangedInstance.getActionOpenSound());
-            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionCloseSound"), PersistentDataType.STRING, rangedInstance.getActionCloseSound());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSound"), PersistentDataType.STRING, rangedInstance.getActionSound());
 
             im.setUnbreakable(true);
 
