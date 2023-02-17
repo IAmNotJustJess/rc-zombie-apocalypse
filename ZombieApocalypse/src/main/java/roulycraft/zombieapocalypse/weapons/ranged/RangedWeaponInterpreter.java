@@ -10,7 +10,10 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.Action;
+import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
+import org.bukkit.event.player.PlayerItemHeldEvent;
+import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -18,8 +21,10 @@ import org.bukkit.persistence.PersistentDataType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
+import roulycraft.zombieapocalypse.utility.ConfigColourParser;
 import roulycraft.zombieapocalypse.utility.SoundSplitter;
 
+import javax.naming.Name;
 import java.util.*;
 
 public class RangedWeaponInterpreter implements Listener {
@@ -31,10 +36,14 @@ public class RangedWeaponInterpreter implements Listener {
 
     private void reloadGun(Player player, ItemStack item, Integer reloadSpeed, String reloadingSound, Integer actionDelay, String actionSound) {
 
-        System.out.println(actionSound);
-        System.out.println(actionDelay);
-
         reloadGun(player, item, reloadSpeed, reloadingSound);
+        gunAction(player, actionDelay, actionSound, reloadSpeed);
+
+    }
+
+    private void reloadGun(Player player, Integer itemSlot, Integer reloadSpeed, String reloadingSound, Integer actionDelay, String actionSound) {
+
+        reloadGun(player, itemSlot, reloadSpeed, reloadingSound);
         gunAction(player, actionDelay, actionSound, reloadSpeed);
 
     }
@@ -79,11 +88,60 @@ public class RangedWeaponInterpreter implements Listener {
 
                 ItemMeta itemMeta = item.getItemMeta();
 
+                Integer clipSize = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER);
+
+                Integer level = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
+
+                String primaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".primary"));
+                String secondaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".secondary"));
+
+                String[] displayName = itemMeta.getDisplayName().split("\\|");
+
                 itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"),
                         PersistentDataType.INTEGER,
-                        itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER));
+                        clipSize);
+
+
+                itemMeta.setDisplayName(displayName[0]+secondaryColour+"| "+primaryColour+clipSize);
 
                 item.setItemMeta(itemMeta);
+
+            }
+        }.runTaskLater(plugin, (long) reloadSpeed);
+
+    }
+
+    private void reloadGun(Player player, Integer itemSlot, Integer reloadSpeed, String reloadingSound) {
+
+        SoundSplitter.playSplitSound(player, reloadingSound);
+
+        delayBetweenShotsList.put(player, reloadSpeed);
+
+        delayDecay(player);
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                ItemMeta itemMeta = player.getInventory().getItem(itemSlot).getItemMeta();
+
+                Integer clipSize = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER);
+
+                Integer level = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
+
+                String primaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".primary"));
+                String secondaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".secondary"));
+
+                String[] displayName = itemMeta.getDisplayName().split("\\|");
+
+                itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"),
+                        PersistentDataType.INTEGER,
+                        clipSize);
+
+
+                itemMeta.setDisplayName(displayName[0]+secondaryColour+"| "+primaryColour+clipSize);
+
+                player.getInventory().getItem(itemSlot).setItemMeta(itemMeta);
 
             }
         }.runTaskLater(plugin, (long) reloadSpeed);
@@ -380,6 +438,70 @@ public class RangedWeaponInterpreter implements Listener {
     }
 
     @EventHandler
+    public void onHotbarSwitch(PlayerItemHeldEvent event){
+
+        if(delayBetweenShotsList != null && delayBetweenShotsList.containsKey(event.getPlayer())) {
+
+            event.setCancelled(true);
+
+        }
+
+    }
+
+    @EventHandler
+    public void onItemDrop(PlayerDropItemEvent event) {
+
+        ItemMeta itemMeta = event.getItemDrop().getItemStack().getItemMeta();
+
+        if (itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "zaGun"), PersistentDataType.INTEGER) == null) {
+
+            return;
+
+        }
+
+        event.setCancelled(true);
+
+        if(delayBetweenShotsList != null && delayBetweenShotsList.containsKey(event.getPlayer())) {
+
+            return;
+
+        }
+
+        Integer clipSize = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER);
+        Integer currentAmmo = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER);
+
+        if(!Objects.equals(currentAmmo, clipSize)) {
+
+            Integer reloadSpeed = (int) Math.round(itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "reloadSpeed"), PersistentDataType.DOUBLE)*20);
+
+            Integer actionDelay = (int) Math.round(itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE)*20);
+
+            String reloadingSound = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "reloadingSound"), PersistentDataType.STRING);
+
+            String actionSound = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionSound"), PersistentDataType.STRING);
+
+            switch(currentAmmo) {
+
+                case 0: {
+
+                    reloadGun(event.getPlayer(), event.getPlayer().getInventory().getHeldItemSlot(), reloadSpeed, reloadingSound, actionDelay, actionSound);
+
+                    break;
+                }
+                default: {
+
+                    reloadGun(event.getPlayer(), event.getPlayer().getInventory().getHeldItemSlot(), reloadSpeed, reloadingSound);
+
+                    break;
+                }
+
+            }
+
+        }
+
+    }
+
+    @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
         if((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && event.hasItem()) {
 
@@ -424,6 +546,15 @@ public class RangedWeaponInterpreter implements Listener {
             currentAmmo -= 1;
 
             itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER, currentAmmo);
+
+            Integer level = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
+
+            String primaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".primary"));
+            String secondaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".secondary"));
+
+            String[] displayName = itemMeta.getDisplayName().split("\\|");
+
+            itemMeta.setDisplayName(displayName[0]+secondaryColour+"| "+primaryColour+currentAmmo);
 
             event.getItem().setItemMeta(itemMeta);
 

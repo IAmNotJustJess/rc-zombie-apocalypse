@@ -22,6 +22,7 @@ public class RangedInstance {
     private String reloadType = "clip";
     private String actionType = "fullAuto";
     private Double actionDelay = 0.0;
+    private Integer actionSpecial = 0;
     private Integer shootingPatternType = 0;
     private Double shootingPatternOffset = 0.0;
     private String shootingSound = "";
@@ -51,6 +52,7 @@ public class RangedInstance {
             String reloadType,
             String actionType,
             Double actionDelay,
+            Integer actionSpecial,
             Integer shootingPatternType,
             Double shootingPatternOffset,
             String shootingSound,
@@ -76,6 +78,7 @@ public class RangedInstance {
         this.reloadType = reloadType;
         this.actionType = actionType;
         this.actionDelay = actionDelay;
+        this.actionSpecial = actionSpecial;
         this.shootingPatternType = shootingPatternType;
         this.shootingPatternOffset = shootingPatternOffset;
         this.shootingSound = shootingSound;
@@ -154,6 +157,10 @@ public class RangedInstance {
 
     public Double getActionDelay() {
         return actionDelay;
+    }
+
+    public Integer getActionSpecial() {
+        return actionSpecial;
     }
 
     public Integer getShootingPatternType() {
@@ -242,6 +249,10 @@ public class RangedInstance {
 
     public void setActionDelay(Double actionDelay) {
         this.actionDelay = actionDelay;
+    }
+
+    public void setActionSpecial(Integer actionSpecial) {
+        this.actionSpecial = actionSpecial;
     }
 
     public void setShootingPatternType(Integer shootingPatternType) {

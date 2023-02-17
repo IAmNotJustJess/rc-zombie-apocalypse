@@ -6,10 +6,12 @@ import org.bukkit.NamespacedKey;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
+import roulycraft.zombieapocalypse.utility.ConfigColourParser;
 
 import java.io.File;
 import java.io.IOException;
@@ -34,10 +36,10 @@ public class RangedManager {
 
     public void createDefaultRangedeInstances() {
 
-        String rangedLvl0 = "§7";
-        String rangedLvl1 = "§bWzmocniony ";
-        String rangedLvl2 = "§dNiepowstrzymany ";
-        String rangedLvl3 = "§6Ostateczny ";
+        String rangedLvl0 = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level0.primary"));
+        String rangedLvl1 = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level1.primary"));
+        String rangedLvl2 = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level2.primary"));
+        String rangedLvl3 = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level3.primary"));
 
         createRangedInstance(
 
@@ -59,6 +61,7 @@ public class RangedManager {
                 "clip",
                 "slide",
                 0.5,
+                0,
                 0,
                 0.0,
                 "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0",
@@ -88,6 +91,7 @@ public class RangedManager {
                 "slide",
                 0.5,
                 0,
+                0,
                 0.0,
                 "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0",
                 "BLOCK_IRON_TRAPDOOR_OPEN|1|2|4;BLOCK_IRON_TRAPDOOR_CLOSE|1|2|28",
@@ -116,6 +120,7 @@ public class RangedManager {
                 "slide",
                 0.5,
                 0,
+                0,
                 0.0,
                 "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0",
                 "BLOCK_IRON_TRAPDOOR_OPEN|1|2|4;BLOCK_IRON_TRAPDOOR_CLOSE|1|2|28",
@@ -143,6 +148,7 @@ public class RangedManager {
                 "clip",
                 "slide",
                 0.5,
+                0,
                 0,
                 0.0,
                 "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0",
@@ -214,6 +220,7 @@ public class RangedManager {
             String reloadType,
             String actionType,
             Double actionDelay,
+            Integer actionSpecial,
             Integer shootingPatternType,
             Double shootingPatternOffset,
             String shootingSound,
@@ -251,6 +258,7 @@ public class RangedManager {
                 reloadType,
                 actionType,
                 actionDelay,
+                actionSpecial,
                 shootingPatternType,
                 shootingPatternOffset,
                 shootingSound,
@@ -376,6 +384,7 @@ public class RangedManager {
                         rangedInstanceConfig.getString(i+".reloadType"),
                         rangedInstanceConfig.getString(i+".actionType"),
                         rangedInstanceConfig.getDouble(i+".actionDelay"),
+                        rangedInstanceConfig.getInt(i+".actionSpecial"),
                         rangedInstanceConfig.getInt(i+".shootingPatternType"),
                         rangedInstanceConfig.getDouble(i+".shootingPatternOffset"),
                         rangedInstanceConfig.getString(i+".shootingSound"),
@@ -407,6 +416,7 @@ public class RangedManager {
             getInstance(id, i).setReloadType(rangedInstanceConfig.getString(i+".reloadType"));
             getInstance(id, i).setActionType(rangedInstanceConfig.getString(i+".actionType"));
             getInstance(id, i).setActionDelay(rangedInstanceConfig.getDouble(i+".actionDelay"));
+            getInstance(id, i).setActionSpecial(rangedInstanceConfig.getInt(i+".actionSpecial"));
             getInstance(id, i).setShootingPatternType(rangedInstanceConfig.getInt(i+".shootingPatternType"));
             getInstance(id, i).setShootingPatternOffset(rangedInstanceConfig.getDouble(i+".shootingPatternOffset"));
             getInstance(id, i).setShootingSound(rangedInstanceConfig.getString(i+".shootingSound"));
@@ -429,7 +439,10 @@ public class RangedManager {
             item = new ItemStack(rangedInstance.getItem());
             ItemMeta im = item.getItemMeta();
 
-            im.setDisplayName(rangedInstance.getName());
+            String primaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+rangedInstance.getLevel()+".primary"));
+            String secondaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+rangedInstance.getLevel()+".secondary"));
+
+            im.setDisplayName(rangedInstance.getName()+" "+secondaryColour+"| "+primaryColour+rangedInstance.getClipSize());
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "zaGun"), PersistentDataType.INTEGER, 1);
 
@@ -457,6 +470,7 @@ public class RangedManager {
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING, rangedInstance.getActionType());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE, rangedInstance.getActionDelay());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecial"), PersistentDataType.INTEGER, rangedInstance.getActionSpecial());
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingPatternType"), PersistentDataType.INTEGER, rangedInstance.getShootingPatternType());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingPatternOffset"), PersistentDataType.DOUBLE, rangedInstance.getShootingPatternOffset());
@@ -466,6 +480,8 @@ public class RangedManager {
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSound"), PersistentDataType.STRING, rangedInstance.getActionSound());
 
             im.setUnbreakable(true);
+
+            im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
 
             item.setItemMeta(im);
 
