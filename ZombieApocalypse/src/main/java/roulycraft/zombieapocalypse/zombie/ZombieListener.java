@@ -13,11 +13,11 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 
 import java.util.*;
-import java.util.Timer;
 
 import static org.bukkit.entity.EntityType.PLAYER;
 
@@ -52,45 +52,39 @@ public class ZombieListener implements Listener {
 
             bossbarList.get(key).put(p, 50);
 
-            Timer timer = new Timer();
-
             final Integer[] detectChange = {50};
 
-            TimerTask task = new TimerTask() {
+            new BukkitRunnable() {
+
                 @Override
                 public void run() {
-                if (!Objects.equals(detectChange[0], bossbarList.get(key).get(p)) || Objects.isNull(bossbarList.get(key).get(p))) {
-                    timer.cancel();
-                    timer.purge();
-                    return;
-                }
 
-                if (bossbarList.get(key).get(p) > 0) {
+                    if (!Objects.equals(detectChange[0], bossbarList.get(key).get(p)) || Objects.isNull(bossbarList.get(key).get(p))) {
+                        cancel();
+                        return;
+                    }
 
-                    if(Objects.isNull(bossbarList.get(key).get(p))) {
-                        bar.removePlayer(p);
-                        timer.cancel();
-                        timer.purge();
+                    if (bossbarList.get(key).get(p) > 0) {
+
+                        if(Objects.isNull(bossbarList.get(key).get(p))) {
+                            bar.removePlayer(p);
+                            cancel();
+                        }
+
+                        else {
+                            bar.addPlayer(p);
+                            bossbarList.get(key).put(p, (bossbarList.get(key).get(p) - 1));
+                            detectChange[0] -= 1;
+                        }
                     }
 
                     else {
-                        bar.addPlayer(p);
-                        bossbarList.get(key).put(p, (bossbarList.get(key).get(p) - 1));
-                        detectChange[0] -= 1;
+
+                        bar.removePlayer(p);
+                        cancel();
                     }
                 }
-
-                else {
-
-                    bar.removePlayer(p);
-                    timer.cancel();
-                    timer.purge();
-                }
-
-                }
-            };
-
-            timer.scheduleAtFixedRate(task, new Date(), 50);
+            }.runTaskTimerAsynchronously(plugin, 0L, 1L);
         }
 
 
@@ -175,19 +169,16 @@ public class ZombieListener implements Listener {
             bar.setProgress(0);
             bar.setTitle(entity.getCustomName() + " §4[§c0§4]");
 
-            Timer timer = new Timer();
+            new BukkitRunnable() {
 
-            TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-                bar.removeAll();
-                bossbarList.get(NamespacedKey.fromString(key, plugin)).clear();
-                Bukkit.removeBossBar(NamespacedKey.fromString(key, plugin));
-
+                    bar.removeAll();
+                    bossbarList.get(NamespacedKey.fromString(key, plugin)).clear();
+                    Bukkit.removeBossBar(NamespacedKey.fromString(key, plugin));
                 }
-            };
+            }.runTaskLaterAsynchronously(plugin, 5L);
 
-            timer.schedule(task, 1000);
 
         }
 
