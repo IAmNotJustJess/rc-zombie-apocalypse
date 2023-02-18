@@ -13,6 +13,8 @@ public class RangedInstance {
     private Integer projectileType = 0; // 0 - Snowball, 1 - Egg, 2 - Arrow
     private Double projectileSpeed = 4.0;
     private Integer pellets = 1;
+    private Integer burstAmount = 1;
+    private Double burstDelay = 0.0;
     private Double bulletSpread = 1.0;
     private Double additiveBulletSpread = 2.0;
     private Double spreadPercentage = 25.0;
@@ -43,6 +45,8 @@ public class RangedInstance {
             Integer projectileType,
             Double projectileSpeed,
             Integer pellets,
+            Integer burstAmount,
+            Double burstDelay,
             Double bulletSpread,
             Double additiveBulletSpread,
             Double spreadPercentage,
@@ -69,6 +73,8 @@ public class RangedInstance {
         this.projectileType = projectileType;
         this.projectileSpeed = projectileSpeed;
         this.pellets = pellets;
+        this.burstAmount = burstAmount;
+        this.burstDelay = burstDelay;
         this.bulletSpread = bulletSpread;
         this.additiveBulletSpread = additiveBulletSpread;
         this.spreadPercentage = spreadPercentage;
@@ -121,6 +127,14 @@ public class RangedInstance {
 
     public Integer getPellets() {
         return this.pellets;
+    }
+
+    public Integer getBurstAmount() {
+        return burstAmount;
+    }
+
+    public Double getBurstDelay() {
+        return burstDelay;
     }
 
     public Double getBulletSpread() {
@@ -213,6 +227,14 @@ public class RangedInstance {
 
     public void setPellets (Integer pellets) {
         this.pellets = pellets;
+    }
+
+    public void setBurstAmount(Integer burstAmount) {
+        this.burstAmount = burstAmount;
+    }
+
+    public void setBurstDelay(Double burstDelay) {
+        this.burstDelay = burstDelay;
     }
 
     public void setBulletSpread(Double bulletSpread) {

@@ -52,6 +52,8 @@ public class RangedManager {
                 0,
                 2.0,
                 1,
+                1,
+                0.0,
                 0.2,
                 2.3,
                 25.0,
@@ -81,6 +83,8 @@ public class RangedManager {
                 0,
                 2.0,
                 1,
+                1,
+                0.0,
                 0.2,
                 2.3,
                 25.0,
@@ -110,6 +114,8 @@ public class RangedManager {
                 0,
                 2.0,
                 1,
+                1,
+                0.0,
                 0.2,
                 2.3,
                 20.0,
@@ -139,6 +145,8 @@ public class RangedManager {
                 0,
                 2.5,
                 1,
+                1,
+                0.0,
                 0.2,
                 1.7,
                 15.0,
@@ -211,6 +219,8 @@ public class RangedManager {
             Integer projectileType,
             Double projectileSpeed,
             Integer pellets,
+            Integer burstAmount,
+            Double burstDelay,
             Double bulletSpread,
             Double bulletAdditiveSpread,
             Double spreadPercentage,
@@ -249,6 +259,8 @@ public class RangedManager {
                 projectileType,
                 projectileSpeed,
                 pellets,
+                burstAmount,
+                burstDelay,
                 bulletSpread,
                 bulletAdditiveSpread,
                 spreadPercentage,
@@ -274,6 +286,8 @@ public class RangedManager {
         getRangedInstanceConfig(id).set((level+".projectileType"), projectileType);
         getRangedInstanceConfig(id).set((level+".projectileSpeed"), projectileSpeed);
         getRangedInstanceConfig(id).set((level+".pellets"), pellets);
+        getRangedInstanceConfig(id).set((level+".burstAmount"), burstAmount);
+        getRangedInstanceConfig(id).set((level+".burstDelay"), burstDelay);
         getRangedInstanceConfig(id).set((level+".bulletSpread"), bulletSpread);
         getRangedInstanceConfig(id).set((level+".bulletAdditiveSpread"), bulletAdditiveSpread);
         getRangedInstanceConfig(id).set((level+".spreadPercentage"), spreadPercentage);
@@ -283,6 +297,7 @@ public class RangedManager {
         getRangedInstanceConfig(id).set((level+".reloadType"), reloadType);
         getRangedInstanceConfig(id).set((level+".actionType"), actionType);
         getRangedInstanceConfig(id).set((level+".actionDelay"), actionDelay);
+        getRangedInstanceConfig(id).set((level+".actionSpecial"), actionSpecial);
         getRangedInstanceConfig(id).set((level+".shootingPatternType"), shootingPatternType);
         getRangedInstanceConfig(id).set((level+".shootingPatternOffset"), shootingPatternOffset);
         getRangedInstanceConfig(id).set((level+".shootingSound"), shootingSound);
@@ -375,6 +390,8 @@ public class RangedManager {
                         rangedInstanceConfig.getInt(i+".projectileType"),
                         rangedInstanceConfig.getDouble(i+".projectileSpeed"),
                         rangedInstanceConfig.getInt(i+".pellets"),
+                        rangedInstanceConfig.getInt(i+".burstAmount"),
+                        rangedInstanceConfig.getDouble(i+".burstDelay"),
                         rangedInstanceConfig.getDouble(i+".bulletSpread"),
                         rangedInstanceConfig.getDouble(i+".bulletAdditiveSpread"),
                         rangedInstanceConfig.getDouble(i+".spreadPercentage"),
@@ -407,6 +424,8 @@ public class RangedManager {
             getInstance(id, i).setProjectileType(rangedInstanceConfig.getInt(i+".projectileType"));
             getInstance(id, i).setProjectileSpeed(rangedInstanceConfig.getDouble(i+".projectileSpeed"));
             getInstance(id, i).setPellets(rangedInstanceConfig.getInt(i+".pellets"));
+            getInstance(id, i).setBurstAmount(rangedInstanceConfig.getInt(i+".burstAmount"));
+            getInstance(id, i).setBurstDelay(rangedInstanceConfig.getDouble(i+".burstDelay"));
             getInstance(id, i).setBulletSpread(rangedInstanceConfig.getDouble(i+".bulletSpread"));
             getInstance(id, i).setAdditiveBulletSpread(rangedInstanceConfig.getDouble(i+".bulletAdditiveSpread"));
             getInstance(id, i).setSpreadPercentage(rangedInstanceConfig.getDouble(i+".spreadPercentage"));
@@ -457,6 +476,9 @@ public class RangedManager {
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "pellets"), PersistentDataType.INTEGER, rangedInstance.getPellets());
 
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "burstAmount"), PersistentDataType.INTEGER, rangedInstance.getBurstAmount());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "burstDelay"), PersistentDataType.DOUBLE, rangedInstance.getBurstDelay());
+
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "bulletSpread"), PersistentDataType.DOUBLE, rangedInstance.getBulletSpread());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "additiveBulletSpread"), PersistentDataType.DOUBLE, rangedInstance.getAdditiveBulletSpread());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "spreadPercentage"), PersistentDataType.DOUBLE, rangedInstance.getSpreadPercentage());
@@ -471,6 +493,7 @@ public class RangedManager {
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING, rangedInstance.getActionType());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE, rangedInstance.getActionDelay());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecial"), PersistentDataType.INTEGER, rangedInstance.getActionSpecial());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecialTracker"), PersistentDataType.INTEGER, 0);
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingPatternType"), PersistentDataType.INTEGER, rangedInstance.getShootingPatternType());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingPatternOffset"), PersistentDataType.DOUBLE, rangedInstance.getShootingPatternOffset());
