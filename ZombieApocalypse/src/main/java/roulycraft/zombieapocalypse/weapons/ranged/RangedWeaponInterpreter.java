@@ -13,7 +13,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.event.player.PlayerItemHeldEvent;
-import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -24,7 +23,6 @@ import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.utility.ConfigColourParser;
 import roulycraft.zombieapocalypse.utility.SoundSplitter;
 
-import javax.naming.Name;
 import java.util.*;
 
 public class RangedWeaponInterpreter implements Listener {
@@ -63,6 +61,12 @@ public class RangedWeaponInterpreter implements Listener {
     }
     private void reloadGun(Player player, ItemStack item, Integer itemSlot, String reloadType, Integer reloadTypeSpecial, Integer reloadSpeed, String reloadingSound, Integer actionDelay, String actionSound) {
 
+        if(delayBetweenShotsList.containsKey(player)) {
+
+            return;
+
+        }
+
         ItemMeta itemMeta = item.getItemMeta();
 
         Integer clipSize = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER);
@@ -75,9 +79,11 @@ public class RangedWeaponInterpreter implements Listener {
 
         String[] displayName = itemMeta.getDisplayName().split("\\|");
 
+        final Integer[] cancelRestReloads = {0};
+
         switch(reloadType) {
 
-            case "multipleBullets":
+            case "multipleBullets": {
 
                 Integer loopCount = 1;
 
@@ -85,16 +91,16 @@ public class RangedWeaponInterpreter implements Listener {
 
                 Integer loopTimes = currentAmmo;
 
-                if(currentAmmo == 0) {
+                if (currentAmmo == 0) {
 
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
 
-                            if(!reloadCancelling.get(player)) {
+                            if (cancelRestReloads[0] == 0) {
 
-                                gunAction(player, actionDelay, actionSound, reloadSpeed * (clipSize - currentAmmo));
+                                gunAction(player, actionDelay, actionSound, 0);
 
                                 reloadCancelling.remove(player);
 
@@ -102,34 +108,64 @@ public class RangedWeaponInterpreter implements Listener {
 
                         }
 
-                    }.runTaskLaterAsynchronously(plugin, (reloadSpeed) * clipSize - loopTimes);
+                    }.runTaskLaterAsynchronously(plugin, (reloadSpeed) * (clipSize - loopTimes));
 
                 }
 
-                while(loopTimes < clipSize) {
+                SoundSplitter.playSplitSound(player, reloadingSound);
+
+                if (delayBetweenShotsList.containsKey(player)) {
+
+                    delayBetweenShotsList.put(player, reloadSpeed);
+
+                } else {
+
+                    delayBetweenShotsList.put(player, reloadSpeed);
+
+                    delayDecay(player);
+
+                }
+
+                while (loopTimes < clipSize) {
 
                     new BukkitRunnable() {
 
                         @Override
                         public void run() {
 
-                            if(!reloadCancelling.containsKey(player)) {
+                            if (cancelRestReloads[0] == 2) {
 
                                 return;
 
                             }
 
-                            if(!reloadCancelling.get(player)) {
+                            if (reloadCancelling.get(player)) {
 
-                                SoundSplitter.playSplitSound(player, reloadingSound);
+                                cancelRestReloads[0] = 1;
 
-                                delayBetweenShotsList.put(player, reloadSpeed);
+                                if (currentAmmo == 0) {
 
-                                delayDecay(player);
+                                    SoundSplitter.playSplitSound(player, "BLOCK_WOOL_BREAK|1|2|0");
+
+                                    reloadCancelling.remove(player);
+
+                                    gunAction(player, actionDelay, actionSound, 0);
+
+                                }
+
+                            }
+
+                            if (cancelRestReloads[0] < 2) {
+
+                                if (cancelRestReloads[0] == 1) {
+
+                                    cancelRestReloads[0] = 2;
+
+                                }
 
                                 Integer currentAmmo = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER) + reloadTypeSpecial;
 
-                                if(currentAmmo > clipSize) {
+                                if (currentAmmo >= clipSize) {
 
                                     itemMeta.getPersistentDataContainer().set(
                                             new NamespacedKey(plugin, "currentAmmo"),
@@ -137,53 +173,45 @@ public class RangedWeaponInterpreter implements Listener {
                                             clipSize
                                     );
 
-                                }
+                                } else {
 
-                                else {
+                                    if (cancelRestReloads[0] == 0) {
+
+                                        SoundSplitter.playSplitSound(player, reloadingSound);
+
+                                        if (delayBetweenShotsList.containsKey(player)) {
+
+                                            delayBetweenShotsList.put(player, reloadSpeed);
+
+                                        } else {
+
+                                            delayBetweenShotsList.put(player, reloadSpeed);
+
+                                            delayDecay(player);
+
+                                        }
+
+                                    }
 
                                     itemMeta.getPersistentDataContainer().set(
                                             new NamespacedKey(plugin, "currentAmmo"),
                                             PersistentDataType.INTEGER,
                                             currentAmmo
                                     );
+
+
                                 }
 
                                 itemMeta.setDisplayName(displayName[0] + secondaryColour + "| " + primaryColour + currentAmmo);
 
                                 item.setItemMeta(itemMeta);
 
-                                if(itemSlot >= 0) {
+                                if (itemSlot >= 0) {
 
                                     player.getInventory().setItem(itemSlot, item);
 
                                 }
-
-
                             }
-
-                            else {
-
-                                if(currentAmmo != 0) {
-
-                                    return;
-
-                                }
-
-                                SoundSplitter.playSplitSound(player, "BLOCK_WOOL_BREAK|1|2|0");
-
-                                new BukkitRunnable() {
-
-                                    @Override
-                                    public void run() {
-
-                                        gunAction(player, actionDelay, actionSound, 0);
-
-                                    }
-
-                                }.runTaskLaterAsynchronously(plugin, 0);
-
-                            }
-
                         }
 
                     }.runTaskLaterAsynchronously(plugin, (loopCount * reloadSpeed));
@@ -191,7 +219,12 @@ public class RangedWeaponInterpreter implements Listener {
                     loopTimes++;
                     loopCount++;
 
+
                 }
+
+                break;
+
+            }
 
             default: {
 
@@ -231,6 +264,8 @@ public class RangedWeaponInterpreter implements Listener {
                 }
 
             }
+
+            break;
 
         }
 
