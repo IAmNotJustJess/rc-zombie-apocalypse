@@ -639,8 +639,6 @@ public class RangedWeaponInterpreter implements Listener {
 
         }
 
-        System.out.println("xdd");
-
 
         event.getEntity().remove();
 
@@ -810,7 +808,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                         if(!delayBeforeSpreadDecay.containsKey(event.getPlayer())) {
 
-                            delayBeforeSpreadDecay.put(event.getPlayer(), 10 + delayBetweenShots[0]);
+                            delayBeforeSpreadDecay.put(event.getPlayer(), 4 + delayBetweenShots[0]);
 
                             delaySpreadDecay(event.getPlayer());
 
@@ -818,7 +816,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                         else {
 
-                            delayBeforeSpreadDecay.put(event.getPlayer(), 10 + delayBetweenShots[0]);
+                            delayBeforeSpreadDecay.put(event.getPlayer(), 4 + delayBetweenShots[0]);
 
                         }
 

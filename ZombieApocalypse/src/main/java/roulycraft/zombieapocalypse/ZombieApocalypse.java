@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import roulycraft.zombieapocalypse.commands.MainCommand;
 import roulycraft.zombieapocalypse.managers.*;
 import roulycraft.zombieapocalypse.utility.SoundSplitter;
+import roulycraft.zombieapocalypse.weapons.ranged.RangedDefaultSettings;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedWeaponInterpreter;
 import roulycraft.zombieapocalypse.zombie.*;
@@ -26,6 +27,7 @@ public final class ZombieApocalypse extends JavaPlugin {
         RangedWeaponInterpreter.injectPlugin(this);
         RangedManager.injectPlugin(this);
         SoundSplitter.injectPlugin(this);
+        RangedDefaultSettings.injectPlugin(this);
 
         this.saveDefaultConfig();
 
@@ -67,7 +69,7 @@ public final class ZombieApocalypse extends JavaPlugin {
             console.sendMessage("§6INFO! §eNie znaleziono folderu §franged§e! Tworzę domyślną konfigurację folderu §franged§e...");
             console.sendMessage("");
 
-            RangedManager.getManager().createDefaultRangedeInstances();
+            RangedDefaultSettings.loadDefaultSettings();
 
         }
 
