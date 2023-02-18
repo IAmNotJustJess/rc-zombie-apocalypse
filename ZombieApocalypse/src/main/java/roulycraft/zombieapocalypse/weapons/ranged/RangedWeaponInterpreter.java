@@ -33,20 +33,7 @@ public class RangedWeaponInterpreter implements Listener {
     private Map<Player, Integer> delayBetweenShotsList = new WeakHashMap<>();
     private Map<Player, Double> delayBeforeSpreadNullification = new WeakHashMap<>();
     private Map<Player, Integer> delayBeforeSpreadDecay = new WeakHashMap<>();
-
-    private void reloadGun(Player player, ItemStack item, Integer reloadSpeed, String reloadingSound, Integer actionDelay, String actionSound) {
-
-        reloadGun(player, item, reloadSpeed, reloadingSound);
-        gunAction(player, actionDelay, actionSound, reloadSpeed);
-
-    }
-
-    private void reloadGun(Player player, Integer itemSlot, Integer reloadSpeed, String reloadingSound, Integer actionDelay, String actionSound) {
-
-        reloadGun(player, itemSlot, reloadSpeed, reloadingSound);
-        gunAction(player, actionDelay, actionSound, reloadSpeed);
-
-    }
+    private Map<Player, Boolean> reloadCancelling = new WeakHashMap<>();
 
     private void gunAction(Player player, Integer actionDelay, String actionSound, Integer delayBeforeSound) {
 
@@ -71,80 +58,181 @@ public class RangedWeaponInterpreter implements Listener {
 
                 SoundSplitter.playSplitSound(player, actionSound);
             }
-        }.runTaskLater(plugin, (long) delayBeforeSound);
+        }.runTaskLaterAsynchronously(plugin, (long) delayBeforeSound);
 
     }
-    private void reloadGun(Player player, ItemStack item, Integer reloadSpeed, String reloadingSound) {
+    private void reloadGun(Player player, ItemStack item, Integer itemSlot, String reloadType, Integer reloadTypeSpecial, Integer reloadSpeed, String reloadingSound, Integer actionDelay, String actionSound) {
 
-        SoundSplitter.playSplitSound(player, reloadingSound);
+        ItemMeta itemMeta = item.getItemMeta();
 
-        delayBetweenShotsList.put(player, reloadSpeed);
+        Integer clipSize = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER);
+        Integer currentAmmo = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER);
 
-        delayDecay(player);
+        Integer level = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
 
-        new BukkitRunnable() {
-            @Override
-            public void run() {
+        String primaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".primary"));
+        String secondaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".secondary"));
 
-                ItemMeta itemMeta = item.getItemMeta();
+        String[] displayName = itemMeta.getDisplayName().split("\\|");
 
-                Integer clipSize = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER);
+        switch(reloadType) {
 
-                Integer level = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
+            case "multipleBullets":
 
-                String primaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".primary"));
-                String secondaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".secondary"));
+                Integer loopCount = 1;
 
-                String[] displayName = itemMeta.getDisplayName().split("\\|");
+                reloadCancelling.put(player, false);
 
-                itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"),
-                        PersistentDataType.INTEGER,
-                        clipSize);
+                Integer loopTimes = currentAmmo;
+
+                if(currentAmmo == 0) {
+
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+
+                            if(!reloadCancelling.get(player)) {
+
+                                gunAction(player, actionDelay, actionSound, reloadSpeed * (clipSize - currentAmmo));
+
+                                reloadCancelling.remove(player);
+
+                            }
+
+                        }
+
+                    }.runTaskLaterAsynchronously(plugin, (reloadSpeed) * clipSize - loopTimes);
+
+                }
+
+                while(loopTimes < clipSize) {
+
+                    new BukkitRunnable() {
+
+                        @Override
+                        public void run() {
+
+                            if(!reloadCancelling.containsKey(player)) {
+
+                                return;
+
+                            }
+
+                            if(!reloadCancelling.get(player)) {
+
+                                SoundSplitter.playSplitSound(player, reloadingSound);
+
+                                delayBetweenShotsList.put(player, reloadSpeed);
+
+                                delayDecay(player);
+
+                                Integer currentAmmo = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER) + reloadTypeSpecial;
+
+                                if(currentAmmo > clipSize) {
+
+                                    itemMeta.getPersistentDataContainer().set(
+                                            new NamespacedKey(plugin, "currentAmmo"),
+                                            PersistentDataType.INTEGER,
+                                            clipSize
+                                    );
+
+                                }
+
+                                else {
+
+                                    itemMeta.getPersistentDataContainer().set(
+                                            new NamespacedKey(plugin, "currentAmmo"),
+                                            PersistentDataType.INTEGER,
+                                            currentAmmo
+                                    );
+                                }
+
+                                itemMeta.setDisplayName(displayName[0] + secondaryColour + "| " + primaryColour + currentAmmo);
+
+                                item.setItemMeta(itemMeta);
+
+                                if(itemSlot >= 0) {
+
+                                    player.getInventory().setItem(itemSlot, item);
+
+                                }
 
 
-                itemMeta.setDisplayName(displayName[0]+secondaryColour+"| "+primaryColour+clipSize);
+                            }
 
-                item.setItemMeta(itemMeta);
+                            else {
+
+                                if(currentAmmo != 0) {
+
+                                    return;
+
+                                }
+
+                                SoundSplitter.playSplitSound(player, "BLOCK_WOOL_BREAK|1|2|0");
+
+                                new BukkitRunnable() {
+
+                                    @Override
+                                    public void run() {
+
+                                        gunAction(player, actionDelay, actionSound, 0);
+
+                                    }
+
+                                }.runTaskLaterAsynchronously(plugin, 0);
+
+                            }
+
+                        }
+
+                    }.runTaskLaterAsynchronously(plugin, (loopCount * reloadSpeed));
+
+                    loopTimes++;
+                    loopCount++;
+
+                }
+
+            default: {
+
+                SoundSplitter.playSplitSound(player, reloadingSound);
+
+                delayBetweenShotsList.put(player, reloadSpeed);
+
+                delayDecay(player);
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+
+                        itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"),
+                                PersistentDataType.INTEGER,
+                                clipSize);
+
+
+                        itemMeta.setDisplayName(displayName[0]+secondaryColour+"| "+primaryColour+clipSize);
+
+                        item.setItemMeta(itemMeta);
+
+                        if(itemSlot >= 0) {
+
+                            player.getInventory().setItem(itemSlot, item);
+
+                        }
+
+                    }
+                }.runTaskLaterAsynchronously(plugin, (long) reloadSpeed);
+
+
+                if(currentAmmo == 0) {
+
+                    gunAction(player, actionDelay, actionSound, reloadSpeed);
+
+                }
 
             }
-        }.runTaskLater(plugin, (long) reloadSpeed);
 
-    }
-
-    private void reloadGun(Player player, Integer itemSlot, Integer reloadSpeed, String reloadingSound) {
-
-        SoundSplitter.playSplitSound(player, reloadingSound);
-
-        delayBetweenShotsList.put(player, reloadSpeed);
-
-        delayDecay(player);
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-
-                ItemMeta itemMeta = player.getInventory().getItem(itemSlot).getItemMeta();
-
-                Integer clipSize = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER);
-
-                Integer level = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
-
-                String primaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".primary"));
-                String secondaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".secondary"));
-
-                String[] displayName = itemMeta.getDisplayName().split("\\|");
-
-                itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"),
-                        PersistentDataType.INTEGER,
-                        clipSize);
-
-
-                itemMeta.setDisplayName(displayName[0]+secondaryColour+"| "+primaryColour+clipSize);
-
-                player.getInventory().getItem(itemSlot).setItemMeta(itemMeta);
-
-            }
-        }.runTaskLater(plugin, (long) reloadSpeed);
+        }
 
     }
     private void delayDecay(Player player) {
@@ -169,7 +257,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                 }
             }
-        }.runTaskLater(plugin, 1L);
+        }.runTaskLaterAsynchronously(plugin, 1L);
 
     }
 
@@ -197,7 +285,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                 }
             }
-        }.runTaskLater(plugin, 1L);
+        }.runTaskLaterAsynchronously(plugin, 1L);
 
     }
 
@@ -230,7 +318,7 @@ public class RangedWeaponInterpreter implements Listener {
                 }
 
             }
-        }.runTaskLater(plugin, 1L);
+        }.runTaskLaterAsynchronously(plugin, 1L);
 
     }
 
@@ -248,6 +336,7 @@ public class RangedWeaponInterpreter implements Listener {
         Double shootingPatternOffset)
 
     {
+
 
         projectileSpeed *= 2;
 
@@ -273,8 +362,8 @@ public class RangedWeaponInterpreter implements Listener {
                     double angle = random.nextDouble() * 2 * Math.PI;
 
                     Vector vector = playerVector.clone().
-                        add(spreadOffset.clone().rotateAroundAxis(playerVector, angle)).
-                        multiply(projectileSpeed);
+                            add(spreadOffset.clone().rotateAroundAxis(playerVector, angle)).
+                            multiply(projectileSpeed);
 
                     switch (projectileType) {
 
@@ -320,9 +409,9 @@ public class RangedWeaponInterpreter implements Listener {
                     Vector offsetPatternYaw = playerEyeLocationRotationUp.getDirection().multiply(currentOffset);
 
                     Vector vector = playerVector.clone().
-                        add(offsetPatternYaw.clone().rotateAroundAxis(playerVector, Math.PI / 2)).
-                        add(spreadOffset.clone().rotateAroundAxis(playerVector, angle)).
-                        multiply(projectileSpeed);
+                            add(offsetPatternYaw.clone().rotateAroundAxis(playerVector, Math.PI / 2)).
+                            add(spreadOffset.clone().rotateAroundAxis(playerVector, angle)).
+                            multiply(projectileSpeed);
 
                     switch (projectileType) {
 
@@ -404,6 +493,7 @@ public class RangedWeaponInterpreter implements Listener {
 
             }
         }
+
     }
 
     private void shootProjectile(
@@ -431,7 +521,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                 }
 
-            }.runTaskLater(plugin, ((long) (i - 1) * delayBetweenBurst));
+            }.runTaskLaterAsynchronously(plugin, ((long) (i - 1) * delayBetweenBurst));
 
         }
 
@@ -480,22 +570,19 @@ public class RangedWeaponInterpreter implements Listener {
 
             String actionSound = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionSound"), PersistentDataType.STRING);
 
-            switch(currentAmmo) {
+            String[] reloadTypeSplit = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "reloadType"), PersistentDataType.STRING).split("-");
 
-                case 0: {
+            String reloadType = reloadTypeSplit[0];
 
-                    reloadGun(event.getPlayer(), event.getPlayer().getInventory().getHeldItemSlot(), reloadSpeed, reloadingSound, actionDelay, actionSound);
+            Integer reloadTypeSpecial = 0;
 
-                    break;
-                }
-                default: {
+            if(reloadTypeSplit.length > 1) {
 
-                    reloadGun(event.getPlayer(), event.getPlayer().getInventory().getHeldItemSlot(), reloadSpeed, reloadingSound);
-
-                    break;
-                }
+                reloadTypeSpecial = Integer.valueOf(reloadTypeSplit[1]);
 
             }
+
+            reloadGun(event.getPlayer(), event.getItemDrop().getItemStack(), event.getPlayer().getInventory().getHeldItemSlot(), reloadType, reloadTypeSpecial, reloadSpeed, reloadingSound, actionDelay, actionSound);
 
         }
 
@@ -504,6 +591,12 @@ public class RangedWeaponInterpreter implements Listener {
     @EventHandler
     public void onRightClick(PlayerInteractEvent event) {
         if((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && event.hasItem()) {
+
+            if(reloadCancelling.containsKey(event.getPlayer())) {
+
+                reloadCancelling.put(event.getPlayer(), true);
+
+            }
 
             if(delayBetweenShotsList != null && delayBetweenShotsList.containsKey(event.getPlayer())) {
 
@@ -537,7 +630,19 @@ public class RangedWeaponInterpreter implements Listener {
 
                 String actionSound = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionSound"), PersistentDataType.STRING);
 
-                reloadGun(event.getPlayer(), event.getItem(), reloadSpeed, reloadingSound, actionDelay, actionSound);
+                String[] reloadTypeSplit = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "reloadType"), PersistentDataType.STRING).split("-");
+
+                String reloadType = reloadTypeSplit[0];
+
+                Integer reloadTypeSpecial = 0;
+
+                if(reloadTypeSplit.length > 1) {
+
+                    reloadTypeSpecial = Integer.valueOf(reloadTypeSplit[1]);
+
+                }
+
+                reloadGun(event.getPlayer(), event.getItem(), -1, reloadType, reloadTypeSpecial, reloadSpeed, reloadingSound, actionDelay, actionSound);
 
                 return;
 
