@@ -21,7 +21,6 @@ import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.utility.ConfigColourParser;
 import roulycraft.zombieapocalypse.utility.SoundSplitter;
 
-import javax.naming.Name;
 import java.util.*;
 
 public class RangedWeaponInterpreter implements Listener {
@@ -30,7 +29,6 @@ public class RangedWeaponInterpreter implements Listener {
     private Map<Player, Integer> delayBetweenShotsList = new WeakHashMap<>();
     private Map<Player, Double> delayBeforeSpreadNullification = new WeakHashMap<>();
     private Map<Player, Integer> delayBeforeSpreadDecay = new WeakHashMap<>();
-    private Map<Player, Boolean> reloadCancelling = new WeakHashMap<>();
 
     private void gunAction(Player player, Integer actionDelay, String actionSound, Integer delayBeforeSound) {
 
@@ -58,7 +56,7 @@ public class RangedWeaponInterpreter implements Listener {
         }.runTaskLaterAsynchronously(plugin, (long) delayBeforeSound);
 
     }
-    private void reloadGun(Player player, ItemStack item, Integer itemSlot, String reloadType, Integer reloadTypeSpecial, Integer reloadSpeed, String reloadingSound, Integer actionDelay, String actionSound) {
+    private void reloadGun(Player player, ItemStack item, Integer itemSlot, String reloadType, Integer reloadTypeSpecial, Integer reloadSpeed, String reloadingSound, String actionType, Integer actionDelay, String actionSound) {
 
         if(delayBetweenShotsList.containsKey(player)) {
 
@@ -78,87 +76,70 @@ public class RangedWeaponInterpreter implements Listener {
 
         String[] displayName = itemMeta.getDisplayName().split("\\|");
 
-        final Integer[] cancelRestReloads = {0};
-
         switch(reloadType) {
 
             case "multipleBullets": {
 
-                Integer loopCount = 1;
+                Integer delayBeforeFirstBullet = 0;
 
-                reloadCancelling.put(player, false);
+                if (Objects.equals(actionType, "breakAction")) {
 
-                Integer loopTimes = currentAmmo;
+                    gunAction(player, actionDelay, actionSound.split("]\\[")[0], 0);
 
-                if (currentAmmo == 0) {
+                    delayBeforeFirstBullet = actionDelay;
 
-                    new BukkitRunnable() {
+                }
 
-                        @Override
-                        public void run() {
+                new BukkitRunnable() {
 
-                            if (cancelRestReloads[0] == 0) {
+                    @Override
+                    public void run() {
 
-                                gunAction(player, actionDelay, actionSound, 0);
+                        final Integer[] cancelRestReloads = {0};
 
-                                itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecialTracker"), PersistentDataType.INTEGER, 0);
+                        Integer loopCount = 1;
 
-                                item.setItemMeta(itemMeta);
+                        Integer loopTimes = currentAmmo;
 
-                                if (itemSlot >= 0) {
+                        if (delayBetweenShotsList.containsKey(player)) {
 
-                                    player.getInventory().setItem(itemSlot, item);
+                            delayBetweenShotsList.put(player, reloadSpeed);
 
-                                }
+                        } else {
 
-                                reloadCancelling.remove(player);
+                            delayBetweenShotsList.put(player, reloadSpeed);
 
-                            }
+                            delayDecay(player);
 
                         }
 
-                    }.runTaskLaterAsynchronously(plugin, (long) ((reloadSpeed) * Math.floor(clipSize / reloadTypeSpecial)));
+                        if (currentAmmo == 0 || actionType == "breakAction") {
 
-                }
+                            if (delayBetweenShotsList.containsKey(player)) {
 
-                SoundSplitter.playSplitSound(player, reloadingSound);
+                                delayBetweenShotsList.put(player, reloadSpeed + actionDelay);
 
-                if (delayBetweenShotsList.containsKey(player)) {
+                            } else {
 
-                    delayBetweenShotsList.put(player, reloadSpeed);
+                                delayBetweenShotsList.put(player, reloadSpeed + actionDelay);
 
-                } else {
-
-                    delayBetweenShotsList.put(player, reloadSpeed);
-
-                    delayDecay(player);
-
-                }
-
-                while (loopTimes < clipSize) {
-
-                    new BukkitRunnable() {
-
-                        @Override
-                        public void run() {
-
-                            if (cancelRestReloads[0] == 2) {
-
-                                return;
+                                delayDecay(player);
 
                             }
 
-                            if (reloadCancelling.get(player)) {
+                            new BukkitRunnable() {
 
-                                cancelRestReloads[0] = 1;
+                                @Override
+                                public void run() {
 
-                                if (currentAmmo == 0) {
 
-                                    SoundSplitter.playSplitSound(player, "BLOCK_WOOL_BREAK|1|2|0");
+                                    if (Objects.equals(actionType, "breakAction")) {
+                                        return;
+                                    }
 
-                                    reloadCancelling.remove(player);
-
-                                    gunAction(player, actionDelay, actionSound, 0);
+                                    else{
+                                        gunAction(player, actionDelay, actionSound, 0);
+                                    }
 
                                     itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecialTracker"), PersistentDataType.INTEGER, 0);
 
@@ -172,76 +153,138 @@ public class RangedWeaponInterpreter implements Listener {
 
                                 }
 
-                            }
+                            }.runTaskLaterAsynchronously(plugin, (long) ((reloadSpeed) * Math.floor(clipSize / reloadTypeSpecial)));
 
-                            if (cancelRestReloads[0] < 2) {
 
-                                if (cancelRestReloads[0] == 1) {
+                        }
 
-                                    cancelRestReloads[0] = 2;
+                        SoundSplitter.playSplitSound(player, reloadingSound);
 
-                                }
+                        while (loopTimes < clipSize) {
 
-                                Integer currentAmmo = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER) + reloadTypeSpecial;
+                            new BukkitRunnable() {
 
-                                if (currentAmmo >= clipSize) {
+                                @Override
+                                public void run() {
 
-                                    currentAmmo = clipSize;
 
-                                    itemMeta.getPersistentDataContainer().set(
-                                            new NamespacedKey(plugin, "currentAmmo"),
-                                            PersistentDataType.INTEGER,
-                                            clipSize
-                                    );
+                                    if (delayBetweenShotsList.containsKey(player)) {
 
-                                } else {
+                                        delayBetweenShotsList.put(player, reloadSpeed);
 
-                                    if (cancelRestReloads[0] == 0) {
+                                    } else {
 
-                                        SoundSplitter.playSplitSound(player, reloadingSound);
+                                        delayBetweenShotsList.put(player, reloadSpeed);
+
+                                        delayDecay(player);
+
+                                    }
+
+                                    if (delayBetweenShotsList.containsKey(player)) {
+
+                                        delayBetweenShotsList.put(player, reloadSpeed);
+
+                                    } else {
+
+                                        delayBetweenShotsList.put(player, reloadSpeed);
+
+                                        delayDecay(player);
+
+                                    }
+
+                                    Integer currentAmmo = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER) + reloadTypeSpecial;
+
+                                    if (currentAmmo >= clipSize) {
+
+                                        currentAmmo = clipSize;
+
+                                        itemMeta.getPersistentDataContainer().set(
+                                                new NamespacedKey(plugin, "currentAmmo"),
+                                                PersistentDataType.INTEGER,
+                                                clipSize
+                                        );
 
                                         if (delayBetweenShotsList.containsKey(player)) {
 
-                                            delayBetweenShotsList.put(player, reloadSpeed);
+                                            delayBetweenShotsList.put(player, reloadSpeed + actionDelay);
 
                                         } else {
 
-                                            delayBetweenShotsList.put(player, reloadSpeed);
+                                            delayBetweenShotsList.put(player, reloadSpeed + actionDelay);
 
                                             delayDecay(player);
 
                                         }
 
+                                        if (Objects.equals(actionType, "breakAction")) {
+
+                                            gunAction(player, actionDelay, actionSound.split("]\\[")[1], reloadSpeed);
+
+                                            itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecialTracker"), PersistentDataType.INTEGER, 0);
+
+                                            item.setItemMeta(itemMeta);
+
+                                            if (itemSlot >= 0) {
+
+                                                player.getInventory().setItem(itemSlot, item);
+
+                                            }
+                                        }
+
+                                    } else {
+
+                                        if (cancelRestReloads[0] == 0) {
+
+                                            SoundSplitter.playSplitSound(player, reloadingSound);
+
+                                        }
+
+                                        itemMeta.getPersistentDataContainer().set(
+                                                new NamespacedKey(plugin, "currentAmmo"),
+                                                PersistentDataType.INTEGER,
+                                                currentAmmo
+                                        );
+
+                                        if (delayBetweenShotsList.containsKey(player)) {
+
+                                            delayBetweenShotsList.put(player, reloadSpeed + actionDelay);
+
+                                        } else {
+
+                                            delayBetweenShotsList.put(player, reloadSpeed + actionDelay);
+
+                                            delayDecay(player);
+
+                                        }
+
+
                                     }
 
-                                    itemMeta.getPersistentDataContainer().set(
-                                            new NamespacedKey(plugin, "currentAmmo"),
-                                            PersistentDataType.INTEGER,
-                                            currentAmmo
-                                    );
+                                    itemMeta.setDisplayName(displayName[0] + secondaryColour + "| " + primaryColour + currentAmmo);
 
+                                    item.setItemMeta(itemMeta);
 
+                                    if (itemSlot >= 0) {
+
+                                        player.getInventory().setItem(itemSlot, item);
+
+                                    }
                                 }
 
-                                itemMeta.setDisplayName(displayName[0] + secondaryColour + "| " + primaryColour + currentAmmo);
 
-                                item.setItemMeta(itemMeta);
 
-                                if (itemSlot >= 0) {
 
-                                    player.getInventory().setItem(itemSlot, item);
+                            }.runTaskLaterAsynchronously(plugin, (loopCount * reloadSpeed));
 
-                                }
-                            }
+                            loopTimes += reloadTypeSpecial;
+                            loopCount += 1;
+
+
                         }
 
-                    }.runTaskLaterAsynchronously(plugin, (loopCount * reloadSpeed));
+                    }
 
-                    loopTimes += reloadTypeSpecial;
-                    loopCount++;
-
-
-                }
+                }.runTaskLater(plugin, delayBeforeFirstBullet);
 
                 break;
 
@@ -307,7 +350,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                 delayBetweenShotsList.put(player, currentDelay);
 
-                if(currentDelay > 1) {
+                if(currentDelay > 0) {
 
                     delayDecay(player);
 
@@ -320,7 +363,6 @@ public class RangedWeaponInterpreter implements Listener {
                 }
             }
         }.runTaskLaterAsynchronously(plugin, 1L);
-
     }
 
     private void delaySpreadDecay(Player player) {
@@ -333,7 +375,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                 delayBeforeSpreadDecay.put(player, currentDelay);
 
-                if(currentDelay > 0) {
+                if(currentDelay >= 0) {
 
                     delaySpreadDecay(player);
 
@@ -572,6 +614,13 @@ public class RangedWeaponInterpreter implements Listener {
     @EventHandler
     public void onItemDrop(PlayerDropItemEvent event) {
 
+        if(delayBetweenShotsList.containsKey(event.getPlayer())) {
+
+            event.setCancelled(true);
+            return;
+
+        }
+
         ItemMeta itemMeta = event.getItemDrop().getItemStack().getItemMeta();
 
         if (itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "zaGun"), PersistentDataType.INTEGER) == null) {
@@ -597,6 +646,8 @@ public class RangedWeaponInterpreter implements Listener {
 
             Integer actionDelay = (int) Math.round(itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE)*20);
 
+            String actionType = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING);
+
             String reloadingSound = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "reloadingSound"), PersistentDataType.STRING);
 
             String actionSound = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionSound"), PersistentDataType.STRING);
@@ -613,7 +664,7 @@ public class RangedWeaponInterpreter implements Listener {
 
             }
 
-            reloadGun(event.getPlayer(), event.getItemDrop().getItemStack(), event.getPlayer().getInventory().getHeldItemSlot(), reloadType, reloadTypeSpecial, reloadSpeed, reloadingSound, actionDelay, actionSound);
+            reloadGun(event.getPlayer(), event.getItemDrop().getItemStack(), event.getPlayer().getInventory().getHeldItemSlot(), reloadType, reloadTypeSpecial, reloadSpeed, reloadingSound, actionType, actionDelay, actionSound);
 
         }
 
@@ -648,13 +699,7 @@ public class RangedWeaponInterpreter implements Listener {
     public void onRightClick(PlayerInteractEvent event) {
         if((event.getAction() == Action.RIGHT_CLICK_AIR || event.getAction() == Action.RIGHT_CLICK_BLOCK) && event.hasItem()) {
 
-            if (reloadCancelling.containsKey(event.getPlayer())) {
-
-                reloadCancelling.put(event.getPlayer(), true);
-
-            }
-
-            if (delayBetweenShotsList != null && delayBetweenShotsList.containsKey(event.getPlayer())) {
+            if ((delayBetweenShotsList != null && delayBetweenShotsList.containsKey(event.getPlayer()))) {
 
                 return;
 
@@ -679,11 +724,13 @@ public class RangedWeaponInterpreter implements Listener {
             Integer burstAmount = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "burstAmount"), PersistentDataType.INTEGER);
             Integer burstDelay = (int) (itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "burstDelay"), PersistentDataType.DOUBLE) * 20);
 
-            if (currentAmmo[0] <= 0) { // reloading
+            if (currentAmmo[0] <= 0 && !delayBetweenShotsList.containsKey(event.getPlayer())) { // reloading
 
                 Integer reloadSpeed = (int) Math.round(itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "reloadSpeed"), PersistentDataType.DOUBLE) * 20);
 
                 Integer actionDelay = (int) Math.round(itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE) * 20);
+
+                String actionType = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING);
 
                 String reloadingSound = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "reloadingSound"), PersistentDataType.STRING);
 
@@ -701,7 +748,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                 }
 
-                reloadGun(event.getPlayer(), event.getItem(), -1, reloadType, reloadTypeSpecial, reloadSpeed, reloadingSound, actionDelay, actionSound);
+                reloadGun(event.getPlayer(), event.getItem(), -1, reloadType, reloadTypeSpecial, reloadSpeed, reloadingSound, actionType, actionDelay, actionSound);
 
                 return;
 
@@ -757,7 +804,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                         switch (actionType) {
 
-                            default: {
+                            case "slide": case "breakAction": {
 
                                 break;
 
