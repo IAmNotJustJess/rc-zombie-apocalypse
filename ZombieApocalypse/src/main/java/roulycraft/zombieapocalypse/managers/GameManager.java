@@ -179,6 +179,7 @@ public class GameManager {
     }
 
     public boolean loadGameInstanceConfig(String name) {
+
         reloadGameInstanceConfig(name);
 
         if (!gameInstanceFile.exists()) {

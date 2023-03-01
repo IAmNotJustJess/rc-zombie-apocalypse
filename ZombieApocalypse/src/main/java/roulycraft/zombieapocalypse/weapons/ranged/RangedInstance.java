@@ -7,25 +7,67 @@ public class RangedInstance {
     private final Integer id;
     private String name = "Broń";
     private ItemStack item = new ItemStack(Material.IRON_HORSE_ARMOR, 1);
-    private Integer level = 1;
+    private Integer level = 0;
     private Integer minDmg = 1;
     private Integer maxDmg = 1;
-    private Integer projectileType = 0;
-    private Float projectileSpeed = 4f;
+    private Integer projectileType = 0; // 0 - Snowball, 1 - Egg, 2 - Arrow
+    private Double projectileSpeed = 4.0;
     private Integer pellets = 1;
-    private Float bulletSpread = 2.0f;
-    private Integer spreadPercentage = 25;
-    private Float delayBetweenShots = 0.2f;
+    private Integer burstAmount = 1;
+    private Double burstDelay = 0.0;
+    private Double bulletSpread = 1.0;
+    private Double additiveBulletSpread = 2.0;
+    private Double spreadPercentage = 25.0;
+    private Integer zoomAmount = 1;
+    private Double zoomSpreadMultiplier = 0.5;
+    private Double delayBetweenShots = 0.2;
     private Integer clipSize = 10;
-    private Float reloadSpeed = 1.6f;
+    private Double reloadSpeed = 1.6;
     private String reloadType = "clip";
     private String actionType = "fullAuto";
+    private Double actionDelay = 0.0;
+    private Integer actionSpecial = 0;
+    private Integer shootingPatternType = 0;
+    private Double shootingPatternOffset = 0.0;
+    private String shootingSound = "";
+    private String reloadingSound = "";
+    private String actionSound = "";
 
     public RangedInstance(Integer id) {
         this.id = id;
     }
 
-    public RangedInstance(Integer id, String name, Integer level, ItemStack item, Integer minDmg, Integer maxDmg, Integer projectileType, Float projectileSpeed, Integer pellets, Float bulletSpread, Integer spreadPercentage, Float delayBetweenShots, Integer clipSize, Float reloadSpeed, String reloadType, String actionType) {
+    public RangedInstance(
+            Integer id,
+            String name,
+            Integer level,
+            ItemStack item,
+            Integer minDmg,
+            Integer maxDmg,
+            Integer projectileType,
+            Double projectileSpeed,
+            Integer pellets,
+            Integer burstAmount,
+            Double burstDelay,
+            Double bulletSpread,
+            Double additiveBulletSpread,
+            Double spreadPercentage,
+            Integer zoomAmount,
+            Double zoomSpreadMultiplier,
+            Double delayBetweenShots,
+            Integer clipSize,
+            Double reloadSpeed,
+            String reloadType,
+            String actionType,
+            Double actionDelay,
+            Integer actionSpecial,
+            Integer shootingPatternType,
+            Double shootingPatternOffset,
+            String shootingSound,
+            String reloadingSound,
+            String actionSound
+    ) {
+
         this.id = id;
         this.name = name;
         this.level = level;
@@ -35,13 +77,26 @@ public class RangedInstance {
         this.projectileType = projectileType;
         this.projectileSpeed = projectileSpeed;
         this.pellets = pellets;
+        this.burstAmount = burstAmount;
+        this.burstDelay = burstDelay;
         this.bulletSpread = bulletSpread;
+        this.additiveBulletSpread = additiveBulletSpread;
         this.spreadPercentage = spreadPercentage;
+        this.zoomAmount = zoomAmount;
+        this.zoomSpreadMultiplier = zoomSpreadMultiplier;
         this.delayBetweenShots = delayBetweenShots;
         this.clipSize = clipSize;
         this.reloadSpeed = reloadSpeed;
         this.reloadType = reloadType;
         this.actionType = actionType;
+        this.actionDelay = actionDelay;
+        this.actionSpecial = actionSpecial;
+        this.shootingPatternType = shootingPatternType;
+        this.shootingPatternOffset = shootingPatternOffset;
+        this.shootingSound = shootingSound;
+        this.reloadingSound = reloadingSound;
+        this.actionSound = actionSound;
+
     }
 
     public Integer getId() {
@@ -71,21 +126,44 @@ public class RangedInstance {
     public Integer getProjectileType() {
         return this.projectileType;
     }
-    public Float getProjectileSpeed() {
+
+    public Double getProjectileSpeed() {
         return projectileSpeed;
     }
 
     public Integer getPellets() {
         return this.pellets;
     }
-    public Float getBulletSpread() {
+
+    public Integer getBurstAmount() {
+        return burstAmount;
+    }
+
+    public Double getBurstDelay() {
+        return burstDelay;
+    }
+
+    public Double getBulletSpread() {
         return this.bulletSpread;
     }
-    public Integer getSpreadPercentage() {
+
+    public Double getAdditiveBulletSpread() {
+        return this.additiveBulletSpread;
+    }
+
+    public Double getSpreadPercentage() {
         return spreadPercentage;
     }
 
-    public Float getDelayBetweenShots() {
+    public Integer getZoomAmount() {
+        return zoomAmount;
+    }
+
+    public Double getZoomSpreadMultiplier() {
+        return zoomSpreadMultiplier;
+    }
+
+    public Double getDelayBetweenShots() {
         return delayBetweenShots;
     }
 
@@ -93,7 +171,7 @@ public class RangedInstance {
         return clipSize;
     }
 
-    public Float getReloadSpeed() {
+    public Double getReloadSpeed() {
         return reloadSpeed;
     }
 
@@ -103,6 +181,34 @@ public class RangedInstance {
 
     public String getActionType() {
         return actionType;
+    }
+
+    public Double getActionDelay() {
+        return actionDelay;
+    }
+
+    public Integer getActionSpecial() {
+        return actionSpecial;
+    }
+
+    public Integer getShootingPatternType() {
+        return shootingPatternType;
+    }
+
+    public Double getShootingPatternOffset() {
+        return shootingPatternOffset;
+    }
+
+    public String getShootingSound() {
+        return shootingSound;
+    }
+
+    public String getReloadingSound() {
+        return reloadingSound;
+    }
+
+    public String getActionSound() {
+        return actionSound;
     }
 
     public void setName (String name) {
@@ -128,21 +234,44 @@ public class RangedInstance {
     public void setProjectileType (Integer projectileType) {
         this.projectileType = projectileType;
     }
-    public void setProjectileSpeed (Float projectileSpeed) {
+
+    public void setProjectileSpeed (Double projectileSpeed) {
         this.projectileSpeed = projectileSpeed;
     }
 
     public void setPellets (Integer pellets) {
         this.pellets = pellets;
     }
-    public void setBulletSpread(Float bulletSpread) {
+
+    public void setBurstAmount(Integer burstAmount) {
+        this.burstAmount = burstAmount;
+    }
+
+    public void setBurstDelay(Double burstDelay) {
+        this.burstDelay = burstDelay;
+    }
+
+    public void setBulletSpread(Double bulletSpread) {
         this.bulletSpread = bulletSpread;
     }
-    public void setSpreadPercentage(Integer spreadPercentage) {
+
+    public void setAdditiveBulletSpread(Double additiveBulletSpread) {
+        this.additiveBulletSpread = additiveBulletSpread;
+    }
+
+    public void setSpreadPercentage(Double spreadPercentage) {
         this.spreadPercentage = spreadPercentage;
     }
 
-    public void setDelayBetweenShots (Float delayBetweenShots) {
+    public void setZoomAmount(Integer zoomAmount) {
+        this.zoomAmount = zoomAmount;
+    }
+
+    public void setZoomSpreadMultiplier(Double zoomSpreadMultiplier) {
+        this.zoomSpreadMultiplier = zoomSpreadMultiplier;
+    }
+
+    public void setDelayBetweenShots (Double delayBetweenShots) {
         this.delayBetweenShots = delayBetweenShots;
     }
 
@@ -150,7 +279,7 @@ public class RangedInstance {
         this.clipSize = clipSize;
     }
 
-    public void setReloadSpeed(Float reloadSpeed) {
+    public void setReloadSpeed(Double reloadSpeed) {
         this.reloadSpeed = reloadSpeed;
     }
 
@@ -162,4 +291,31 @@ public class RangedInstance {
         this.actionType = actionType;
     }
 
+    public void setActionDelay(Double actionDelay) {
+        this.actionDelay = actionDelay;
+    }
+
+    public void setActionSpecial(Integer actionSpecial) {
+        this.actionSpecial = actionSpecial;
+    }
+
+    public void setShootingPatternType(Integer shootingPatternType) {
+        this.shootingPatternType = shootingPatternType;
+    }
+
+    public void setShootingPatternOffset(Double shootingPatternOffset) {
+        this.shootingPatternOffset = shootingPatternOffset;
+    }
+
+    public void setShootingSound(String shootingSound) {
+        this.shootingSound = shootingSound;
+    }
+
+    public void setReloadingSound(String reloadingSound) {
+        this.reloadingSound = reloadingSound;
+    }
+
+    public void setActionSound(String actionSound) {
+        this.actionSound = actionSound;
+    }
 }

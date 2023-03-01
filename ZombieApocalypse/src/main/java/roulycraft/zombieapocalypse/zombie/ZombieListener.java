@@ -7,15 +7,17 @@ import org.bukkit.boss.BossBar;
 import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.LivingEntity;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.scheduler.BukkitRunnable;
+import org.bukkit.util.Vector;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 
 import java.util.*;
-import java.util.Timer;
 
 import static org.bukkit.entity.EntityType.PLAYER;
 
@@ -30,6 +32,14 @@ public class ZombieListener implements Listener {
 
     public static void injectPlugin(ZombieApocalypse p) {
         plugin = p;
+    }
+
+    public static void clearAllBossbars() {
+
+        for (NamespacedKey key : bossbarList.keySet()) {
+            Bukkit.getServer().getBossBar(key).removeAll();
+        }
+
     }
 
     public static void zombieBossBar(Player p, NamespacedKey key, String name, Integer maxHP, Integer HP) {
@@ -50,45 +60,39 @@ public class ZombieListener implements Listener {
 
             bossbarList.get(key).put(p, 50);
 
-            Timer timer = new Timer();
-
             final Integer[] detectChange = {50};
 
-            TimerTask task = new TimerTask() {
+            new BukkitRunnable() {
+
                 @Override
                 public void run() {
-                if (!Objects.equals(detectChange[0], bossbarList.get(key).get(p)) || Objects.isNull(bossbarList.get(key).get(p))) {
-                    timer.cancel();
-                    timer.purge();
-                    return;
-                }
 
-                if (bossbarList.get(key).get(p) > 0) {
+                    if (!Objects.equals(detectChange[0], bossbarList.get(key).get(p)) || Objects.isNull(bossbarList.get(key).get(p))) {
+                        cancel();
+                        return;
+                    }
 
-                    if(Objects.isNull(bossbarList.get(key).get(p))) {
-                        bar.removePlayer(p);
-                        timer.cancel();
-                        timer.purge();
+                    if (bossbarList.get(key).get(p) > 0) {
+
+                        if(Objects.isNull(bossbarList.get(key).get(p))) {
+                            bar.removePlayer(p);
+                            cancel();
+                        }
+
+                        else {
+                            bar.addPlayer(p);
+                            bossbarList.get(key).put(p, (bossbarList.get(key).get(p) - 1));
+                            detectChange[0] -= 1;
+                        }
                     }
 
                     else {
-                        bar.addPlayer(p);
-                        bossbarList.get(key).put(p, (bossbarList.get(key).get(p) - 1));
-                        detectChange[0] -= 1;
+
+                        bar.removePlayer(p);
+                        cancel();
                     }
                 }
-
-                else {
-
-                    bar.removePlayer(p);
-                    timer.cancel();
-                    timer.purge();
-                }
-
-                }
-            };
-
-            timer.scheduleAtFixedRate(task, new Date(), 50);
+            }.runTaskTimerAsynchronously(plugin, 0L, 1L);
         }
 
 
@@ -98,10 +102,8 @@ public class ZombieListener implements Listener {
     public void onZombieDamage(EntityDamageByEntityEvent event) {
 
         Entity entity = event.getEntity();
-
-        if(entity.getType() != EntityType.ZOMBIE) {
-            return;
-        }
+        LivingEntity lentity = (LivingEntity) event.getEntity();
+        Player player = null;
 
         int doesItReturn = 0;
 
@@ -113,28 +115,45 @@ public class ZombieListener implements Listener {
             doesItReturn = 0;
         }
 
-        if(doesItReturn == 1) {
+        if(doesItReturn == 1 || entity.getType() != EntityType.ZOMBIE || !entity.getMetadata("ZA").get(0).asBoolean()) {
             return;
         }
 
-        if(!entity.getMetadata("ZA").get(0).asBoolean()) {
+        if(!event.getDamager().getMetadata("ZAProjectile").get(0).asBoolean()) {
             return;
         }
+
         int damage;
 
         damage = (int) Math.round(event.getDamage());
 
         if(event.getDamager().getType() == EntityType.SNOWBALL || event.getDamager().getType() == EntityType.EGG || event.getDamager().getType() == EntityType.ARROW) {
+
             if(event.getDamager().getMetadata("ZAProjectile").get(0).asBoolean()) {
-                int minDMG = entity.getMetadata("minDMG").get(0).asInt();
-                int maxDMG = entity.getMetadata("maxDMG").get(0).asInt();
+
+                int minDMG = event.getDamager().getMetadata("minDMG").get(0).asInt();
+                int maxDMG = event.getDamager().getMetadata("maxDMG").get(0).asInt();
+
+                player = Bukkit.getPlayer(event.getDamager().getMetadata("shooter").get(0).asString());
 
                 Random rng = new Random();
 
                 damage = rng.nextInt(maxDMG - minDMG) + minDMG;
 
+                lentity.setNoDamageTicks(0);
+                lentity.setMaximumNoDamageTicks(0);
+
                 event.setDamage(damage);
             }
+        }
+        
+        else {
+            
+            player = (Player) event.getDamager();
+
+            lentity.setNoDamageTicks(20);
+            lentity.setMaximumNoDamageTicks(20);
+
         }
 
         int maxHP = entity.getMetadata("maxHealth").get(0).asInt();
@@ -144,6 +163,9 @@ public class ZombieListener implements Listener {
         HP -= damage;
 
         entity.setMetadata("health", new FixedMetadataValue(plugin, HP));
+
+        final org.bukkit.util.Vector v = new Vector();
+        Bukkit.getScheduler().runTaskLater(plugin, () -> entity.setVelocity(v), 1l);
 
         if(HP <= 0) {
 
@@ -155,26 +177,23 @@ public class ZombieListener implements Listener {
             bar.setProgress(0);
             bar.setTitle(entity.getCustomName() + " §4[§c0§4]");
 
-            Timer timer = new Timer();
+            new BukkitRunnable() {
 
-            TimerTask task = new TimerTask() {
                 @Override
                 public void run() {
-                bar.removeAll();
-                bossbarList.get(NamespacedKey.fromString(key, plugin)).clear();
-                Bukkit.removeBossBar(NamespacedKey.fromString(key, plugin));
-
+                    bar.removeAll();
+                    bossbarList.get(NamespacedKey.fromString(key, plugin)).clear();
+                    Bukkit.removeBossBar(NamespacedKey.fromString(key, plugin));
                 }
-            };
+            }.runTaskLaterAsynchronously(plugin, 15L);
 
-            timer.schedule(task, 1000);
 
         }
 
         else {
 
             event.setDamage(0);
-            zombieBossBar((Player) event.getDamager(), NamespacedKey.fromString(key, plugin), entity.getCustomName(), maxHP, HP);
+            zombieBossBar(player, NamespacedKey.fromString(key, plugin), entity.getCustomName(), maxHP, HP);
 
         }
     }

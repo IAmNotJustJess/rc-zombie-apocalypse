@@ -722,9 +722,11 @@ public class ZombieManager {
     }
 
     public void saveZombieInstanceConfig() {
+
         try {
             getZombieInstanceConfig().save(zombieInstanceFile);
         }
+
         catch (IOException ex) {
             ConsoleCommandSender console = Bukkit.getConsoleSender();
             console.sendMessage("§4BŁĄD KRYTYCZNY §cNie można było zapisać konfiguracji §fzombie.yml§c!");

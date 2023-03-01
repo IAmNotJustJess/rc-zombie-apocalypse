@@ -10,6 +10,7 @@ import java.util.Objects;
 
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.managers.GameManager;
+import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.zombie.ZombieInstance;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
 
@@ -52,33 +53,36 @@ public class MainCommand implements CommandExecutor {
                 case "help": {
                     if (args.length == 1) {
                         sender.sendMessage(" ");
-                        sender.sendMessage("§6== §eKomendy Podstawowe §aZombie Apocalypse §6==");
-                        sender.sendMessage("§6/za help §8- §ePomoc ogólna.");
-                        sender.sendMessage("§6/za leave §8- §eWyjście z areny.");
-                        if (sender.isOp() || sender.hasPermission("technik")) {
-                            sender.sendMessage("§6/za join <instancja> §8- §eDołączenia na konkretną arenę.");
-                            sender.sendMessage("§6/za help ct §8- §ePomoc tworzeniu aren.");
-                            sender.sendMessage("§6/za help debug §8- §ePomoc w testowaniu lub debugowaniu aren.");
+                        sender.sendMessage(plugin.getConfig().getString("commands.colours.symbol")+"== "+plugin.getConfig().getString("commands.colours.headline")+"§lKomendy Podstawowe "+plugin.getConfig().getString("plugin.colour")+"§lZombie Apocalypse "+plugin.getConfig().getString("commands.colours.symbol")+"§r==");
+                        sender.sendMessage(" ");
+                        sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za help "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Pomoc ogólna.");
+                        sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za leave "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Wyjście z areny.");
+                        if (sender.isOp() || sender.hasPermission("za.ct")) {
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za join <instancja> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Dołączenia na konkretną arenę.");
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za help ct "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Pomoc tworzeniu aren.");
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za help debug "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Pomoc w testowaniu lub debugowaniu aren.");
                             return true;
                         }
                     } else {
-                        if ("ct".equalsIgnoreCase(args[1])) {
+                        if ("ct".equalsIgnoreCase(args[1]) && sender.hasPermission("za.ct")) {
                             sender.sendMessage(" ");
-                            sender.sendMessage("§6== §eKomendy Creation Tools §aZombie Apocalypse §6==");
-                            sender.sendMessage("§6/za ct <instancja> create §8- §eStwarza instancję.");
-                            sender.sendMessage("§6/za ct <instancja> lobby §8- §eUstawia lokacje lobby instancji.");
-                            sender.sendMessage("§6/za ct <instancja> spawn add §8- §edodaje spawn graczy instancji");
-                            sender.sendMessage("§6/za ct <instancja> spawn remove <number> §8- §eusuwa spawn graczy instancji (przesuwa spawny z wyższym numerem w dół).");
-                            sender.sendMessage("§6/za ct <instancja> zombie add §8- §edodaje spawn zombie instancji.");
-                            sender.sendMessage("§6/za ct <instancja> zombie remove <number> §8- §eusuwa spawn zombie instancji (przesuwa spawny z wyższym numerem w dół).");
+                            sender.sendMessage(""+plugin.getConfig().getString("commands.colours.symbol")+"== "+plugin.getConfig().getString("commands.colours.headline")+"§lKomendy Creation Tools "+plugin.getConfig().getString("plugin.colour")+"§lZombie Apocalypse "+plugin.getConfig().getString("commands.colours.symbol")+"==");
+                            sender.sendMessage(" ");
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> create "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Stwarza instancję.");
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> lobby "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Ustawia lokacje lobby instancji.");
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> spawn add "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"dodaje spawn graczy instancji");
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> spawn remove <number> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"usuwa spawn graczy instancji (przesuwa spawny z wyższym numerem w dół).");
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> zombie add "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"dodaje spawn zombie instancji.");
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> zombie remove <number> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"usuwa spawn zombie instancji (przesuwa spawny z wyższym numerem w dół).");
                             return true;
                         }
 
-                        if ("debug".equalsIgnoreCase(args[1])) {
+                        if ("debug".equalsIgnoreCase(args[1]) && sender.hasPermission("za.ct")) {
                             sender.sendMessage(" ");
-                            sender.sendMessage("§6== §eKomendy Creation Tools §aZombie Apocalypse §6==");
-                            sender.sendMessage("§6/za debug spawnZombie <nazwa> §8- §eRespi zombiaka na twojej lokacji.");
-                            sender.sendMessage("§6/za debug giveRanged <gracz> <id> §8- §eDaje graczu broń palną.");
+                            sender.sendMessage(""+plugin.getConfig().getString("commands.colours.symbol")+"== "+plugin.getConfig().getString("commands.colours.headline")+"§lKomendy Creation Tools "+plugin.getConfig().getString("plugin.colour")+"§lZombie Apocalypse "+plugin.getConfig().getString("commands.colours.symbol")+"==");
+                            sender.sendMessage(" ");
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za debug spawnZombie <nazwa> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Respi zombiaka na twojej lokacji.");
+                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za debug giveRanged <gracz> <id> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Daje graczu broń palną.");
                             return true;
                         }
                     }
@@ -269,41 +273,61 @@ public class MainCommand implements CommandExecutor {
                         return true;
                     }
 
-                    if("spawnzombie".equalsIgnoreCase(args[1])) {
+                    switch(args[1].toLowerCase()) {
 
-                        boolean count = false;
+                        case "getgun":
 
-                        if (Objects.isNull(args[2])) {
-                            sender.sendMessage(missingZombieMessage);
-                            return true;
-                        }
+                            Integer.valueOf(args[2]);
+                            Integer.valueOf(args[3]);
 
-                        try {
-                            if (Objects.equals(args[3], "true")) {
-                                count = true;
+                            if (RangedManager.getManager().getGun(Integer.valueOf(args[2]), Integer.valueOf(args[3])) == null) {
+
+                                sender.sendMessage("§4BŁĄD! §cBroń o ID: §f" + args[2] + " §ci poziomie  §f" + args[3] + " §c nie istnieje!");
+                                return true;
+
                             }
-                        }
-                        catch (ArrayIndexOutOfBoundsException e) {
-                            count = false;
-                        }
 
-                        boolean exists = false;
+                            ((Player) sender).getInventory().addItem(RangedManager.getManager().getGun(Integer.valueOf(args[2]), Integer.valueOf(args[3])));
+                            sender.sendMessage("§2SUKCES! §aOtrzymano broń o ID: §f" + args[2] + " §ai poziomie §f" + args[3] + "§a!");
 
-                        for (ZombieInstance checkIfExists : ZombieManager.getManager().zombieInstanceList) {
-                            if (checkIfExists.getName().equals(args[2])) {
-                                exists = true;
-                            }
-                        }
-
-                        if(!exists) {
-                            sender.sendMessage(missingZombieMessage);
                             return true;
-                        }
 
-                        Location loc = ((Player) sender).getLocation();
-                        ZombieManager.getManager().spawnZombie(loc, args[2], count);
+                        case "spawnzombie":
 
-                        return true;
+                            boolean count = false;
+
+                            if (Objects.isNull(args[2])) {
+                                sender.sendMessage(missingZombieMessage);
+                                return true;
+                            }
+
+                            try {
+                                if (Objects.equals(args[3], "true")) {
+                                    count = true;
+                                }
+                            }
+                            catch (ArrayIndexOutOfBoundsException e) {
+                                count = false;
+                            }
+
+                            boolean exists = false;
+
+                            for (ZombieInstance checkIfExists : ZombieManager.getManager().zombieInstanceList) {
+                                if (checkIfExists.getName().equals(args[2])) {
+                                    exists = true;
+                                }
+                            }
+
+                            if(!exists) {
+                                sender.sendMessage(missingZombieMessage);
+                                return true;
+                            }
+
+                            Location loc = ((Player) sender).getLocation();
+                            ZombieManager.getManager().spawnZombie(loc, args[2], count);
+
+                            return true;
+
                     }
             }
 
