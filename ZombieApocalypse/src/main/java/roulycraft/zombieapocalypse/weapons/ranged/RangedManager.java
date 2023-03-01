@@ -1,7 +1,6 @@
 package roulycraft.zombieapocalypse.weapons.ranged;
 
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -92,6 +91,8 @@ public class RangedManager {
             Double bulletSpread,
             Double bulletAdditiveSpread,
             Double spreadPercentage,
+            Integer zoomAmount,
+            Double zoomSpreadMultiplier,
             Double delayBetweenShots,
             Integer clipSize,
             Double reloadSpeed,
@@ -132,6 +133,8 @@ public class RangedManager {
                 bulletSpread,
                 bulletAdditiveSpread,
                 spreadPercentage,
+                zoomAmount,
+                zoomSpreadMultiplier,
                 delayBetweenShots,
                 clipSize,
                 reloadSpeed,
@@ -159,6 +162,8 @@ public class RangedManager {
         getRangedInstanceConfig(id).set((level+".bulletSpread"), bulletSpread);
         getRangedInstanceConfig(id).set((level+".bulletAdditiveSpread"), bulletAdditiveSpread);
         getRangedInstanceConfig(id).set((level+".spreadPercentage"), spreadPercentage);
+        getRangedInstanceConfig(id).set((level+".zoomAmount"), zoomAmount);
+        getRangedInstanceConfig(id).set((level+".zoomSpreadMultiplier"), zoomSpreadMultiplier);
         getRangedInstanceConfig(id).set((level+".delayBetweenShots"), delayBetweenShots);
         getRangedInstanceConfig(id).set((level+".clipSize"), clipSize);
         getRangedInstanceConfig(id).set((level+".reloadSpeed"), reloadSpeed);
@@ -263,6 +268,8 @@ public class RangedManager {
                         rangedInstanceConfig.getDouble(i+".bulletSpread"),
                         rangedInstanceConfig.getDouble(i+".bulletAdditiveSpread"),
                         rangedInstanceConfig.getDouble(i+".spreadPercentage"),
+                        rangedInstanceConfig.getInt(i+".zoomAmount"),
+                        rangedInstanceConfig.getDouble(i+".zoomSpreadMultiplier"),
                         rangedInstanceConfig.getDouble(i+".delayBetweenShots"),
                         rangedInstanceConfig.getInt(i+".clipSize"),
                         rangedInstanceConfig.getDouble(i+".reloadSpeed"),
@@ -297,6 +304,8 @@ public class RangedManager {
             getInstance(id, i).setBulletSpread(rangedInstanceConfig.getDouble(i+".bulletSpread"));
             getInstance(id, i).setAdditiveBulletSpread(rangedInstanceConfig.getDouble(i+".bulletAdditiveSpread"));
             getInstance(id, i).setSpreadPercentage(rangedInstanceConfig.getDouble(i+".spreadPercentage"));
+            getInstance(id, i).setZoomAmount(rangedInstanceConfig.getInt(i+".zoomAmount"));
+            getInstance(id, i).setZoomSpreadMultiplier(rangedInstanceConfig.getDouble(i+".zoomSpreadMultiplier"));
             getInstance(id, i).setDelayBetweenShots(rangedInstanceConfig.getDouble(i+".delayBetweenShots"));
             getInstance(id, i).setClipSize(rangedInstanceConfig.getInt(i+".clipSize"));
             getInstance(id, i).setReloadSpeed(rangedInstanceConfig.getDouble(i+".reloadSpeed"));
@@ -350,6 +359,9 @@ public class RangedManager {
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "bulletSpread"), PersistentDataType.DOUBLE, rangedInstance.getBulletSpread());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "additiveBulletSpread"), PersistentDataType.DOUBLE, rangedInstance.getAdditiveBulletSpread());
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "spreadPercentage"), PersistentDataType.DOUBLE, rangedInstance.getSpreadPercentage());
+
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "zoomAmount"), PersistentDataType.INTEGER, rangedInstance.getZoomAmount());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "zoomSpreadMultiplier"), PersistentDataType.DOUBLE, rangedInstance.getZoomSpreadMultiplier());
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "delayBetweenShots"), PersistentDataType.DOUBLE, rangedInstance.getDelayBetweenShots());
 

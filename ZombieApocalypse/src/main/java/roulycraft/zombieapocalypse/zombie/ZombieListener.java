@@ -34,6 +34,14 @@ public class ZombieListener implements Listener {
         plugin = p;
     }
 
+    public static void clearAllBossbars() {
+
+        for (NamespacedKey key : bossbarList.keySet()) {
+            Bukkit.getServer().getBossBar(key).removeAll();
+        }
+
+    }
+
     public static void zombieBossBar(Player p, NamespacedKey key, String name, Integer maxHP, Integer HP) {
 
         BossBar bar = Bukkit.getServer().getBossBar(key);
@@ -177,7 +185,7 @@ public class ZombieListener implements Listener {
                     bossbarList.get(NamespacedKey.fromString(key, plugin)).clear();
                     Bukkit.removeBossBar(NamespacedKey.fromString(key, plugin));
                 }
-            }.runTaskLaterAsynchronously(plugin, 5L);
+            }.runTaskLaterAsynchronously(plugin, 15L);
 
 
         }

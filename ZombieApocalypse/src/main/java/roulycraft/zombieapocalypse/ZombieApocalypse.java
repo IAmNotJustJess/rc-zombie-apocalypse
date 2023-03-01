@@ -29,6 +29,8 @@ public final class ZombieApocalypse extends JavaPlugin {
         SoundSplitter.injectPlugin(this);
         RangedDefaultSettings.injectPlugin(this);
 
+        ZombieListener.clearAllBossbars();
+
         this.saveDefaultConfig();
 
         getServer().getPluginManager().registerEvents(new ZombieListener(), this);

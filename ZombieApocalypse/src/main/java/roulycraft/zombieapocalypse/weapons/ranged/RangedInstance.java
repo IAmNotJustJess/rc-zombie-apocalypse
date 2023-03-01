@@ -18,6 +18,8 @@ public class RangedInstance {
     private Double bulletSpread = 1.0;
     private Double additiveBulletSpread = 2.0;
     private Double spreadPercentage = 25.0;
+    private Integer zoomAmount = 1;
+    private Double zoomSpreadMultiplier = 0.5;
     private Double delayBetweenShots = 0.2;
     private Integer clipSize = 10;
     private Double reloadSpeed = 1.6;
@@ -50,6 +52,8 @@ public class RangedInstance {
             Double bulletSpread,
             Double additiveBulletSpread,
             Double spreadPercentage,
+            Integer zoomAmount,
+            Double zoomSpreadMultiplier,
             Double delayBetweenShots,
             Integer clipSize,
             Double reloadSpeed,
@@ -78,6 +82,8 @@ public class RangedInstance {
         this.bulletSpread = bulletSpread;
         this.additiveBulletSpread = additiveBulletSpread;
         this.spreadPercentage = spreadPercentage;
+        this.zoomAmount = zoomAmount;
+        this.zoomSpreadMultiplier = zoomSpreadMultiplier;
         this.delayBetweenShots = delayBetweenShots;
         this.clipSize = clipSize;
         this.reloadSpeed = reloadSpeed;
@@ -147,6 +153,14 @@ public class RangedInstance {
 
     public Double getSpreadPercentage() {
         return spreadPercentage;
+    }
+
+    public Integer getZoomAmount() {
+        return zoomAmount;
+    }
+
+    public Double getZoomSpreadMultiplier() {
+        return zoomSpreadMultiplier;
     }
 
     public Double getDelayBetweenShots() {
@@ -247,6 +261,14 @@ public class RangedInstance {
 
     public void setSpreadPercentage(Double spreadPercentage) {
         this.spreadPercentage = spreadPercentage;
+    }
+
+    public void setZoomAmount(Integer zoomAmount) {
+        this.zoomAmount = zoomAmount;
+    }
+
+    public void setZoomSpreadMultiplier(Double zoomSpreadMultiplier) {
+        this.zoomSpreadMultiplier = zoomSpreadMultiplier;
     }
 
     public void setDelayBetweenShots (Double delayBetweenShots) {
