@@ -1,12 +1,31 @@
 plugin:
   version: 0 #DO NOT CHANGE THIS - IT MAY BREAK AUTOMATIC UPDATES
-  colour: §x§7§e§d§d§7§e
+  colour: 7edd7e
+
+settings:
+
+  logZombieLoad: true
+  logRangedLoad: true
+  logArenaLoad: true
+
+  logGameStateChanges: true
+
+  minPlayersPerArena: 1
+  maxPlayersPerArena: 32
+
+  startCountdownAtPlayers: 1
+  countdownTime: 60
+  countdownReductionPlayers: 2
+  countdownReduceTo: 10
+
+  newWaveZombieKills: 45
+  gameOverAfter: 180
 
 commands:
   colours:
-    command: §x§5§c§a§4§e§0
-    symbol: §x§5§5§5§5§5§5
-    headline: §x§a§a§a§a§a§a
+    command: 5ca4e0
+    symbol: 555555
+    headline: aaaaaa
 
 guns:
   colours:
@@ -22,3 +41,29 @@ guns:
     level3:
       primary: ffaa00
       secondary: 7f5500
+
+messages:
+  formats:
+    arenaPlayersFormat: "[%min%/%max%]" # %min% - Players currently in the arena, %max% - Maximum players per arena
+    bossbarFormat: "Fala %wave% | Zabite zombie: %zombie1%/%zombie2% | Przegrana za: %time%" # %wave % - Wave, %zombie1% - Killed zombies in a wave, %zombie2% - Required zombie count until the next wave, %time% - Remaining time
+  arena:
+    playerJoinLobby: "%player% dołącza do areny." # %player% - Player
+    playerLeaveLobby: "%player% opuszcza arenę." # %player% - Player
+    minimumPlayersReached: "Na arenie jest wystarczająca ilość graczy! Odliczanie rozpoczęte!"
+    reductionPlayersReached: "Arena jest pełna! Odliczanie skrócone!"
+    arenaCountdown: "Arena rozpocznie się za %time%." # %time% - Time until the arena starts
+    arenaBeginExplenationTitles: "Witaj na%nl%Twoje zadania:%nl%Twoje zadania:%nl%Twoje zadania:"  # %nl% - Split for multiple titles
+    arenaBeginExplenationSubtitles: "Zombie Apocalypse!%nl%Przetrwaj jak najdłużej!%nl%Zabijaj zombie!%nl%" # %nl% - Split for multiple subtitles
+    arenaBeginExplenationMessages: "Witaj na ZombieApocalypse (Java Reworked Edition)!%br%%br%Obecnie grasz na zamkniętych testach alpha!%nl% 
+    Przetrwaj jak najdłużej walcząć z licznymi falami Zombie.%br%%br%Im większa fala, tym silniejsze stają się zombie%br%Aktualnie gra kończy się po 80 fali!%nl%
+    Zabijaj jak najwięcej zombie!%br%%br%Po zabiciu wymaganej ilości kolejna fala rozpocznie się automatycznie.%br%Zmieniaj bronie (jak narazie) pod komendą /za tb <id> <poziom>, ID: 1 - 15, Poziom 0 - 3" # %nl% - Split for multiple messages, %br% - Split for multiple rows of messages
+    arenaBeginTitle: "Powodzenia!"
+    arenaBeginSubtitle: "Start za 5 sekund!"
+    arenaBeginMessages: "Powodzenia!%br%%br%Pierwsza fala rozpoczenie się za 5 sekund!" # %br% - Split for multiple rows of messages
+    nextWave: "Następna fala: %wave%" # %wave% - Next wave
+    nextWaveTitle: "Fala %wave%" # %wave% - Next wave
+    nextWaveSubtitle10s: "Zombie stają się potężniejsze..."
+    waveBeaten: "Fala %wave% zakończona! Kolejna fala za 5 sekund..." # %wave% - Wave beaten
+    waveTimeout: "Czas się kończy! Pozostało %time% do przegranej!" # %time% - Time till losing
+    defeat: "Przegrana... Zombie was pokonały..."
+    victory: "Zwycięstwo! Zombie zostały pokonane!"

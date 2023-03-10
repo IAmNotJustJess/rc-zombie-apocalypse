@@ -1,20 +1,17 @@
 package roulycraft.zombieapocalypse.utility;
-
-import com.google.common.base.Splitter;
-
 public class ConfigColourParser {
 
     public static String getColour(String input) {
 
         StringBuilder output;
-        Iterable<String> split;
+        String[] split;
 
         switch (input.length()) {
 
             case 6:
 
                 output = new StringBuilder("§x");
-                split = Splitter.fixedLength(1).split(input);
+                split = input.split("");
 
                 for (String i : split) {
 

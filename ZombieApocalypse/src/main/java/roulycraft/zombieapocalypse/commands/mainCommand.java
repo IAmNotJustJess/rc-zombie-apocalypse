@@ -13,6 +13,7 @@ import roulycraft.zombieapocalypse.managers.GameManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.zombie.ZombieInstance;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
+import roulycraft.zombieapocalypse.utility.ConfigColourParser;
 
 public class MainCommand implements CommandExecutor {
 
@@ -24,6 +25,11 @@ public class MainCommand implements CommandExecutor {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+
+        String pluginColour = ConfigColourParser.getColour(plugin.getConfig().getString("plugin.colour"));
+        String commandColour = ConfigColourParser.getColour(plugin.getConfig().getString("commands.colours.command"));
+        String symbolColour = ConfigColourParser.getColour(plugin.getConfig().getString("commands.colours.symbol"));
+        String headlineColour = ConfigColourParser.getColour(plugin.getConfig().getString("commands.colours.headline"));
 
         String missingPermissionMessage = "§4BŁĄD! §cBrakuje uprawnień!";
         String missingArgumentsMessage = "§4BŁĄD! §cPodaj więcej argumentów!";
@@ -53,36 +59,36 @@ public class MainCommand implements CommandExecutor {
                 case "help": {
                     if (args.length == 1) {
                         sender.sendMessage(" ");
-                        sender.sendMessage(plugin.getConfig().getString("commands.colours.symbol")+"== "+plugin.getConfig().getString("commands.colours.headline")+"§lKomendy Podstawowe "+plugin.getConfig().getString("plugin.colour")+"§lZombie Apocalypse "+plugin.getConfig().getString("commands.colours.symbol")+"§r==");
+                        sender.sendMessage(symbolColour+"== "+headlineColour+"§lKomendy Podstawowe "+pluginColour+"§lZombie Apocalypse "+symbolColour+"==");
                         sender.sendMessage(" ");
-                        sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za help "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Pomoc ogólna.");
-                        sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za leave "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Wyjście z areny.");
+                        sender.sendMessage(commandColour+"/za help "+symbolColour+"- "+headlineColour+"Pomoc ogólna.");
+                        sender.sendMessage(commandColour+"/za leave "+symbolColour+"- "+headlineColour+"Wyjście z areny.");
                         if (sender.isOp() || sender.hasPermission("za.ct")) {
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za join <instancja> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Dołączenia na konkretną arenę.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za help ct "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Pomoc tworzeniu aren.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za help debug "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Pomoc w testowaniu lub debugowaniu aren.");
+                            sender.sendMessage(commandColour+"/za join <instancja> "+symbolColour+"- "+headlineColour+"Dołączenia na konkretną arenę.");
+                            sender.sendMessage(commandColour+"/za help ct "+symbolColour+"- "+headlineColour+"Pomoc tworzeniu aren.");
+                            sender.sendMessage(commandColour+"/za help debug "+symbolColour+"- "+headlineColour+"Pomoc w testowaniu lub debugowaniu aren.");
                             return true;
                         }
                     } else {
                         if ("ct".equalsIgnoreCase(args[1]) && sender.hasPermission("za.ct")) {
                             sender.sendMessage(" ");
-                            sender.sendMessage(""+plugin.getConfig().getString("commands.colours.symbol")+"== "+plugin.getConfig().getString("commands.colours.headline")+"§lKomendy Creation Tools "+plugin.getConfig().getString("plugin.colour")+"§lZombie Apocalypse "+plugin.getConfig().getString("commands.colours.symbol")+"==");
+                            sender.sendMessage(""+symbolColour+"== "+headlineColour+"§lKomendy Creation Tools "+pluginColour+"§lZombie Apocalypse "+symbolColour+"==");
                             sender.sendMessage(" ");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> create "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Stwarza instancję.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> lobby "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Ustawia lokacje lobby instancji.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> spawn add "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"dodaje spawn graczy instancji");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> spawn remove <number> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"usuwa spawn graczy instancji (przesuwa spawny z wyższym numerem w dół).");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> zombie add "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"dodaje spawn zombie instancji.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> zombie remove <number> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"usuwa spawn zombie instancji (przesuwa spawny z wyższym numerem w dół).");
+                            sender.sendMessage(commandColour+"/za ct <instancja> create "+symbolColour+"- "+headlineColour+"Stwarza instancję.");
+                            sender.sendMessage(commandColour+"/za ct <instancja> lobby "+symbolColour+"- "+headlineColour+"Ustawia lokacje lobby instancji.");
+                            sender.sendMessage(commandColour+"/za ct <instancja> spawn add "+symbolColour+"- "+headlineColour+"dodaje spawn graczy instancji");
+                            sender.sendMessage(commandColour+"/za ct <instancja> spawn remove <number> "+symbolColour+"- "+headlineColour+"usuwa spawn graczy instancji (przesuwa spawny z wyższym numerem w dół).");
+                            sender.sendMessage(commandColour+"/za ct <instancja> zombie add "+symbolColour+"- "+headlineColour+"dodaje spawn zombie instancji.");
+                            sender.sendMessage(commandColour+"/za ct <instancja> zombie remove <number> "+symbolColour+"- "+headlineColour+"usuwa spawn zombie instancji (przesuwa spawny z wyższym numerem w dół).");
                             return true;
                         }
 
                         if ("debug".equalsIgnoreCase(args[1]) && sender.hasPermission("za.ct")) {
                             sender.sendMessage(" ");
-                            sender.sendMessage(""+plugin.getConfig().getString("commands.colours.symbol")+"== "+plugin.getConfig().getString("commands.colours.headline")+"§lKomendy Creation Tools "+plugin.getConfig().getString("plugin.colour")+"§lZombie Apocalypse "+plugin.getConfig().getString("commands.colours.symbol")+"==");
+                            sender.sendMessage(""+symbolColour+"== "+headlineColour+"§lKomendy Creation Tools "+pluginColour+"§lZombie Apocalypse "+symbolColour+"==");
                             sender.sendMessage(" ");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za debug spawnZombie <nazwa> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Respi zombiaka na twojej lokacji.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za debug giveRanged <gracz> <id> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Daje graczu broń palną.");
+                            sender.sendMessage(commandColour+"/za debug spawnZombie <nazwa> "+symbolColour+"- "+headlineColour+"Respi zombiaka na twojej lokacji.");
+                            sender.sendMessage(commandColour+"/za debug giveRanged <gracz> <id> "+symbolColour+"- "+headlineColour+"Daje graczu broń palną.");
                             return true;
                         }
                     }

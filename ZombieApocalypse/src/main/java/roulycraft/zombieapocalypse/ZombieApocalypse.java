@@ -7,6 +7,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import roulycraft.zombieapocalypse.commands.MainCommand;
 import roulycraft.zombieapocalypse.managers.*;
 import roulycraft.zombieapocalypse.utility.SoundSplitter;
+import roulycraft.zombieapocalypse.waves.WaveManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedDefaultSettings;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedWeaponInterpreter;
@@ -28,6 +29,7 @@ public final class ZombieApocalypse extends JavaPlugin {
         RangedManager.injectPlugin(this);
         SoundSplitter.injectPlugin(this);
         RangedDefaultSettings.injectPlugin(this);
+        WaveManager.injectPlugin(this);
 
         ZombieListener.clearAllBossbars();
 
@@ -41,14 +43,17 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         File zombieFile = new File(this.getDataFolder() + File.separator + "zombie.yml");
 
+
         console.sendMessage("");
         console.sendMessage("§9== §bInicjowanie listy zombie! §9==");
         console.sendMessage("");
 
         if(!zombieFile.exists()) {
 
-            console.sendMessage("§6INFO! §eNie znaleziono pliku! Tworzę domyślną konfigurację pliku §fzombie.yml§e...");
-            console.sendMessage("");
+            if(this.getConfig().getBoolean("settings.logZombieLoad")) {
+                console.sendMessage("§6INFO! §eNie znaleziono pliku! Tworzę domyślną konfigurację pliku §fzombie.yml§e...");
+                console.sendMessage("");
+            }
 
             ZombieManager.getManager().createDefaultZombieInstances();
 
@@ -68,8 +73,10 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         if(!rangedFolder.exists()) {
 
-            console.sendMessage("§6INFO! §eNie znaleziono folderu §franged§e! Tworzę domyślną konfigurację folderu §franged§e...");
-            console.sendMessage("");
+            if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                console.sendMessage("§6INFO! §eNie znaleziono folderu §franged§e! Tworzę domyślną konfigurację folderu §franged§e...");
+                console.sendMessage("");
+            }
 
             RangedDefaultSettings.loadDefaultSettings();
 
@@ -86,13 +93,17 @@ public final class ZombieApocalypse extends JavaPlugin {
 
                 if (RangedManager.getManager().loadRangedInstanceConfig(Integer.valueOf(rangedInstanceName))) {
 
-                    console.sendMessage("§2SUKCES! §aPoprawnie zinicjonowano instancję broni dalekosiężnej o ID: §f" + rangedInstanceName + "§a!");
+                    if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                        console.sendMessage("§2SUKCES! §aPoprawnie zinicjonowano instancję broni dalekosiężnej o ID: §f" + rangedInstanceName + "§a!");
+                    }
 
                 }
 
                 else {
 
-                    console.sendMessage("§4BŁĄD! §cInicjacja instancji broni dalekosiężnej o ID: §f" + rangedInstanceName + "§c nie powiodła się!");
+                    if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                        console.sendMessage("§4BŁĄD! §cInicjacja instancji broni dalekosiężnej o ID: §f" + rangedInstanceName + "§c nie powiodła się!");
+                    }
 
                 }
             }
@@ -125,11 +136,14 @@ public final class ZombieApocalypse extends JavaPlugin {
 
                 if (GameManager.getManager().loadGameInstanceConfig(gameInstanceName)) {
 
-                    console.sendMessage("§2SUKCES! §aPoprawnie zinicjonowano instancję gry §f" + gameInstanceName + "§a!");
+                    if(this.getConfig().getBoolean("settings.logArenaLoad")) {
+                        console.sendMessage("§2SUKCES! §aPoprawnie zinicjonowano instancję gry §f" + gameInstanceName + "§a!");
+                    }
                 }
                 else {
-
-                    console.sendMessage("§4BŁĄD! §cInicjacja instancji gry §f" + gameInstanceName + "§c nie powiodła się!");
+                    if(this.getConfig().getBoolean("settings.logArenaLoad")) {
+                        console.sendMessage("§4BŁĄD! §cInicjacja instancji gry §f" + gameInstanceName + "§c nie powiodła się!");
+                    }
                 }
             }
 

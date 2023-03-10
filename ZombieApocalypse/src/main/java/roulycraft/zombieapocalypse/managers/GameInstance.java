@@ -2,6 +2,7 @@ package roulycraft.zombieapocalypse.managers;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.*;
 
@@ -16,7 +17,6 @@ public class GameInstance {
     private List<Location> zombieSpawnLocs = new ArrayList<>();
     public GameState gameState = GameState.LOBBY;
     private Integer wave;
-    private Integer timeLeft;
     private Integer zombieKills;
     private Integer gameDifficulty;
     private Double zombieHPMultiplier;
@@ -77,9 +77,6 @@ public class GameInstance {
         return this.wave;
     }
 
-    public Integer getTimeLeft() {
-        return this.timeLeft;
-    }
 
     public Integer getZombieKills() {
         return this.zombieKills;
@@ -142,12 +139,6 @@ public class GameInstance {
         }
     }
 
-    public void setTimeLeft(Integer i) {
-        if (this.gameState == GameState.ACTIVE) {
-            this.timeLeft = i;
-        }
-    }
-
     public void setZombieKills(Integer i) {
         if (this.gameState == GameState.ACTIVE) {
             this.zombieKills = i;
@@ -191,28 +182,21 @@ public class GameInstance {
     }
 
     // A. SETTERS
-    public void setGameState(GameState gameState) {
+    public boolean setGameState(GameState gameState) {
 
-        if (this.gameState == GameState.LOBBY && gameState != GameState.COUNTDOWN) return;
-        if (this.gameState == GameState.COUNTDOWN && gameState != GameState.STARTING) return;
-        if (this.gameState == GameState.STARTING && gameState != GameState.ACTIVE) return;
-        if (this.gameState == GameState.ACTIVE && gameState != GameState.FINISHED) return;
-        if (this.gameState == GameState.FINISHED && gameState != GameState.RESTARTING) return;
-        if (this.gameState == GameState.RESTARTING && gameState != GameState.LOBBY) return;
-        if (this.gameState == gameState) return;
+        if (this.gameState == GameState.LOBBY && gameState != GameState.COUNTDOWN) return false;
+        if (this.gameState == GameState.COUNTDOWN && gameState != GameState.STARTING) return false;
+        if (this.gameState == GameState.STARTING && gameState != GameState.ACTIVE) return false;
+        if (this.gameState == GameState.ACTIVE && gameState != GameState.FINISHED) return false;
+        if (this.gameState == GameState.FINISHED && gameState != GameState.RESTARTING) return false;
+        if (this.gameState == GameState.RESTARTING && gameState != GameState.LOBBY) return false;
+        if (this.gameState == gameState) return false;
+
+        if(JavaPlugin.getProvidingPlugin(this.getClass()).getConfig().getBoolean("settings.logGameStateChange")) {
+            Bukkit.getConsoleSender().sendMessage("§6INFO! §eStatus instancja areny §f"+this.getName()+" §ezostał zmieniony na: §f"+gameState+"§e!");
+        }
 
         this.gameState = gameState;
-
-        switch (gameState) {
-            case LOBBY:
-                Bukkit.broadcastMessage("Lobby");
-                break;
-            case STARTING:
-                Bukkit.broadcastMessage("Odliczańsko");
-                break;
-            case ACTIVE:
-                Bukkit.broadcastMessage("Aktywna");
-                break;
-        }
+        return true;
     }
 }

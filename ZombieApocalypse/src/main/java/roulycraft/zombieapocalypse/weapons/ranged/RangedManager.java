@@ -15,6 +15,7 @@ import roulycraft.zombieapocalypse.utility.ConfigColourParser;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Objects;
 
@@ -47,34 +48,108 @@ public class RangedManager {
 
     public ItemStack getGun(Integer id, Integer level) {
 
-        for (ItemStack item : this.rangedInstanceItemList) {
+        int left = 0;
+        int right = rangedInstanceItemList.size() - 1;
+        List<ItemStack> foundList = new ArrayList<>();
 
-            if (Objects.equals(item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "id"), PersistentDataType.INTEGER), id) && Objects.equals(item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER), level)) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int foundId = rangedInstanceItemList.get(mid).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "id"), PersistentDataType.INTEGER);
 
-                return item;
+            if (foundId == id) {
 
+                int foundLevel = rangedInstanceItemList.get(mid).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
+                int offset = (mid - foundLevel);
+
+                for(int i = 0; i < 4; i++) {
+                    foundList.add(rangedInstanceItemList.get(offset));
+                    offset++;
+                }
+                break;
             }
 
+            if(foundId < id) {
+                left = mid + 1;
+            }
+
+            else {
+                right = mid - 1;
+            }
         }
 
-        return null;
+        left = 0;
+        right = foundList.size() - 1;
 
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            int foundLevel = foundList.get(mid).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
+
+            if(foundLevel == level) {
+                return foundList.get(mid);
+            }
+
+            if(foundLevel < level) {
+                left = mid + 1;
+            }
+
+            else {
+                right = mid - 1;
+            }
+        }
+        return null;
     }
 
     public RangedInstance getInstance(Integer id, Integer level) {
 
-        for (RangedInstance rangedInstance : this.rangedInstanceList) {
+        int left = 0;
+        int right = rangedInstanceList.size() - 1;
+        List<RangedInstance> foundList = new ArrayList<>();
 
-            if (rangedInstance.getId().equals(id) && rangedInstance.getLevel().equals(level)) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int foundId = rangedInstanceList.get(mid).getId();
 
-                return rangedInstance;
+            if (foundId == id) {
 
+                int foundLevel = rangedInstanceList.get(mid).getLevel();
+                int offset = (mid - foundLevel);
+
+                for(int i = 0; i < 4; i++) {
+                    foundList.add(rangedInstanceList.get(offset));
+                    offset++;
+                }
+                break;
             }
 
+            if(foundId < id) {
+                left = mid + 1;
+            }
+
+            else {
+                right = mid - 1;
+            }
         }
 
-        return null;
+        left = 0;
+        right = foundList.size() - 1;
 
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            int foundLevel = foundList.get(mid).getLevel();
+
+            if(foundLevel == level) {
+                return foundList.get(mid);
+            }
+
+            if(foundLevel < level) {
+                left = mid + 1;
+            }
+
+            else {
+                right = mid - 1;
+            }
+        }
+        return null;
     }
     public void createRangedInstance(
             Integer id,
@@ -179,6 +254,7 @@ public class RangedManager {
         saveRangedInstanceConfig(id);
 
         this.rangedInstanceList.add(rangedInstance);
+        rangedInstanceList.sort(Comparator.comparing(RangedInstance::getId).thenComparing(RangedInstance::getLevel));
     }
 
     public RangedInstance getRangedInstance(Integer id, Integer level) {
@@ -286,6 +362,7 @@ public class RangedManager {
                 );
 
                 rangedInstanceList.add(rangedInstance);
+                rangedInstanceList.sort(Comparator.comparing(RangedInstance::getId).thenComparing(RangedInstance::getLevel));
 
                 continue;
 

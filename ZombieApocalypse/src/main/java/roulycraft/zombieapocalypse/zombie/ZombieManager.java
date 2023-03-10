@@ -22,6 +22,7 @@ import roulycraft.zombieapocalypse.ZombieApocalypse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import static org.bukkit.Material.*;
@@ -685,6 +686,7 @@ public class ZombieManager {
 
         zombieInstance = new ZombieInstance(name, displayName, health, damage, speed, special, helmet, chestplate, leggings, boots, xpReward);
         this.zombieInstanceList.add(zombieInstance);
+        this.zombieInstanceList.sort(Comparator.comparing(ZombieInstance::getName));
 
         reloadZombieInstanceConfig();
         getZombieInstanceConfig().set(("zombies." + name + ".displayName"), displayName);
@@ -701,9 +703,23 @@ public class ZombieManager {
     }
 
     public ZombieInstance getZombieInstance(String name){
-        for (ZombieInstance zombieInstance : this.zombieInstanceList) {
-            if (zombieInstance.getName().equals(name)) {
-                return zombieInstance;
+        int left = 0;
+        int right = zombieInstanceList.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            int res = name.compareTo(zombieInstanceList.get(mid).getName());
+
+            if(res == 0) {
+                return zombieInstanceList.get(mid);
+            }
+
+            if(res > 0) {
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
             }
         }
 
@@ -782,7 +798,7 @@ public class ZombieManager {
 
     }
 
-    public void spawnZombie(Location loc, String name, Boolean countTowardsKills) {
+    public static void spawnZombie(Location loc, String name, Boolean countTowardsKills) {
 
         Entity zombie = loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
 
