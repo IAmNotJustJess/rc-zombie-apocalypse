@@ -1,9 +1,6 @@
 package roulycraft.zombieapocalypse.zombie;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -709,13 +706,13 @@ public class ZombieManager {
         while (left <= right) {
             int mid = left + (right - left) / 2;
 
-            int res = name.compareTo(zombieInstanceList.get(mid).getName());
+            int result = name.compareTo(zombieInstanceList.get(mid).getName());
 
-            if(res == 0) {
+            if(result == 0) {
                 return zombieInstanceList.get(mid);
             }
 
-            if(res > 0) {
+            if(result > 0) {
                 left = mid + 1;
             }
             else {
@@ -811,8 +808,8 @@ public class ZombieManager {
         zombie.setMetadata("damage", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getDamage()));
         zombie.setMetadata("xpReward", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getXPReward()));
 
-        NamespacedKey key = new NamespacedKey(plugin, "zabossbar" + zombie.getEntityId());
-        zombie.setMetadata("bossbarKey", new FixedMetadataValue(plugin, ("zabossbar" + zombie.getEntityId())));
+        NamespacedKey key = new NamespacedKey(plugin, ("zabossbar." + zombie.getEntityId()));
+        zombie.setMetadata("bossbarKey", new FixedMetadataValue(plugin, ("zabossbar." + zombie.getEntityId())));
 
         Bukkit.getServer().createBossBar(key, "", BarColor.GREEN, BarStyle.SOLID);
         Bukkit.getServer().getBossBar(key).setProgress(1.0);
@@ -829,6 +826,9 @@ public class ZombieManager {
         ((Zombie) zombie).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(ZombieManager.getManager().getZombieInstance(name).getSpeed()/10);
 
         ((Zombie) zombie).setAdult();
+
+        ((Zombie) zombie).getEquipment().setItemInMainHand(new ItemStack(Material.AIR, 0));
+        ((Zombie) zombie).getEquipment().setItemInOffHand(new ItemStack(Material.AIR, 0));
 
         ((Zombie) zombie).getEquipment().setHelmet(ZombieManager.getManager().getZombieInstance(name).getHelmet());
         ((Zombie) zombie).getEquipment().setChestplate(ZombieManager.getManager().getZombieInstance(name).getChestplate());

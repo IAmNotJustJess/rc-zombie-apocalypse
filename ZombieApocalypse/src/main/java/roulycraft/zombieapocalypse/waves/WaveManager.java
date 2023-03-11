@@ -5,11 +5,13 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
+import roulycraft.zombieapocalypse.weapons.ranged.RangedInstance;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 public class WaveManager {
@@ -38,11 +40,27 @@ public class WaveManager {
     }
     public WaveInstance getWaveInstance(Integer waveNumber) {
 
-        for (WaveInstance instance: this.waveInstanceList) {
-            if (instance.getWaveNumber() == waveNumber) {
-                return instance;
+        int left = 0;
+        int right = waveInstanceList.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int foundWaveNo = waveInstanceList.get(mid).getWaveNumber();
+
+            if (foundWaveNo == waveNumber) {
+
+                return waveInstanceList.get(mid);
+            }
+
+            if(foundWaveNo < waveNumber) {
+                left = mid + 1;
+            }
+
+            else {
+                right = mid - 1;
             }
         }
+
         return null;
 
     }
@@ -52,6 +70,7 @@ public class WaveManager {
         }
 
         waveInstanceList.add(new WaveInstance(waveNumber));
+        waveInstanceList.sort(Comparator.comparing(WaveInstance::getWaveNumber));
     }
 
     public void reloadWaveInstanceConfig(Integer id) {
