@@ -95,6 +95,8 @@ public class GameManager {
                 if(currentDelay > 0) {
 
                     startArenaCountdown(gameInstance);
+                    sendGameMessage(MessageType.COUNTDOWN, null, gameInstance, new String[]{""}
+                    );
 
                 }
 
@@ -213,7 +215,7 @@ public class GameManager {
 
                     String[] message = {splitTitles[finalI], splitSubtitles[finalI], splitMessages[finalI]};
 
-                    sendGameMessage("start", null, gameInstance, message);
+                    sendGameMessage(MessageType.START, null, gameInstance, message);
 
                 }
             }.runTaskLaterAsynchronously(plugin, (100L * i));
@@ -254,7 +256,7 @@ public class GameManager {
 
         String[] msg = {""};
         gameInstance.setWave(wave);
-        sendGameMessage("nextWave", null, gameInstance, msg);
+        sendGameMessage(MessageType.WAVE_NEXT, null, gameInstance, msg);
         arenaCountdownList.put(gameInstance.getName(), plugin.getConfig().getInt("settings.gameOverAfter"));
         startWaveCountdown(gameInstance);
 
@@ -325,7 +327,7 @@ public class GameManager {
         p.teleport(gameInstance.getRandomPlayerSpawnLoc());
 
         gameInstance.getPlayers().add(p.getUniqueId());
-        sendGameMessage("joinLobby", p, gameInstance, new String[]{""});
+        sendGameMessage(MessageType.PLAYER_JOIN, p, gameInstance, new String[]{""});
 
         if(gameInstance.getPlayers().size() >= plugin.getConfig().getInt("settings.startCountdownAtPlayers") &&
             !arenaCountdownList.containsKey(gameInstance)) {
@@ -369,10 +371,10 @@ public class GameManager {
 
         p.setFireTicks(0);
     }
-    private void sendGameMessage(String type, Player player, GameInstance gameInstance, String[] message) {
+    private void sendGameMessage(MessageType type, Player player, GameInstance gameInstance, String[] message) {
 
         switch (type) {
-            case "joinLobby": {
+            case PLAYER_JOIN: {
 
                 message[0] = "";
 
@@ -388,7 +390,7 @@ public class GameManager {
                 break;
 
             }
-            case "leaveLobby": {
+            case PLAYER_LEAVE: {
 
                 message[0] = "";
 
@@ -404,7 +406,7 @@ public class GameManager {
                 break;
 
             }
-            case "countdown": {
+            case COUNTDOWN: {
 
                 int countdown = arenaCountdownList.get(gameInstance);
                 String time = PolishNumberConverter.convert(countdown, "sekunda", "sekundy", "sekund");
@@ -422,7 +424,7 @@ public class GameManager {
 
             }
 
-            case "start": {
+            case START: {
 
                 for(UUID uuid : gameInstance.getPlayers()) {
                     for(String split : message[2].split("%br%")) {
@@ -434,7 +436,7 @@ public class GameManager {
 
             }
 
-            case "waveBeaten": {
+            case WAVE_BEATEN: {
 
                 message[0] = plugin.getConfig().getString("messages.arena.waveBeaten");
                 for(UUID uuid : gameInstance.getPlayers()) {
@@ -444,7 +446,7 @@ public class GameManager {
 
             }
 
-            case "nextWave": {
+            case WAVE_NEXT: {
 
                 message[0] = plugin.getConfig().getString("messages.arena.nextWave");
                 message[0].replace("%wave%", Integer.toString(gameInstance.getWave()));
@@ -464,14 +466,14 @@ public class GameManager {
 
             }
 
-            case "onePlayer":
+            case ONE_PLAYER:
 
                 for(String msg : message) {
                     player.sendMessage(msg);
                 }
                 break;
 
-            default:
+            case EVERYONE:
 
                 for(String msg : message) {
                     for (UUID uuid : gameInstance.getPlayers()) {

@@ -5,7 +5,6 @@ import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
-import roulycraft.zombieapocalypse.weapons.ranged.RangedInstance;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
 
 import java.io.File;

@@ -77,7 +77,6 @@ public class GameInstance {
         return this.wave;
     }
 
-
     public Integer getZombieKills() {
         return this.zombieKills;
     }

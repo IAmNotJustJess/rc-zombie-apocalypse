@@ -21,13 +21,14 @@ import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
-import roulycraft.zombieapocalypse.utility.ConfigColourParser;
 import roulycraft.zombieapocalypse.utility.SoundSplitter;
 
 import java.util.*;
 
 public class RangedWeaponInterpreter implements Listener {
     private static ZombieApocalypse plugin;
+    private static String[] primaryColours = {"", "", "", ""};
+    private static String[] secondaryColours = {"", "", "", ""};
     private Map<Player, Integer> delayBetweenShotsList = new WeakHashMap<>();
     private Map<Player, Double> delayBeforeSpreadNullification = new WeakHashMap<>();
     private Map<Player, Integer> delayBeforeSpreadDecay = new WeakHashMap<>();
@@ -89,9 +90,6 @@ public class RangedWeaponInterpreter implements Listener {
 
         Integer level = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
 
-        String primaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".primary"));
-        String secondaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".secondary"));
-
         String[] displayName = itemMeta.getDisplayName().split("\\|");
 
         switch(reloadType) {
@@ -151,7 +149,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                                     itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecialTracker"), PersistentDataType.INTEGER, 0);
 
-                                    itemMeta.setDisplayName(displayName[0]+secondaryColour+"| "+primaryColour+currentAmmo[0]);
+                                    itemMeta.setDisplayName(displayName[0]+secondaryColours[level]+"| "+primaryColours[level]+currentAmmo[0]);
 
                                     item.setItemMeta(itemMeta);
 
@@ -228,7 +226,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                         itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecialTracker"), PersistentDataType.INTEGER, 0);
 
-                        itemMeta.setDisplayName(displayName[0]+secondaryColour+"| "+primaryColour+clipSize);
+                        itemMeta.setDisplayName(displayName[0]+secondaryColours[level]+"| "+primaryColours[level]+clipSize);
 
                         item.setItemMeta(itemMeta);
 
@@ -762,12 +760,9 @@ public class RangedWeaponInterpreter implements Listener {
 
                         Integer level = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
 
-                        String primaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".primary"));
-                        String secondaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+level+".secondary"));
-
                         String[] displayName = itemMeta.getDisplayName().split("\\|");
 
-                        itemMeta.setDisplayName(displayName[0]+secondaryColour+"| "+primaryColour+ currentAmmo[0]);
+                        itemMeta.setDisplayName(displayName[0]+secondaryColours[level]+"| "+primaryColours[level]+currentAmmo[0]);
 
                         String actionType = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING);
                         Integer actionSpecial = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionSpecial"), PersistentDataType.INTEGER);
@@ -911,5 +906,32 @@ public class RangedWeaponInterpreter implements Listener {
 
     public static void injectPlugin(ZombieApocalypse plugin) {
         RangedWeaponInterpreter.plugin = plugin;
+
+        primaryColours[0] = plugin.getConfig().getString("messages.plugin.guns.level0.primary");
+        primaryColours[1] = plugin.getConfig().getString("messages.plugin.guns.level1.primary");
+        primaryColours[2] = plugin.getConfig().getString("messages.plugin.guns.level2.primary");
+        primaryColours[3] = plugin.getConfig().getString("messages.plugin.guns.level3.primary");
+        secondaryColours[0] = plugin.getConfig().getString("messages.plugin.guns.level0.secondary");
+        secondaryColours[1] = plugin.getConfig().getString("messages.plugin.guns.level1.secondary");
+        secondaryColours[2] = plugin.getConfig().getString("messages.plugin.guns.level2.secondary");
+        secondaryColours[3] = plugin.getConfig().getString("messages.plugin.guns.level3.secondary");
+
+        for(int i = 0; i < 4; i++) {
+            String[] ranged = (primaryColours[i]).split("");
+            String helper = "§x";
+            for(int j = 2; j < 8; j++) {
+                helper += "§"+ranged[j];
+            }
+            primaryColours[i] = helper;
+        }
+
+        for(int i = 0; i < 4; i++) {
+            String[] ranged = (secondaryColours[i]).split("");
+            String helper = "§x";
+            for(int j = 2; j < 8; j++) {
+                helper += "§"+ranged[j];
+            }
+            secondaryColours[i] = helper;
+        }
     }
 }

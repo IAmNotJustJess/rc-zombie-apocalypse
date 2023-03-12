@@ -3,30 +3,39 @@ package roulycraft.zombieapocalypse.weapons.ranged;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
-import roulycraft.zombieapocalypse.utility.ConfigColourParser;
 
 public class RangedDefaultSettings {
 
     public static ZombieApocalypse plugin;
+    public static String[] rangedLvl = {"", "", "", ""};
 
     public static void injectPlugin(ZombieApocalypse p) {
 
         plugin = p;
 
+        rangedLvl[0] = plugin.getConfig().getString("messages.plugin.guns.level0.primary");
+        rangedLvl[1] = plugin.getConfig().getString("messages.plugin.guns.level1.primary");
+        rangedLvl[2] = plugin.getConfig().getString("messages.plugin.guns.level2.primary");
+        rangedLvl[3] = plugin.getConfig().getString("messages.plugin.guns.level3.primary");
+
+        for(int i = 0; i < 4; i++) {
+            String[] ranged = (rangedLvl[i]).split("");
+            String helper = "§x";
+            for(int j = 2; j < 8; j++) {
+                helper += "§"+ranged[j];
+            }
+            rangedLvl[i] = helper;
+        }
+
     }
 
     public static void loadDefaultSettings() {
-
-        String rangedLvl0 = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level0.primary"));
-        String rangedLvl1 = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level1.primary"));
-        String rangedLvl2 = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level2.primary"));
-        String rangedLvl3 = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level3.primary"));
 
         {
             RangedManager.getManager().createRangedInstance(
 
                 1,
-                (rangedLvl0 + "Pistolet"),
+                rangedLvl[0]+"Pistolet",
                 0,
                 new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                 4,
@@ -59,7 +68,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                 1,
-                (rangedLvl1 + "Pistolet"),
+                rangedLvl[1]+"Pistolet",
                 1,
                 new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                 5,
@@ -92,7 +101,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                 1,
-                (rangedLvl2 + "Pistolet"),
+                rangedLvl[2]+"Pistolet",
                 2,
                 new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                 5,
@@ -125,7 +134,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                 1,
-                (rangedLvl3 + "Pistolet"),
+                rangedLvl[3]+"Pistolet",
                 3,
                 new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                 6,
@@ -161,7 +170,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     2,
-                    (rangedLvl0 + "Pistolet Mało Maszynowy"),
+                    rangedLvl[0]+"Pistolet Mało Maszynowy",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     1,
@@ -194,7 +203,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     2,
-                    (rangedLvl1 + "Pistolet Mało Maszynowy"),
+                    rangedLvl[1]+"Pistolet Mało Maszynowy",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -227,7 +236,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     2,
-                    (rangedLvl2 + "Pistolet Mało Maszynowy"),
+                    rangedLvl[2]+"Pistolet Mało Maszynowy",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -260,7 +269,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     2,
-                    (rangedLvl3 + "Pistolet Mało Maszynowy"),
+                    rangedLvl[3]+"Pistolet Mało Maszynowy",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -295,7 +304,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     3,
-                    (rangedLvl0 + "Seryjny Pistolet"),
+                    rangedLvl[0]+"Seryjny Pistolet",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -328,7 +337,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     3,
-                    (rangedLvl1 + "Seryjny Pistolet"),
+                    rangedLvl[1]+"Seryjny Pistolet",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     3,
@@ -361,7 +370,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     3,
-                    (rangedLvl2 + "Seryjny Pistolet"),
+                    rangedLvl[2]+"Seryjny Pistolet",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     3,
@@ -394,7 +403,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     3,
-                    (rangedLvl3 + "Seryjny Pistolet"),
+                    rangedLvl[3]+"Seryjny Pistolet",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     3,
@@ -430,7 +439,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     4,
-                    (rangedLvl0 + "Trój-strzałowy Pistolet"),
+                    rangedLvl[0]+"Trój-strzałowy Pistolet",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -463,7 +472,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     4,
-                    (rangedLvl1 + "Trój-strzałowy Pistolet"),
+                    rangedLvl[1]+"Trój-strzałowy Pistolet",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     3,
@@ -496,7 +505,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     4,
-                    (rangedLvl2 + "Trój-strzałowy Pistolet"),
+                    rangedLvl[2]+"Trój-strzałowy Pistolet",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     3,
@@ -530,7 +539,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     4,
-                    (rangedLvl3 + "Trój-strzałowy Pistolet"),
+                    rangedLvl[3]+"Trój-strzałowy Pistolet",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     3,
@@ -566,7 +575,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     5,
-                    (rangedLvl0 + "Dubeltówka"),
+                    rangedLvl[0]+"Dubeltówka",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     1,
@@ -599,7 +608,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     5,
-                    (rangedLvl1 + "Dubeltówka"),
+                    rangedLvl[1]+"Dubeltówka",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     1,
@@ -632,7 +641,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     5,
-                    (rangedLvl2 + "Dubeltówka"),
+                    rangedLvl[2]+"Dubeltówka",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -665,7 +674,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     5,
-                    (rangedLvl3 + "Dubeltówka"),
+                    rangedLvl[3]+"Dubeltówka",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -701,7 +710,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     6,
-                    (rangedLvl0 + "Rewolwer"),
+                    rangedLvl[0]+"Rewolwer",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     12,
@@ -734,7 +743,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     6,
-                    (rangedLvl1 + "Rewolwer"),
+                    rangedLvl[1]+"Rewolwer",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     12,
@@ -767,7 +776,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     6,
-                    (rangedLvl2 + "Rewolwer"),
+                    rangedLvl[2]+"Rewolwer",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     12,
@@ -800,7 +809,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     6,
-                    (rangedLvl3 + "Rewolwer"),
+                    rangedLvl[3]+"Rewolwer",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     16,
@@ -836,7 +845,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     7,
-                    (rangedLvl0 + "Karabin Wyborowy"),
+                    rangedLvl[0]+"Karabin Wyborowy",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     12,
@@ -869,7 +878,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     7,
-                    (rangedLvl1 + "Karabin Wyborowy"),
+                    rangedLvl[1]+"Karabin Wyborowy",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     12,
@@ -902,7 +911,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     7,
-                    (rangedLvl2 + "Karabin Wyborowy"),
+                    rangedLvl[2]+"Karabin Wyborowy",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     13,
@@ -935,7 +944,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     7,
-                    (rangedLvl3 + "Karabin Wyborowy"),
+                    rangedLvl[3]+"Karabin Wyborowy",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     14,
@@ -971,7 +980,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     8,
-                    (rangedLvl0 + "Karabin Szturmowy"),
+                    rangedLvl[0]+"Karabin Szturmowy",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     8,
@@ -1004,7 +1013,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     8,
-                    (rangedLvl1 + "Karabin Szturmowy"),
+                    rangedLvl[1]+"Karabin Szturmowy",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     9,
@@ -1037,7 +1046,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     8,
-                    (rangedLvl2 + "Karabin Szturmowy"),
+                    rangedLvl[2]+"Karabin Szturmowy",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     10,
@@ -1070,7 +1079,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     8,
-                    (rangedLvl3 + "Karabin Szturmowy"),
+                    rangedLvl[3]+"Karabin Szturmowy",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     10,
@@ -1105,7 +1114,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     9,
-                    (rangedLvl0 + "Strzelba"),
+                    rangedLvl[0]+"Strzelba",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -1138,7 +1147,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     9,
-                    (rangedLvl1 + "Strzelba"),
+                    rangedLvl[1]+"Strzelba",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -1171,7 +1180,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     9,
-                    (rangedLvl2 + "Strzelba"),
+                    rangedLvl[2]+"Strzelba",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -1204,7 +1213,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     9,
-                    (rangedLvl3 + "Strzelba"),
+                    rangedLvl[3]+"Strzelba",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -1239,7 +1248,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     10,
-                    (rangedLvl0 + "Karabin Myśliwski"),
+                    rangedLvl[0]+"Karabin Myśliwski",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     25,
@@ -1272,7 +1281,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     10,
-                    (rangedLvl1 + "Karabin Myśliwski"),
+                    rangedLvl[1]+"Karabin Myśliwski",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     25,
@@ -1305,7 +1314,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     10,
-                    (rangedLvl2 + "Karabin Myśliwski"),
+                    rangedLvl[2]+"Karabin Myśliwski",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     30,
@@ -1338,7 +1347,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     10,
-                    (rangedLvl3 + "Karabin Myśliwski"),
+                    rangedLvl[3]+"Karabin Myśliwski",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     35,
@@ -1373,7 +1382,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     11,
-                    (rangedLvl0 + "Kuszabin"),
+                    rangedLvl[0]+"Kuszabin",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     12,
@@ -1406,7 +1415,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     11,
-                    (rangedLvl1 + "Kuszabin"),
+                    rangedLvl[1]+"Kuszabin",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     12,
@@ -1439,7 +1448,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     11,
-                    (rangedLvl2 + "Kuszabin"),
+                    rangedLvl[2]+"Kuszabin",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     14,
@@ -1472,7 +1481,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     11,
-                    (rangedLvl3 + "Kuszabin"),
+                    rangedLvl[3]+"Kuszabin",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     16,
@@ -1508,7 +1517,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     12,
-                    (rangedLvl0 + "Garłacz"),
+                    rangedLvl[0]+"Garłacz",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     4,
@@ -1540,7 +1549,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     12,
-                    (rangedLvl1 + "Garłacz"),
+                    rangedLvl[1]+"Garłacz",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     4,
@@ -1572,7 +1581,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     12,
-                    (rangedLvl2 + "Garłacz"),
+                    rangedLvl[2]+"Garłacz",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     4,
@@ -1604,7 +1613,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     12,
-                    (rangedLvl3 + "Garłacz"),
+                    rangedLvl[3]+"Garłacz",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     4,
@@ -1640,7 +1649,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     13,
-                    (rangedLvl0 + "Karabin Snajperski"),
+                    rangedLvl[0]+"Karabin Snajperski",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     35,
@@ -1673,7 +1682,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     13,
-                    (rangedLvl1 + "Karabin Snajperski"),
+                    rangedLvl[1]+"Karabin Snajperski",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     40,
@@ -1706,7 +1715,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     13,
-                    (rangedLvl2 + "Karabin Snajperski"),
+                    rangedLvl[2]+"Karabin Snajperski",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     40,
@@ -1739,7 +1748,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     13,
-                    (rangedLvl3 + "Karabin Snajperski"),
+                    rangedLvl[3]+"Karabin Snajperski",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     45,
@@ -1774,7 +1783,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     14,
-                    (rangedLvl0 + "Dwutaktowa Strzelba"),
+                    rangedLvl[0]+"Dwutaktowa Strzelba",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     5,
@@ -1806,7 +1815,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     14,
-                    (rangedLvl1 + "Dwutaktowa Strzelba"),
+                    rangedLvl[1]+"Dwutaktowa Strzelba",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     5,
@@ -1839,7 +1848,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     14,
-                    (rangedLvl2 + "Dwutaktowa Strzelba"),
+                    rangedLvl[2]+"Dwutaktowa Strzelba",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     6,
@@ -1872,7 +1881,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     14,
-                    (rangedLvl3 + "Dwutaktowa Strzelba"),
+                    rangedLvl[3]+"Dwutaktowa Strzelba",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     6,
@@ -1909,7 +1918,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     15,
-                    (rangedLvl0 + "Szybkostrzelny Pistolet Maszynowy"),
+                    rangedLvl[0]+"Szybkostrzelny Pistolet Maszynowy",
                     0,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     1,
@@ -1942,7 +1951,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     15,
-                    (rangedLvl1 + "Szybkostrzelny Pistolet Maszynowy"),
+                    rangedLvl[1]+"Szybkostrzelny Pistolet Maszynowy",
                     1,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     1,
@@ -1975,7 +1984,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     15,
-                    (rangedLvl2 + "Szybkostrzelny Pistolet Maszynowy"),
+                    rangedLvl[2]+"Szybkostrzelny Pistolet Maszynowy",
                     2,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,
@@ -2008,7 +2017,7 @@ public class RangedDefaultSettings {
             RangedManager.getManager().createRangedInstance(
 
                     15,
-                    (rangedLvl3 + "Szybkostrzelny Pistolet Maszynowy"),
+                    rangedLvl[3]+"Szybkostrzelny Pistolet Maszynowy",
                     3,
                     new ItemStack(Material.IRON_HORSE_ARMOR, 1),
                     2,

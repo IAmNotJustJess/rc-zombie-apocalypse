@@ -1,6 +1,5 @@
 plugin:
   version: 0 #DO NOT CHANGE THIS - IT MAY BREAK AUTOMATIC UPDATES
-  colour: 7edd7e
 
 settings:
 
@@ -21,28 +20,25 @@ settings:
   newWaveZombieKills: 45
   gameOverAfter: 180
 
-commands:
-  colours:
-    command: 5ca4e0
-    symbol: 555555
-    headline: aaaaaa
-
-guns:
-  colours:
-    level0:
-      primary: aaaaaa
-      secondary: 555555
-    level1:
-      primary: 55ffff
-      secondary: 2a7f7f
-    level2:
-      primary: ff55ff
-      secondary: 7f2a7f
-    level3:
-      primary: ffaa00
-      secondary: 7f5500
-
 messages:
+  plugin:
+    name: "<gradient:#7edd7e:#95e595><bold>Zombie Apocalypse</bold></gradient>"
+    command: "<#5ca4e0>"
+    symbol: "<#555555>"
+    headline: "<#aaaaaa>"
+    guns:
+      level0:
+        primary: "<#aaaaaa>"
+        secondary: "<#555555>"
+      level1:
+        primary: "<#55ffff>"
+        secondary: "<#2a7f7f>"
+      level2:
+        primary: "<#ff55ff>"
+        secondary: "<#7f2a7f>"
+      level3:
+        primary: "<#ffaa00>"
+        secondary: "<#7f5500>"
   formats:
     arenaPlayersFormat: "[%min%/%max%]" # %min% - Players currently in the arena, %max% - Maximum players per arena
     bossbarFormat: "Fala %wave% | Zabite zombie: %zombie1%/%zombie2% | Przegrana za: %time%" # %wave % - Wave, %zombie1% - Killed zombies in a wave, %zombie2% - Required zombie count until the next wave, %time% - Remaining time
