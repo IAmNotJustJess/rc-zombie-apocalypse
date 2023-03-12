@@ -7,6 +7,7 @@ import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.event.entity.EntityCombustEvent;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
@@ -42,7 +43,7 @@ public class ZombieListener implements Listener {
 
     private void deathParticles(BlockData blockData, Location loc) {
         loc.getWorld().spawnParticle(Particle.FALLING_DUST, loc, 50, 0.5, 1, 0.5, 0.3, blockData);
-        loc.getWorld().spawnParticle(Particle.BLOCK_DUST, loc, 20, 0.5, 1, 0.5, 0.3, new ItemStack(Material.REDSTONE_BLOCK, 1).getType().createBlockData());
+        loc.getWorld().spawnParticle(Particle.BLOCK_DUST, loc, 50, 0.5, 1, 0.5, 0.3, new ItemStack(Material.REDSTONE_BLOCK, 1).getType().createBlockData());
         loc.getWorld().spawnParticle(Particle.CLOUD, loc, 20, 0.5, 1, 0.5, 0.1);
         loc.getWorld().spawnParticle(Particle.SMOKE_LARGE, loc, 10, 0.5, 1, 0.5, 0.2);
 
@@ -111,7 +112,24 @@ public class ZombieListener implements Listener {
     }
 
     @EventHandler
+    public void onZombieIgnite(EntityCombustEvent event) {
+
+        if(event.getEntity().getType() != EntityType.ZOMBIE){
+            return;
+        }
+
+        if(event.getEntity().getMetadata("ZA").get(0).asBoolean()) {
+            event.setCancelled(true);
+        }
+
+    }
+
+    @EventHandler
     public void onZombieDamage(EntityDamageByEntityEvent event) {
+
+        if(event.getEntity().getType() != EntityType.ZOMBIE){
+            return;
+        }
 
         Zombie entity = (Zombie) event.getEntity();
         LivingEntity lentity = (LivingEntity) event.getEntity();
@@ -196,8 +214,14 @@ public class ZombieListener implements Listener {
         }
 
         else {
+            BlockData data;
 
-            BlockData data = entity.getEquipment().getHelmet().getType().createBlockData();
+            if (!entity.getEquipment().getHelmet().getType().isAir()){
+                data = entity.getEquipment().getHelmet().getType().createBlockData();
+            }
+            else {
+                data = new ItemStack(Material.GREEN_WOOL, 1).getType().createBlockData();
+            }
             deathParticles(data, entity.getLocation().add(0, 1, 0));
 
             deleteZombieBossBar(namespacedKey);
