@@ -5,6 +5,7 @@ import org.bukkit.entity.Player;
 public class PlayerInstance {
     private final Player player;
     private String inArena;
+    private Boolean isAlive;
     private String selectedRanged;
     private Integer maxHP;
     private Integer hp;
@@ -34,6 +35,9 @@ public class PlayerInstance {
     public String getInArena() {
         return inArena;
     }
+    public Boolean getAlive() {
+        return isAlive;
+    }
     public String getSelectedRanged() {
         return selectedRanged;
     }
@@ -61,6 +65,12 @@ public class PlayerInstance {
     public Double getSpreadModifier() {
         return spreadModifier;
     }
+    public void setInArena(String inArena) {
+        this.inArena = inArena;
+    }
+    public void setAlive(Boolean alive) {
+        isAlive = alive;
+    }
     public void setSelectedRanged(String selectedRanged) {
         this.selectedRanged = selectedRanged;
     }
@@ -87,9 +97,6 @@ public class PlayerInstance {
     }
     public void setSpreadModifier(Double spreadModifier) {
         this.spreadModifier = spreadModifier;
-    }
-    public void setInArena(String inArena) {
-        this.inArena = inArena;
     }
 }
 

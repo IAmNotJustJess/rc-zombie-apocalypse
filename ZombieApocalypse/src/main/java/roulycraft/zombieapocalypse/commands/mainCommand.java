@@ -336,7 +336,7 @@ public class MainCommand implements CommandExecutor {
                             }
 
                             Location loc = ((Player) sender).getLocation();
-                            ZombieManager.getManager().spawnZombie(loc, args[2], count);
+                            ZombieManager.getManager().spawnZombie(loc, args[2], count, "");
 
                             return true;
 

@@ -31,6 +31,7 @@ public class GameInstance {
     }
 
     // GETTERS
+
     public String getName() {
         return this.name;
     }

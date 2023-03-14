@@ -71,7 +71,6 @@ public class WaveManager {
         waveInstanceList.add(new WaveInstance(waveNumber));
         waveInstanceList.sort(Comparator.comparing(WaveInstance::getWaveNumber));
     }
-
     public void reloadWaveInstanceConfig(Integer id) {
 
         if (waveInstanceFile == null) {
@@ -82,7 +81,6 @@ public class WaveManager {
         waveInstanceConfig = YamlConfiguration.loadConfiguration(waveInstanceFile);
 
     }
-
     public FileConfiguration getWaveInstanceConfig(Integer id) {
 
         if (waveInstanceConfig == null) {

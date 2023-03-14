@@ -795,7 +795,7 @@ public class ZombieManager {
 
     }
 
-    public static void spawnZombie(Location loc, String name, Boolean countTowardsKills) {
+    public static Zombie spawnZombie(Location loc, String name, Boolean countTowardsKills, String instanceName) {
 
         Entity zombie = loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
 
@@ -807,6 +807,8 @@ public class ZombieManager {
         zombie.setMetadata("maxHealth", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
         zombie.setMetadata("damage", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getDamage()));
         zombie.setMetadata("xpReward", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getXPReward()));
+
+        zombie.setMetadata("instanceName", new FixedMetadataValue(plugin, instanceName));
 
         NamespacedKey key = new NamespacedKey(plugin, ("zabossbar." + zombie.getEntityId()));
         zombie.setMetadata("bossbarKey", new FixedMetadataValue(plugin, ("zabossbar." + zombie.getEntityId())));
@@ -841,6 +843,8 @@ public class ZombieManager {
         ((Zombie) zombie).getEquipment().setBootsDropChance(0f);
 
         ZombieListener.insertMap(NamespacedKey.fromString(zombie.getMetadata("bossbarKey").get(0).asString(), plugin));
+
+        return (Zombie) zombie;
     }
 }
 
