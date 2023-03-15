@@ -8,10 +8,10 @@ settings:
   logGameStateChanges: true
   minPlayersPerArena: 1
   maxPlayersPerArena: 32
-  startCountdownAtPlayers: 1
-  countdownTime: 5
-  countdownReductionPlayers: 2
-  countdownReduceTo: 5
+  startCountdownAtPlayers: 2
+  countdownTime: 60
+  countdownReductionPlayers: 8
+  countdownReduceTo: 10
   delayBeforeNextWave: 5
   newWaveZombieKills: 45
   gameOverAfter: 240
@@ -61,8 +61,8 @@ messages:
     nextWaveSubtitle10s: "Zombie stają się potężniejsze..."
     waveBeaten: "Fala %wave% zakończona! Kolejna fala za 5 sekund..." # %wave% - Wave beaten
     waveTimeout: "Czas się kończy! Pozostało %time% do przegranej!" # %time% - Time till losing
-    playerDeathTitle: "Umarłeś! Odrodzenie nastąpi po starcie kolejnej fali!"
-    playerDeathSubtitle: "Umarłeś! Odrodzenie nastąpi po starcie kolejnej fali!"
+    playerDeathTitle: "Umarłeś!"
+    playerDeathSubtitle: "Odrodzenie nastąpi po starcie kolejnej fali!"
     playerDeathMessage: "%player% został zabity! Zostało %alive% żywycych graczy!" # %player% - player, %alive% - alive players
     defeat: "Przegrana... Zombie was pokonały..."
     defeatTitle: "Przegrana.."
