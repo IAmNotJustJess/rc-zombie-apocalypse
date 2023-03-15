@@ -10,17 +10,18 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
-import roulycraft.zombieapocalypse.utility.ConfigColourParser;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
-import java.util.Objects;
 
 public class RangedManager {
     private static RangedManager rangedManager;
     private static ZombieApocalypse plugin;
+    private static String[] primaryColours = {"", "", "", ""};
+    private static String[] secondaryColours = {"", "", "", ""};
     private FileConfiguration rangedInstanceConfig = null;
     private File rangedInstanceFile = null;
     public final List<RangedInstance> rangedInstanceList = new ArrayList<>();
@@ -28,6 +29,33 @@ public class RangedManager {
 
     public static void injectPlugin(ZombieApocalypse p) {
         plugin = p;
+
+        primaryColours[0] = plugin.getConfig().getString("messages.plugin.guns.level0.primary");
+        primaryColours[1] = plugin.getConfig().getString("messages.plugin.guns.level1.primary");
+        primaryColours[2] = plugin.getConfig().getString("messages.plugin.guns.level2.primary");
+        primaryColours[3] = plugin.getConfig().getString("messages.plugin.guns.level3.primary");
+        secondaryColours[0] = plugin.getConfig().getString("messages.plugin.guns.level0.secondary");
+        secondaryColours[1] = plugin.getConfig().getString("messages.plugin.guns.level1.secondary");
+        secondaryColours[2] = plugin.getConfig().getString("messages.plugin.guns.level2.secondary");
+        secondaryColours[3] = plugin.getConfig().getString("messages.plugin.guns.level3.secondary");
+
+        for(int i = 0; i < 4; i++) {
+            String[] ranged = (primaryColours[i]).split("");
+            String helper = "§x";
+            for(int j = 2; j < 8; j++) {
+                helper += "§"+ranged[j];
+            }
+            primaryColours[i] = helper;
+        }
+
+        for(int i = 0; i < 4; i++) {
+            String[] ranged = (secondaryColours[i]).split("");
+            String helper = "§x";
+            for(int j = 2; j < 8; j++) {
+                helper += "§"+ranged[j];
+            }
+            secondaryColours[i] = helper;
+        }
     }
 
     private RangedManager() {
@@ -47,64 +75,138 @@ public class RangedManager {
 
     public ItemStack getGun(Integer id, Integer level) {
 
-        for (ItemStack item : this.rangedInstanceItemList) {
+        int left = 0;
+        int right = rangedInstanceItemList.size() - 1;
+        List<ItemStack> foundList = new ArrayList<>();
 
-            if (Objects.equals(item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "id"), PersistentDataType.INTEGER), id) && Objects.equals(item.getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER), level)) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int foundId = rangedInstanceItemList.get(mid).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "id"), PersistentDataType.INTEGER);
 
-                return item;
+            if (foundId == id) {
 
+                int foundLevel = rangedInstanceItemList.get(mid).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
+                int offset = (mid - foundLevel);
+
+                for(int i = 0; i < 4; i++) {
+                    foundList.add(rangedInstanceItemList.get(offset));
+                    offset++;
+                }
+                break;
             }
 
+            if(foundId < id) {
+                left = mid + 1;
+            }
+
+            else {
+                right = mid - 1;
+            }
         }
 
-        return null;
+        left = 0;
+        right = foundList.size() - 1;
 
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            int foundLevel = foundList.get(mid).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
+
+            if(foundLevel == level) {
+                return foundList.get(mid);
+            }
+
+            if(foundLevel < level) {
+                left = mid + 1;
+            }
+
+            else {
+                right = mid - 1;
+            }
+        }
+        return null;
     }
 
     public RangedInstance getInstance(Integer id, Integer level) {
 
-        for (RangedInstance rangedInstance : this.rangedInstanceList) {
+        int left = 0;
+        int right = rangedInstanceList.size() - 1;
+        List<RangedInstance> foundList = new ArrayList<>();
 
-            if (rangedInstance.getId().equals(id) && rangedInstance.getLevel().equals(level)) {
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+            int foundId = rangedInstanceList.get(mid).getId();
 
-                return rangedInstance;
+            if (foundId == id) {
 
+                int foundLevel = rangedInstanceList.get(mid).getLevel();
+                int offset = (mid - foundLevel);
+
+                for(int i = 0; i < 4; i++) {
+                    foundList.add(rangedInstanceList.get(offset));
+                    offset++;
+                }
+                break;
             }
 
+            if(foundId < id) {
+                left = mid + 1;
+            }
+
+            else {
+                right = mid - 1;
+            }
         }
 
-        return null;
+        left = 0;
+        right = foundList.size() - 1;
 
+        while(left <= right) {
+            int mid = left + (right - left) / 2;
+            int foundLevel = foundList.get(mid).getLevel();
+
+            if(foundLevel == level) {
+                return foundList.get(mid);
+            }
+
+            if(foundLevel < level) {
+                left = mid + 1;
+            }
+
+            else {
+                right = mid - 1;
+            }
+        }
+        return null;
     }
     public void createRangedInstance(
-            Integer id,
-            String name,
-            Integer level,
-            ItemStack item,
-            Integer minDmg,
-            Integer maxDmg,
-            Integer projectileType,
-            Double projectileSpeed,
-            Integer pellets,
-            Integer burstAmount,
-            Double burstDelay,
-            Double bulletSpread,
-            Double bulletAdditiveSpread,
-            Double spreadPercentage,
-            Integer zoomAmount,
-            Double zoomSpreadMultiplier,
-            Double delayBetweenShots,
-            Integer clipSize,
-            Double reloadSpeed,
-            String reloadType,
-            String actionType,
-            Double actionDelay,
-            Integer actionSpecial,
-            Integer shootingPatternType,
-            Double shootingPatternOffset,
-            String shootingSound,
-            String reloadingSound,
-            String actionSound
+        Integer id,
+        String name,
+        Integer level,
+        ItemStack item,
+        Integer minDmg,
+        Integer maxDmg,
+        Integer projectileType,
+        Double projectileSpeed,
+        Integer pellets,
+        Integer burstAmount,
+        Double burstDelay,
+        Double bulletSpread,
+        Double bulletAdditiveSpread,
+        Double spreadPercentage,
+        Integer zoomAmount,
+        Double zoomSpreadMultiplier,
+        Double delayBetweenShots,
+        Integer clipSize,
+        Double reloadSpeed,
+        String reloadType,
+        String actionType,
+        Double actionDelay,
+        Integer actionSpecial,
+        Integer shootingPatternType,
+        Double shootingPatternOffset,
+        String shootingSound,
+        String reloadingSound,
+        String actionSound
     ) {
 
         if (level < 0 || level >= 4) {
@@ -179,6 +281,7 @@ public class RangedManager {
         saveRangedInstanceConfig(id);
 
         this.rangedInstanceList.add(rangedInstance);
+        rangedInstanceList.sort(Comparator.comparing(RangedInstance::getId).thenComparing(RangedInstance::getLevel));
     }
 
     public RangedInstance getRangedInstance(Integer id, Integer level) {
@@ -286,6 +389,7 @@ public class RangedManager {
                 );
 
                 rangedInstanceList.add(rangedInstance);
+                rangedInstanceList.sort(Comparator.comparing(RangedInstance::getId).thenComparing(RangedInstance::getLevel));
 
                 continue;
 
@@ -335,10 +439,7 @@ public class RangedManager {
             item = new ItemStack(rangedInstance.getItem());
             ItemMeta im = item.getItemMeta();
 
-            String primaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+rangedInstance.getLevel()+".primary"));
-            String secondaryColour = ConfigColourParser.getColour(plugin.getConfig().getString("guns.colours.level"+rangedInstance.getLevel()+".secondary"));
-
-            im.setDisplayName(rangedInstance.getName()+" "+secondaryColour+"| "+primaryColour+rangedInstance.getClipSize());
+            im.setDisplayName(rangedInstance.getName()+" "+secondaryColours[rangedInstance.getLevel()]+"| "+primaryColours[rangedInstance.getLevel()]+rangedInstance.getClipSize());
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "zaGun"), PersistentDataType.INTEGER, 1);
 

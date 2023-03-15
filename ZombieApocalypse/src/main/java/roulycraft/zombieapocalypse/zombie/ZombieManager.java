@@ -1,9 +1,6 @@
 package roulycraft.zombieapocalypse.zombie;
 
-import org.bukkit.Bukkit;
-import org.bukkit.Color;
-import org.bukkit.Location;
-import org.bukkit.NamespacedKey;
+import org.bukkit.*;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
@@ -22,7 +19,9 @@ import roulycraft.zombieapocalypse.ZombieApocalypse;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import static org.bukkit.Material.*;
 
@@ -685,6 +684,7 @@ public class ZombieManager {
 
         zombieInstance = new ZombieInstance(name, displayName, health, damage, speed, special, helmet, chestplate, leggings, boots, xpReward);
         this.zombieInstanceList.add(zombieInstance);
+        this.zombieInstanceList.sort(Comparator.comparing(ZombieInstance::getName));
 
         reloadZombieInstanceConfig();
         getZombieInstanceConfig().set(("zombies." + name + ".displayName"), displayName);
@@ -701,9 +701,23 @@ public class ZombieManager {
     }
 
     public ZombieInstance getZombieInstance(String name){
-        for (ZombieInstance zombieInstance : this.zombieInstanceList) {
-            if (zombieInstance.getName().equals(name)) {
-                return zombieInstance;
+        int left = 0;
+        int right = zombieInstanceList.size() - 1;
+
+        while (left <= right) {
+            int mid = left + (right - left) / 2;
+
+            int result = name.compareTo(zombieInstanceList.get(mid).getName());
+
+            if(result == 0) {
+                return zombieInstanceList.get(mid);
+            }
+
+            if(result > 0) {
+                left = mid + 1;
+            }
+            else {
+                right = mid - 1;
             }
         }
 
@@ -782,7 +796,7 @@ public class ZombieManager {
 
     }
 
-    public void spawnZombie(Location loc, String name, Boolean countTowardsKills) {
+    public static UUID spawnZombie(Location loc, String name, Boolean countTowardsKills, String instanceName) {
 
         Entity zombie = loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
 
@@ -795,8 +809,10 @@ public class ZombieManager {
         zombie.setMetadata("damage", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getDamage()));
         zombie.setMetadata("xpReward", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getXPReward()));
 
-        NamespacedKey key = new NamespacedKey(plugin, "zabossbar" + zombie.getEntityId());
-        zombie.setMetadata("bossbarKey", new FixedMetadataValue(plugin, ("zabossbar" + zombie.getEntityId())));
+        zombie.setMetadata("instanceName", new FixedMetadataValue(plugin, instanceName));
+
+        NamespacedKey key = new NamespacedKey(plugin, ("zabossbar." + zombie.getEntityId()));
+        zombie.setMetadata("bossbarKey", new FixedMetadataValue(plugin, ("zabossbar." + zombie.getEntityId())));
 
         Bukkit.getServer().createBossBar(key, "", BarColor.GREEN, BarStyle.SOLID);
         Bukkit.getServer().getBossBar(key).setProgress(1.0);
@@ -814,6 +830,9 @@ public class ZombieManager {
 
         ((Zombie) zombie).setAdult();
 
+        ((Zombie) zombie).getEquipment().setItemInMainHand(new ItemStack(Material.AIR, 0));
+        ((Zombie) zombie).getEquipment().setItemInOffHand(new ItemStack(Material.AIR, 0));
+
         ((Zombie) zombie).getEquipment().setHelmet(ZombieManager.getManager().getZombieInstance(name).getHelmet());
         ((Zombie) zombie).getEquipment().setChestplate(ZombieManager.getManager().getZombieInstance(name).getChestplate());
         ((Zombie) zombie).getEquipment().setLeggings(ZombieManager.getManager().getZombieInstance(name).getLeggings());
@@ -825,6 +844,7 @@ public class ZombieManager {
         ((Zombie) zombie).getEquipment().setBootsDropChance(0f);
 
         ZombieListener.insertMap(NamespacedKey.fromString(zombie.getMetadata("bossbarKey").get(0).asString(), plugin));
+        return zombie.getUniqueId();
     }
 }
 

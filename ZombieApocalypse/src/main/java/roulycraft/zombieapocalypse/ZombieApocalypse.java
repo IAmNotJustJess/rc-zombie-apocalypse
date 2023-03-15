@@ -1,18 +1,24 @@
 package roulycraft.zombieapocalypse;
 
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import roulycraft.zombieapocalypse.commands.MainCommand;
-import roulycraft.zombieapocalypse.managers.*;
+import roulycraft.zombieapocalypse.game.*;
+import roulycraft.zombieapocalypse.players.PlayerListener;
 import roulycraft.zombieapocalypse.utility.SoundSplitter;
+import roulycraft.zombieapocalypse.waves.WaveDefaultSettings;
+import roulycraft.zombieapocalypse.waves.WaveManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedDefaultSettings;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedWeaponInterpreter;
 import roulycraft.zombieapocalypse.zombie.*;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.Objects;
 
 public final class ZombieApocalypse extends JavaPlugin {
@@ -20,6 +26,15 @@ public final class ZombieApocalypse extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        for (Iterator<KeyedBossBar> it = Bukkit.getBossBars(); it.hasNext(); ) {
+
+            KeyedBossBar bar = it.next();
+
+            if(bar.getKey().getKey().contains("zabossbar.")) {
+                bar.removeAll();
+            }
+
+        }
         GameManager.injectPlugin(this);
         ZombieManager.injectPlugin(this);
         MainCommand.injectPlugin(this);
@@ -28,6 +43,7 @@ public final class ZombieApocalypse extends JavaPlugin {
         RangedManager.injectPlugin(this);
         SoundSplitter.injectPlugin(this);
         RangedDefaultSettings.injectPlugin(this);
+        WaveManager.injectPlugin(this);
 
         ZombieListener.clearAllBossbars();
 
@@ -35,20 +51,25 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new ZombieListener(), this);
         getServer().getPluginManager().registerEvents(new RangedWeaponInterpreter(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
-        ConsoleCommandSender console = Bukkit.getConsoleSender();
-        console.sendMessage("§6==== §eTrwa proces inicjacji §aZombieApocalypse§e! §6====");
+        Audience console = (Audience) Bukkit.getConsoleSender();
+        MiniMessage miniMessage = MiniMessage.miniMessage();
+
+        console.sendMessage(miniMessage.deserialize("<gold>==== <yellow>Trwa proces inicjacji <green>ZombieApocalypse<yellow>! <gold>===="));
 
         File zombieFile = new File(this.getDataFolder() + File.separator + "zombie.yml");
 
-        console.sendMessage("");
-        console.sendMessage("§9== §bInicjowanie listy zombie! §9==");
-        console.sendMessage("");
+        console.sendMessage(miniMessage.deserialize(""));
+        console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Inicjowanie listy zombie! <blue>=="));
+        console.sendMessage(miniMessage.deserialize(""));
 
         if(!zombieFile.exists()) {
 
-            console.sendMessage("§6INFO! §eNie znaleziono pliku! Tworzę domyślną konfigurację pliku §fzombie.yml§e...");
-            console.sendMessage("");
+            if(this.getConfig().getBoolean("settings.logZombieLoad")) {
+                console.sendMessage(miniMessage.deserialize("<gold>INFO! <yellow>Nie znaleziono pliku! Tworzę domyślną konfigurację pliku <white>zombie.yml<yellow>..."));
+                console.sendMessage(miniMessage.deserialize(""));
+            }
 
             ZombieManager.getManager().createDefaultZombieInstances();
 
@@ -56,20 +77,69 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         ZombieManager.getManager().loadZombieInstanceConfig();
 
-        console.sendMessage("");
-        console.sendMessage("§9== §bZakończono inicjowanie listy zombie! §9==");
-        console.sendMessage("");
+        console.sendMessage(miniMessage.deserialize(""));
+        console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Zakończono inicjowanie listy zombie! <blue>=="));
+        console.sendMessage(miniMessage.deserialize(""));
 
         File rangedFolder = new File(this.getDataFolder() + File.separator + "instances" + File.separator + "weapons" + File.separator + "ranged");
+        File waveFolder = new File(this.getDataFolder() + File.separator + "instances" + File.separator + "waves");
 
-        console.sendMessage("");
-        console.sendMessage("§9== §bInicjowanie listy broni dalekosiężnej! §9==");
-        console.sendMessage("");
+        console.sendMessage(miniMessage.deserialize(""));
+        console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Inicjowanie listy broni dalekosiężnej! <blue>=="));
+        console.sendMessage(miniMessage.deserialize(""));
+
+        if(!waveFolder.exists()) {
+
+            if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                console.sendMessage(miniMessage.deserialize("<gold>INFO! <yellow>Nie znaleziono folderu <white>waves<yellow>! Tworzę domyślną konfigurację folderu <white>waves<yellow>..."));
+                console.sendMessage(miniMessage.deserialize(""));
+            }
+
+            WaveDefaultSettings.loadDefaultSettings();
+
+        }
+
+        File[] waveFileList = waveFolder.listFiles();
+        assert waveFileList != null;
+
+        if(waveFolder.exists()) {
+
+            for (File waveInstanceFile : waveFileList) {
+
+                String waveInstanceName = waveInstanceFile.getName().substring(0, waveInstanceFile.getName().length() - 4);
+
+                if (WaveManager.getManager().loadWaveInstanceConfig(Integer.valueOf(waveInstanceName))) {
+
+                    if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                        console.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Poprawnie zinicjonowano instancję fali o ID: <white>" + waveInstanceName + "<green>!"));
+                    }
+
+                }
+
+                else {
+
+                    if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                        console.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Inicjacja instancji fali o ID: <white>" + waveInstanceName + "<red> nie powiodła się!"));
+                    }
+
+                }
+            }
+        }
+
+        console.sendMessage(miniMessage.deserialize(""));
+        console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Zakończono inicjowanie listy fal! <blue>=="));
+        console.sendMessage(miniMessage.deserialize(""));
+
+        console.sendMessage(miniMessage.deserialize(""));
+        console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Inicjowanie listy broni dalekosiężnej! <blue>=="));
+        console.sendMessage(miniMessage.deserialize(""));
 
         if(!rangedFolder.exists()) {
 
-            console.sendMessage("§6INFO! §eNie znaleziono folderu §franged§e! Tworzę domyślną konfigurację folderu §franged§e...");
-            console.sendMessage("");
+            if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                console.sendMessage(miniMessage.deserialize("<gold>INFO! <yellow>Nie znaleziono folderu <white>ranged<yellow>! Tworzę domyślną konfigurację folderu <white>ranged<yellow>..."));
+                console.sendMessage(miniMessage.deserialize(""));
+            }
 
             RangedDefaultSettings.loadDefaultSettings();
 
@@ -86,25 +156,30 @@ public final class ZombieApocalypse extends JavaPlugin {
 
                 if (RangedManager.getManager().loadRangedInstanceConfig(Integer.valueOf(rangedInstanceName))) {
 
-                    console.sendMessage("§2SUKCES! §aPoprawnie zinicjonowano instancję broni dalekosiężnej o ID: §f" + rangedInstanceName + "§a!");
+                    if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                        console.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Poprawnie zinicjonowano instancję broni dalekosiężnej o ID: <white>" + rangedInstanceName + "<green>!"));
+                    }
 
                 }
 
                 else {
 
-                    console.sendMessage("§4BŁĄD! §cInicjacja instancji broni dalekosiężnej o ID: §f" + rangedInstanceName + "§c nie powiodła się!");
+                    if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                        console.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Inicjacja instancji broni dalekosiężnej o ID: <white>" + rangedInstanceName + "<red> nie powiodła się!"));
+                    }
 
                 }
             }
 
             RangedManager.getManager().parseRangedInstancesAsItems();
 
-            console.sendMessage("");
-            console.sendMessage("§2SUKCES! §aPoprawnie zparsowano pliki na przedmioty!");
+            console.sendMessage(miniMessage.deserialize(""));
+            console.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Poprawnie zparsowano pliki na przedmioty!"));
 
-            console.sendMessage("");
-            console.sendMessage("§9== §bZakończono inicjowanie listy broni dalekosiężnej! §9==");
-            console.sendMessage("");
+
+            console.sendMessage(miniMessage.deserialize(""));
+            console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Zakończono inicjowanie listy broni dalekosiężnej! <blue>=="));
+            console.sendMessage(miniMessage.deserialize(""));
 
         }
 
@@ -115,9 +190,9 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         if(instanceFolder.exists() && instanceFileList.length != 0) {
 
-            console.sendMessage("");
-            console.sendMessage("§9== §bInicjowanie instancji gier! §9==");
-            console.sendMessage("");
+            console.sendMessage(miniMessage.deserialize(""));
+            console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Inicjowanie instancji gier! <blue>=="));
+            console.sendMessage(miniMessage.deserialize(""));
 
             for (File gameInstanceFile : instanceFileList) {
 
@@ -125,23 +200,26 @@ public final class ZombieApocalypse extends JavaPlugin {
 
                 if (GameManager.getManager().loadGameInstanceConfig(gameInstanceName)) {
 
-                    console.sendMessage("§2SUKCES! §aPoprawnie zinicjonowano instancję gry §f" + gameInstanceName + "§a!");
+                    if(this.getConfig().getBoolean("settings.logArenaLoad")) {
+                        console.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Poprawnie zinicjonowano instancję gry <white>" + gameInstanceName + "<green>!"));
+                    }
                 }
                 else {
-
-                    console.sendMessage("§4BŁĄD! §cInicjacja instancji gry §f" + gameInstanceName + "§c nie powiodła się!");
+                    if(this.getConfig().getBoolean("settings.logArenaLoad")) {
+                        console.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Inicjacja instancji gry <white>" + gameInstanceName + "<red> nie powiodła się!"));
+                    }
                 }
             }
 
-            console.sendMessage("");
-            console.sendMessage("§9== §bZakończono inicjowanie instancji gier! §9==");
-            console.sendMessage("");
+            console.sendMessage(miniMessage.deserialize(""));
+            console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Zakończono inicjowanie instancji gier! <blue>=="));
+            console.sendMessage(miniMessage.deserialize(""));
 
         }
         // Tutaj dodać inicjalizowanie map zapisanych do pliku
         Objects.requireNonNull(getServer().getPluginCommand("za")).setExecutor(new MainCommand());
 
-        console.sendMessage("§6==== §ePoprawnie zinicjowano §aZombieApocalypse§e! §6====");
+        console.sendMessage(miniMessage.deserialize("<gold>==== <yellow>Poprawnie zinicjowano <green>ZombieApocalypse<yellow>! <gold>===="));
 //        getPlugin(ZombieApocalypse.class).saveDefaultConfig();
         // Plugin startup logic
     }

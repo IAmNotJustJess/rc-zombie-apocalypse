@@ -1,5 +1,7 @@
 package roulycraft.zombieapocalypse.commands;
 
+import net.kyori.adventure.audience.Audience;
+import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Location;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -9,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 
 import roulycraft.zombieapocalypse.ZombieApocalypse;
-import roulycraft.zombieapocalypse.managers.GameManager;
+import roulycraft.zombieapocalypse.game.GameManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.zombie.ZombieInstance;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
@@ -23,17 +25,25 @@ public class MainCommand implements CommandExecutor {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean onCommand(CommandSender player, Command command, String label, String[] args) {
 
-        String missingPermissionMessage = "§4BŁĄD! §cBrakuje uprawnień!";
-        String missingArgumentsMessage = "§4BŁĄD! §cPodaj więcej argumentów!";
-        String noArgumentsMessage = "§4BŁĄD! §cWpisz /za help by wyświetlić listę argumentów!";
-        String missingInstanceNameMessage = "§4BŁĄD! §cWprowadź nazwę areny!";
-        String missingZombieMessage = "§4BŁĄD! §cWprowadź nazwę zombie!";
+        Audience sender = (Audience) player;
+        MiniMessage miniMessage = MiniMessage.miniMessage();
+
+        String pluginName = plugin.getConfig().getString("messages.plugin.name");
+        String commandColour = plugin.getConfig().getString("messages.plugin.command");
+        String symbolColour = plugin.getConfig().getString("messages.plugin.symbol");
+        String headlineColour = plugin.getConfig().getString("messages.plugin.headline");
+
+        String missingPermissionMessage = "<dark_red>BŁĄD! <red>Brakuje uprawnień!";
+        String missingArgumentsMessage = "<dark_red>BŁĄD! <red>Podaj więcej argumentów!";
+        String noArgumentsMessage = "<dark_red>BŁĄD! <red>Wpisz /za help by wyświetlić listę argumentów!";
+        String missingInstanceNameMessage = "<dark_red>BŁĄD! <red>Wprowadź nazwę areny!";
+        String missingZombieMessage = "<dark_red>BŁĄD! <red>Wprowadź nazwę zombie!";
 
         if (!(sender instanceof Player)) {
 
-            sender.sendMessage("§4BŁĄD §cDla bezpieczeństwa, tylko gracze mogą wykorzystywać tą komendę!");
+            sender.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD <red>Dla bezpieczeństwa, tylko gracze mogą wykorzystywać tą komendę!"));
             return true;
 
         }
@@ -44,7 +54,7 @@ public class MainCommand implements CommandExecutor {
 
             if (args.length == 0) {
 
-                sender.sendMessage(noArgumentsMessage);
+                sender.sendMessage(miniMessage.deserialize(noArgumentsMessage));
                 return true;
 
             }
@@ -52,51 +62,66 @@ public class MainCommand implements CommandExecutor {
             switch(args[0].toLowerCase()) {
                 case "help": {
                     if (args.length == 1) {
-                        sender.sendMessage(" ");
-                        sender.sendMessage(plugin.getConfig().getString("commands.colours.symbol")+"== "+plugin.getConfig().getString("commands.colours.headline")+"§lKomendy Podstawowe "+plugin.getConfig().getString("plugin.colour")+"§lZombie Apocalypse "+plugin.getConfig().getString("commands.colours.symbol")+"§r==");
-                        sender.sendMessage(" ");
-                        sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za help "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Pomoc ogólna.");
-                        sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za leave "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Wyjście z areny.");
-                        if (sender.isOp() || sender.hasPermission("za.ct")) {
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za join <instancja> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Dołączenia na konkretną arenę.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za help ct "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Pomoc tworzeniu aren.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za help debug "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Pomoc w testowaniu lub debugowaniu aren.");
+                        sender.sendMessage(miniMessage.deserialize("<newline>"+symbolColour+"== "+headlineColour+"<bold>Komendy Podstawowe "+pluginName+" "+symbolColour+"==<newline>"));
+                        sender.sendMessage(miniMessage.deserialize(commandColour+"/za help "+symbolColour+"- "+headlineColour+"Pomoc ogólna."));
+                        sender.sendMessage(miniMessage.deserialize(commandColour+"/za join <instancja> "+symbolColour+"- "+headlineColour+"Dołączenia na konkretną arenę. [Komenda do testów]"));
+                        sender.sendMessage(miniMessage.deserialize(commandColour+"/za leave "+symbolColour+"- "+headlineColour+"Wychodzi z areny, na której jesteś. [Komenda do testów]"));
+                        sender.sendMessage(miniMessage.deserialize(commandColour+"/za tb <id> <poziom> "+symbolColour+"- "+headlineColour+"Wybiera ci broń, ID 1-15, Poziom 0-3 [Komenda do testów]"));
+                        if (player.isOp() || player.hasPermission("za.ct")) {
+                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za help ct "+symbolColour+"- "+headlineColour+"Pomoc tworzeniu aren."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za help debug "+symbolColour+"- "+headlineColour+"Pomoc w testowaniu lub debugowaniu aren."));
                             return true;
                         }
                     } else {
-                        if ("ct".equalsIgnoreCase(args[1]) && sender.hasPermission("za.ct")) {
-                            sender.sendMessage(" ");
-                            sender.sendMessage(""+plugin.getConfig().getString("commands.colours.symbol")+"== "+plugin.getConfig().getString("commands.colours.headline")+"§lKomendy Creation Tools "+plugin.getConfig().getString("plugin.colour")+"§lZombie Apocalypse "+plugin.getConfig().getString("commands.colours.symbol")+"==");
-                            sender.sendMessage(" ");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> create "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Stwarza instancję.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> lobby "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Ustawia lokacje lobby instancji.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> spawn add "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"dodaje spawn graczy instancji");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> spawn remove <number> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"usuwa spawn graczy instancji (przesuwa spawny z wyższym numerem w dół).");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> zombie add "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"dodaje spawn zombie instancji.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za ct <instancja> zombie remove <number> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"usuwa spawn zombie instancji (przesuwa spawny z wyższym numerem w dół).");
+                        if ("ct".equalsIgnoreCase(args[1]) && player.hasPermission("za.ct")) {
+                            sender.sendMessage(miniMessage.deserialize("<newline>"+symbolColour+"== "+headlineColour+"<bold>Komendy Creation Tools "+pluginName+" "+symbolColour+"==<newline>"));
+                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za ct <instancja> create "+symbolColour+"- "+headlineColour+"Stwarza instancję."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za ct <instancja> lobby "+symbolColour+"- "+headlineColour+"Ustawia lokacje lobby instancji."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za ct <instancja> spawn add "+symbolColour+"- "+headlineColour+"dodaje spawn graczy instancji"));
+                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za ct <instancja> spawn remove <number> "+symbolColour+"- "+headlineColour+"usuwa spawn graczy instancji (przesuwa spawny z wyższym numerem w dół)."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za ct <instancja> zombie add "+symbolColour+"- "+headlineColour+"dodaje spawn zombie instancji."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za ct <instancja> zombie remove <number> "+symbolColour+"- "+headlineColour+"usuwa spawn zombie instancji (przesuwa spawny z wyższym numerem w dół)."));
                             return true;
                         }
 
-                        if ("debug".equalsIgnoreCase(args[1]) && sender.hasPermission("za.ct")) {
-                            sender.sendMessage(" ");
-                            sender.sendMessage(""+plugin.getConfig().getString("commands.colours.symbol")+"== "+plugin.getConfig().getString("commands.colours.headline")+"§lKomendy Creation Tools "+plugin.getConfig().getString("plugin.colour")+"§lZombie Apocalypse "+plugin.getConfig().getString("commands.colours.symbol")+"==");
-                            sender.sendMessage(" ");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za debug spawnZombie <nazwa> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Respi zombiaka na twojej lokacji.");
-                            sender.sendMessage(plugin.getConfig().getString("commands.colours.command")+"/za debug giveRanged <gracz> <id> "+plugin.getConfig().getString("commands.colours.symbol")+"- "+plugin.getConfig().getString("commands.colours.headline")+"Daje graczu broń palną.");
+                        if ("debug".equalsIgnoreCase(args[1]) && player.hasPermission("za.ct")) {
+                            sender.sendMessage(miniMessage.deserialize("<newline>"+symbolColour+"== "+headlineColour+"<bold>Komendy Creation Tools "+pluginName+" "+symbolColour+"==<newline>"));
+                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za debug spawnZombie <nazwa> "+symbolColour+"- "+headlineColour+"Respi zombiaka na twojej lokacji."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za debug giveRanged <gracz> <id> "+symbolColour+"- "+headlineColour+"Daje graczu broń palną."));
                             return true;
                         }
                     }
                 }
+                case "join": {
+                    if(args.length == 2) {
+                        if(GameManager.getManager().getGameInstance(args[1]) == null){
+                            break;
+                        }
+                        GameManager.getManager().addPlayer((Player) player, args[1]);
+                    }
+                    break;
+                }
+                case "leave": {
+                    GameManager.getManager().removePlayer((Player) player);
+                    break;
+                }
+                case "tb": {
+                    if(args.length != 3) {
+                        break;
+                    }
+                    String weapon = args[1]+":"+args[2];
+                    GameManager.getManager().changePlayerWeapon((Player) player, weapon);
+                    break;
+                }
+                case "ct": {
 
-                case "ct":
-
-                    if (!sender.isOp() || !sender.hasPermission("za.ct")) {
-                        sender.sendMessage(missingPermissionMessage);
+                    if (!player.isOp() || !player.hasPermission("za.ct")) {
+                        sender.sendMessage(miniMessage.deserialize(missingPermissionMessage));
                         return true;
                     }
 
                     if (args.length == 1) {
-                        sender.sendMessage(missingInstanceNameMessage);
+                        sender.sendMessage(miniMessage.deserialize(missingInstanceNameMessage));
                         return true;
                     }
 
@@ -109,7 +134,7 @@ public class MainCommand implements CommandExecutor {
 
                         if (!GameManager.getManager().checkIfGameInstanceExists(args[1])) {
 
-                            sender.sendMessage("§4BŁĄD! §cArena §f" + args[1] + " §cjuż istnieje!");
+                            sender.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Arena <white>" + args[1] + " <red>już istnieje!"));
 
                         }
 
@@ -124,7 +149,7 @@ public class MainCommand implements CommandExecutor {
 
                                 GameManager.getManager().saveGameInstanceConfig(args[1]);
 
-                                sender.sendMessage("§2SUKCES! §aLokacja Lobby areny §f" + args[1] + " §azostała ustawiona!");
+                                sender.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Lokacja Lobby areny <white>" + args[1] + " <green>została ustawiona!"));
                                 return true;
 
                             case "spawn":
@@ -137,7 +162,7 @@ public class MainCommand implements CommandExecutor {
 
                                         GameManager.getManager().saveGameInstanceConfig(args[1]);
 
-                                        sender.sendMessage("§2SUKCES! §aDodano spawn graczy nr. §f" + (GameManager.getManager().getGameInstance(args[1]).getPlayerSpawnLocs().size() - 1) + "§a na instancji§f " + args[1] + "§a!");
+                                        sender.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Dodano spawn graczy nr. <white>" + (GameManager.getManager().getGameInstance(args[1]).getPlayerSpawnLocs().size() - 1) + "<green> na instancji<white> " + args[1] + "<green>!"));
                                         return true;
 
                                     case "remove":
@@ -166,13 +191,13 @@ public class MainCommand implements CommandExecutor {
                                                 GameManager.getManager().getGameInstance(args[1]).setPlayerSpawnLocs(tempArray);
                                                 GameManager.getManager().saveGameInstanceConfig(args[1]);
 
-                                                sender.sendMessage("§2SUKCES! §aUsunięto spawn graczy nr. §f" + (args[4]) + "§a na instancji§f " + args[1] + "§a!");
+                                                sender.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Usunięto spawn graczy nr. <white>" + (args[4]) + "<green> na instancji<white> " + args[1] + "<green>!"));
 
                                                 return true;
 
                                             } catch (IndexOutOfBoundsException e) {
 
-                                                sender.sendMessage("§4BŁĄD! §cSpawn graczy nr. §f" + (args[4]) + "§c na instancji§f " + args[1] + " §cnie istnieje!");
+                                                sender.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Spawn graczy nr. <white>" + (args[4]) + "<red> na instancji<white> " + args[1] + " <red>nie istnieje!"));
                                                 return true;
 
                                             }
@@ -181,7 +206,7 @@ public class MainCommand implements CommandExecutor {
 
                                     default:
 
-                                        sender.sendMessage(missingArgumentsMessage);
+                                        sender.sendMessage(miniMessage.deserialize(missingArgumentsMessage));
                                         return true;
                                 }
 
@@ -191,11 +216,11 @@ public class MainCommand implements CommandExecutor {
                                     case "add":
 
                                         GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().add(p.getLocation());
-                                        GameManager.getManager().getGameInstanceConfig(args[1]).set(("playerSpawnLocs." + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1)), p.getLocation());
+                                        GameManager.getManager().getGameInstanceConfig(args[1]).set(("zombieSpawnLocs." + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1)), p.getLocation());
 
                                         GameManager.getManager().saveGameInstanceConfig(args[1]);
 
-                                        sender.sendMessage("§2SUKCES! §aDodano spawn zombie nr. §f" + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1) + "§a na instancji§f " + args[1] + "§a!");
+                                        sender.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Dodano spawn zombie nr. <white>" + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1) + "<green> na instancji<white> " + args[1] + "<green>!"));
                                         return true;
 
                                     case "remove":
@@ -224,13 +249,13 @@ public class MainCommand implements CommandExecutor {
                                                 GameManager.getManager().getGameInstance(args[1]).setZombieSpawnLocs(tempArray);
                                                 GameManager.getManager().saveGameInstanceConfig(args[1]);
 
-                                                sender.sendMessage("§2SUKCES! §aUsunięto spawn zombie nr. §f" + (args[4]) + "§a na instancji§f " + args[1] + "§a!");
+                                                sender.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Usunięto spawn zombie nr. <white>" + (args[4]) + "<green> na instancji<white> " + args[1] + "<green>!"));
 
                                                 return true;
 
                                             } catch (IndexOutOfBoundsException e) {
 
-                                                sender.sendMessage("§4BŁĄD! §cSpawn zombie nr. §f" + (args[4]) + "§c na instancji§f " + args[1] + " §cnie istnieje!");
+                                                sender.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Spawn zombie nr. <white>" + (args[4]) + "<red> na instancji<white> " + args[1] + " <red>nie istnieje!"));
                                                 return true;
 
                                             }
@@ -239,7 +264,7 @@ public class MainCommand implements CommandExecutor {
 
                                     default:
 
-                                        sender.sendMessage(missingArgumentsMessage);
+                                        sender.sendMessage(miniMessage.deserialize(missingArgumentsMessage));
                                         return true;
                                 }
 
@@ -247,29 +272,30 @@ public class MainCommand implements CommandExecutor {
 
                                 if (GameManager.getManager().loadGameInstanceConfig(args[1])) {
 
-                                    sender.sendMessage("§2SUKCES! §aWczytano dane instancji §f" + args[1] + " §az pliku!");
+                                    sender.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Wczytano dane instancji <white>" + args[1] + " <green>z pliku!"));
                                     return true;
                                 }
 
-                                sender.sendMessage("§4BŁĄD! §cWczytanie pliku instancji §f" + args[1] + " §cnie powiodło się - plik nie istnieje!");
-                                sender.sendMessage(String.valueOf(args.length));
+                                sender.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Wczytanie pliku instancji <white>" + args[1] + " <red>nie powiodło się - plik nie istnieje!"));
+                                sender.sendMessage(miniMessage.deserialize(String.valueOf(args.length)));
                                 return true;
 
                             default:
 
-                                sender.sendMessage(missingArgumentsMessage);
+                                sender.sendMessage(miniMessage.deserialize(missingArgumentsMessage));
                                 return true;
+                        }
                     }
                 }
-                case "debug":
+                case "debug": {
 
-                    if (!sender.isOp() || !sender.hasPermission("za.ct")) {
-                        sender.sendMessage(missingPermissionMessage);
+                    if (!player.isOp() || !player.hasPermission("za.ct")) {
+                        sender.sendMessage(miniMessage.deserialize(missingPermissionMessage));
                         return true;
                     }
 
                     if (args.length == 1) {
-                        sender.sendMessage(missingInstanceNameMessage);
+                        sender.sendMessage(miniMessage.deserialize(missingInstanceNameMessage));
                         return true;
                     }
 
@@ -282,13 +308,13 @@ public class MainCommand implements CommandExecutor {
 
                             if (RangedManager.getManager().getGun(Integer.valueOf(args[2]), Integer.valueOf(args[3])) == null) {
 
-                                sender.sendMessage("§4BŁĄD! §cBroń o ID: §f" + args[2] + " §ci poziomie  §f" + args[3] + " §c nie istnieje!");
+                                sender.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Broń o ID: <white>" + args[2] + " <red>i poziomie <white>" + args[3] + "<red> nie istnieje!"));
                                 return true;
 
                             }
 
                             ((Player) sender).getInventory().addItem(RangedManager.getManager().getGun(Integer.valueOf(args[2]), Integer.valueOf(args[3])));
-                            sender.sendMessage("§2SUKCES! §aOtrzymano broń o ID: §f" + args[2] + " §ai poziomie §f" + args[3] + "§a!");
+                            sender.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Otrzymano broń o ID: <white>" + args[2] + " <green>i poziomie <white>" + args[3] + "<green>!"));
 
                             return true;
 
@@ -297,7 +323,7 @@ public class MainCommand implements CommandExecutor {
                             boolean count = false;
 
                             if (Objects.isNull(args[2])) {
-                                sender.sendMessage(missingZombieMessage);
+                                sender.sendMessage(miniMessage.deserialize(missingZombieMessage));
                                 return true;
                             }
 
@@ -319,16 +345,17 @@ public class MainCommand implements CommandExecutor {
                             }
 
                             if(!exists) {
-                                sender.sendMessage(missingZombieMessage);
+                                sender.sendMessage(miniMessage.deserialize(missingZombieMessage));
                                 return true;
                             }
 
                             Location loc = ((Player) sender).getLocation();
-                            ZombieManager.getManager().spawnZombie(loc, args[2], count);
+                            ZombieManager.getManager().spawnZombie(loc, args[2], count, "");
 
                             return true;
 
                     }
+                }
             }
 
         }

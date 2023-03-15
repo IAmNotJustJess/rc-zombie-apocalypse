@@ -1,4 +1,4 @@
-package roulycraft.zombieapocalypse.managers;
+package roulycraft.zombieapocalypse.game;
 
 public enum GameState {
 
