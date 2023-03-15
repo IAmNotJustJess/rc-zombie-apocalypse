@@ -512,7 +512,7 @@ public class GameManager {
             endArena(playerInstance.getInArena(), 1);
         }
 
-        sendGameMessage(MessageType.PLAYER_DEATH, player, playerInstance.getSelectedRanged(), new String[]{"", "", "", Integer.toString(alivePlayers)});
+        sendGameMessage(MessageType.PLAYER_DEATH, player, playerInstance.getInArena(), new String[]{"", "", "", Integer.toString(alivePlayers)});
     }
     private void playerRespawn(Player player) {
 
