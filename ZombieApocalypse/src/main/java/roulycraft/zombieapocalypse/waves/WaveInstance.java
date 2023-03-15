@@ -49,8 +49,6 @@ public class WaveInstance {
     public String getRandomZombie() {
 
         double key = new Random().nextDouble() * totalWeight;
-        System.out.println(key);
-        System.out.println(totalWeight);
 
         return zombieList.higherEntry(key).getValue();
 

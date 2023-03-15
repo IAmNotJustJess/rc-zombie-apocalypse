@@ -25,7 +25,6 @@ import roulycraft.zombieapocalypse.players.PlayerInstance;
 import roulycraft.zombieapocalypse.utility.MinuteSecondsFormat;
 import roulycraft.zombieapocalypse.utility.PolishNumberConverter;
 import roulycraft.zombieapocalypse.waves.WaveManager;
-import roulycraft.zombieapocalypse.weapons.ranged.RangedInstance;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
 
@@ -192,7 +191,7 @@ public class GameManager {
 
                 else {
                     arenaCountdownList.remove(name);
-                    endArena(name, 0);
+                    endArena(name, 1);
                 }
             }
         }.runTaskLaterAsynchronously(plugin, 20L);
@@ -252,6 +251,9 @@ public class GameManager {
             }
             case 2: {
                 sendGameMessage(MessageType.VICTORY, null, name, new String[]{"",""});
+                break;
+            }
+            default: {
                 break;
             }
         }
@@ -508,11 +510,10 @@ public class GameManager {
             }
         }
 
+        sendGameMessage(MessageType.PLAYER_DEATH, player, playerInstance.getInArena(), new String[]{"", "", "", Integer.toString(alivePlayers)});
         if(alivePlayers == 0) {
             endArena(playerInstance.getInArena(), 1);
         }
-
-        sendGameMessage(MessageType.PLAYER_DEATH, player, playerInstance.getInArena(), new String[]{"", "", "", Integer.toString(alivePlayers)});
     }
     private void playerRespawn(Player player) {
 
@@ -697,7 +698,7 @@ public class GameManager {
             case COUNTDOWN: {
 
                 Integer countdown = arenaCountdownList.get(name);
-                String time = PolishNumberConverter.convert(countdown, "sekunda", "sekundy", "sekund");
+                String time = PolishNumberConverter.convert(countdown, "sekundę", "sekundy", "sekund");
 
                 message[0] = plugin.getConfig().getString("messages.arena.arenaCountdown");
                 message[0] = message[0].replace("%time%", time);
@@ -775,14 +776,14 @@ public class GameManager {
                 message[0] = plugin.getConfig().getString("messages.arena.playerDeathMessage");
                 message[1] = plugin.getConfig().getString("messages.arena.playerDeathTitle");
                 message[2] = plugin.getConfig().getString("messages.arena.playerDeathSubtitle");
-                message[2] = message[2].replace("%player%", player.getName())
-                    .replace("%alive", message[3]);
+                message[0] = message[0].replace("%player%", player.getName())
+                    .replace("%alive%", message[3]);
 
                 for(UUID uuid : gameInstance.getPlayers()) {
                     ((Audience) Bukkit.getPlayer(uuid)).sendMessage(miniMessage.deserialize(message[0]));
                 }
                 player.sendTitle(message[1], message[2], 0, 40, 20);
-
+                break;
             }
             case VICTORY: {
 
