@@ -44,6 +44,7 @@ public final class ZombieApocalypse extends JavaPlugin {
         SoundSplitter.injectPlugin(this);
         RangedDefaultSettings.injectPlugin(this);
         WaveManager.injectPlugin(this);
+        WaveDefaultSettings.injectPlugin(this);
 
         ZombieListener.clearAllBossbars();
 
@@ -85,7 +86,7 @@ public final class ZombieApocalypse extends JavaPlugin {
         File waveFolder = new File(this.getDataFolder() + File.separator + "instances" + File.separator + "waves");
 
         console.sendMessage(miniMessage.deserialize(""));
-        console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Inicjowanie listy broni dalekosiężnej! <blue>=="));
+        console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Inicjowanie listy fal! <blue>=="));
         console.sendMessage(miniMessage.deserialize(""));
 
         if(!waveFolder.exists()) {
