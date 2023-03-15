@@ -10,7 +10,7 @@ settings:
   maxPlayersPerArena: 32
   startCountdownAtPlayers: 2
   countdownTime: 60
-  countdownReductionPlayers: 8
+  countdownReductionPlayers: 32
   countdownReduceTo: 10
   delayBeforeNextWave: 5
   newWaveZombieKills: 45
@@ -63,7 +63,7 @@ messages:
     waveTimeout: "Czas się kończy! Pozostało %time% do przegranej!" # %time% - Time till losing
     playerDeathTitle: "Umarłeś!"
     playerDeathSubtitle: "Odrodzenie nastąpi po starcie kolejnej fali!"
-    playerDeathMessage: "%player% został zabity! Zostało %alive% żywycych graczy!" # %player% - player, %alive% - alive players
+    playerDeathMessage: "%player% został zabity! Zostało %alive% żywych graczy!" # %player% - player, %alive% - alive players
     defeat: "Przegrana... Zombie was pokonały..."
     defeatTitle: "Przegrana.."
     victory: "Zwycięstwo! Zombie zostały pokonane!"

@@ -17,6 +17,7 @@ public class WaveDefaultSettings {
         for(int i = 1; i <= 80; i++) {
             WaveManager.getManager().createInstance(i);
         }
+
         WaveInstance waveInstance;
         {
             waveInstance = WaveManager.getManager().getWaveInstance(1);
@@ -1164,11 +1165,12 @@ public class WaveDefaultSettings {
             waveInstance.add(2.0, "magma3");
         } // 80
 
-
         for(int i = 1; i <= 80; i++) {
             WaveManager.getManager().reloadWaveInstanceConfig(i);
             WaveManager.getManager().saveWaveInstanceConfig(i);
         }
+
+        WaveManager.getManager().waveInstanceList.clear();
 
     }
 }

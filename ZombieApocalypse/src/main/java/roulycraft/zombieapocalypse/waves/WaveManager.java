@@ -103,8 +103,8 @@ public class WaveManager {
 
         }
 
-        for(Double weight : WaveManager.getManager().getWaveInstance(id).getZombieList().keySet()) {
-            waveInstanceConfig.set(WaveManager.getManager().getWaveInstance(id).getZombieList().get(weight), weight);
+        for(String zombieName : WaveManager.getManager().getWaveInstance(id).getPreZombieList().keySet()) {
+            waveInstanceConfig.set(zombieName, WaveManager.getManager().getWaveInstance(id).getPreZombieList().get(zombieName));
         }
 
         try {
