@@ -187,8 +187,6 @@ public class GameInstance {
         if (this.gameState == GameState.LOBBY && gameState != GameState.COUNTDOWN) return false;
         if (this.gameState == GameState.COUNTDOWN && gameState != GameState.STARTING) return false;
         if (this.gameState == GameState.STARTING && gameState != GameState.ACTIVE) return false;
-        if (this.gameState == GameState.ACTIVE && gameState != GameState.FINISHED) return false;
-        if (this.gameState == GameState.FINISHED && gameState != GameState.RESTARTING) return false;
         if (this.gameState == GameState.RESTARTING && gameState != GameState.LOBBY) return false;
         if (this.gameState == gameState) return false;
 

@@ -262,7 +262,7 @@ public class GameManager {
     private void resetArena(String name) {
 
         GameInstance gameInstance = getGameInstance(name);
-        gameInstance.setGameState(GameState.FINISHED);
+        gameInstance.setGameState(GameState.RESTARTING);
 
         KeyedBossBar bar = bossbarList.get(name);
         bar.removeAll();
@@ -282,6 +282,8 @@ public class GameManager {
 
             playerStats.remove(uuid);
         }
+
+        gameInstance.getPlayers().clear();
 
         for(UUID id : arenaZombieList.get(name)) {
             Zombie zombie = (Zombie) Bukkit.getEntity(id);
@@ -428,7 +430,7 @@ public class GameManager {
                 startWave(name, wave);
 
             }
-        }.runTaskLaterAsynchronously(plugin, plugin.getConfig().getLong("settings.delayBeforeNextWave") * 20);
+        }.runTaskLater(plugin, plugin.getConfig().getLong("settings.delayBeforeNextWave") * 20);
 
     }
     private void startWave(String name, Integer wave) {
@@ -500,6 +502,7 @@ public class GameManager {
         UUID playerUUID = player.getUniqueId();
         PlayerInstance playerInstance = playerStats.get(playerUUID);
 
+        player.getInventory().clear();
         playerInstance.setAlive(false);
         player.setGameMode(GameMode.SPECTATOR);
 
@@ -557,7 +560,7 @@ public class GameManager {
         sendGameMessage(MessageType.PLAYER_JOIN, player, name, new String[]{""});
 
         if(gameInstance.getPlayers().size() >= plugin.getConfig().getInt("settings.startCountdownAtPlayers") &&
-            !arenaCountdownList.containsKey(gameInstance)) {
+            !arenaCountdownList.containsKey(name)) {
 
             gameInstance.setGameState(GameState.COUNTDOWN);
             arenaCountdownList.put(gameInstance.getName(), plugin.getConfig().getInt("settings.countdownTime") + 1);
