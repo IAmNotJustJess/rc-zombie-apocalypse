@@ -5,7 +5,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>roulycraft</groupId>
-    <artifactId>zombieApocalypse</artifactId>
+    <artifactId>ZombieApocalypse</artifactId>
     <version>0.1a</version>
     <packaging>jar</packaging>
 
