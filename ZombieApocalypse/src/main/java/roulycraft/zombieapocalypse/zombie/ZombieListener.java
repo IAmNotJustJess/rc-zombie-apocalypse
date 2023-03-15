@@ -14,7 +14,7 @@ import org.bukkit.metadata.FixedMetadataValue;
 import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
-import roulycraft.zombieapocalypse.managers.GameManager;
+import roulycraft.zombieapocalypse.game.GameManager;
 
 import java.util.*;
 
@@ -219,7 +219,7 @@ public class ZombieListener implements Listener {
             deathParticles(data, entity.getLocation().add(0, 1, 0));
 
             deleteZombieBossBar(namespacedKey);
-            GameManager.getManager().addScore(entity.getMetadata("instanceName").get(0).asString(), entity);
+            GameManager.getManager().addScore(entity.getMetadata("instanceName").get(0).asString(), entity.getUniqueId());
             entity.remove();
 
         }
@@ -232,6 +232,8 @@ public class ZombieListener implements Listener {
             return;
         }
 
+        event.setDamage(0.0);
+
         Player player = (Player) event.getEntity();
         Zombie zombie = (Zombie) event.getDamager();
 
@@ -240,6 +242,12 @@ public class ZombieListener implements Listener {
         int maxhp = GameManager.getManager().playerStats.get(player.getUniqueId()).getMaxHP();
 
         hp -= damage;
+        GameManager.getManager().playerStats.get(player.getUniqueId()).setHp(hp);
+        GameManager.getManager().displayPlayerActionBar(player);
 
+        if(hp <= 0) {
+            hp = 0;
+            GameManager.getManager().playerDeath(player);
+        }
     }
 }

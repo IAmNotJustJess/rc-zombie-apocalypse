@@ -1,4 +1,4 @@
-package roulycraft.zombieapocalypse.managers;
+package roulycraft.zombieapocalypse.game;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

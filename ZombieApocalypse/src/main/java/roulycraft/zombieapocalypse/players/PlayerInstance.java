@@ -15,9 +15,11 @@ public class PlayerInstance {
     private Double ammoModifier;
     private Double damageModifier;
     private Double spreadModifier;
-    public PlayerInstance(Player player, String selectedRanged, Integer maxHP, Integer hp, Double speed, Double speedModifier, Double ammoModifier, Double damageModifier, Double spreadModifier) {
+    public PlayerInstance(Player player, String inArena, Boolean isAlive, String selectedRanged, Integer maxHP, Integer hp, Double speed, Double speedModifier, Double ammoModifier, Double damageModifier, Double spreadModifier) {
 
         this.player = player;
+        this.inArena = inArena;
+        this.isAlive = isAlive;
         this.selectedRanged = selectedRanged;
         this.maxHP = maxHP;
         this.hp = hp;

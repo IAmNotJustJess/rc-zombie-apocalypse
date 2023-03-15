@@ -1,5 +1,0 @@
-package roulycraft.zombieapocalypse.managers;
-
-public enum MessageType {
-    PLAYER_JOIN, PLAYER_LEAVE, START_COUNTDOWN, REDUCE_COUNTDOWN, COUNTDOWN, START, WAVE_NEXT, WAVE_BEATEN, PLAYER_DEATH, ONE_PLAYER, EVERYONE
-}

@@ -6,6 +6,7 @@ public class PolishNumberConverter {
 
         int absNumber = Math.abs(number);
         String message = Integer.toString(number);
+        message += " ";
 
         if(absNumber == 1) {
             message += msg1;

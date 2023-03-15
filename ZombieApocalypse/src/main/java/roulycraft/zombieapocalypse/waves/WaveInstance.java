@@ -26,7 +26,7 @@ public class WaveInstance {
             return false;
         }
         totalWeight += weight;
-        zombieList.put(weight, zombieName);
+        zombieList.put(totalWeight, zombieName);
         return true;
     }
 
@@ -48,7 +48,11 @@ public class WaveInstance {
 
     public String getRandomZombie() {
 
-        return zombieList.higherEntry(new Random().nextDouble() * totalWeight).getValue();
+        double key = new Random().nextDouble() * totalWeight;
+        System.out.println(key);
+        System.out.println(totalWeight);
+
+        return zombieList.higherEntry(key).getValue();
 
     }
 }

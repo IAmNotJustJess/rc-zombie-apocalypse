@@ -70,6 +70,8 @@ public class WaveManager {
 
         waveInstanceList.add(new WaveInstance(waveNumber));
         waveInstanceList.sort(Comparator.comparing(WaveInstance::getWaveNumber));
+
+        saveWaveInstanceConfig(waveNumber);
     }
     public void reloadWaveInstanceConfig(Integer id) {
 
@@ -101,6 +103,10 @@ public class WaveManager {
 
         }
 
+        for(Double weight : WaveManager.getManager().getWaveInstance(id).getZombieList().keySet()) {
+            waveInstanceConfig.set(WaveManager.getManager().getWaveInstance(id).getZombieList().get(weight), weight);
+        }
+
         try {
 
             getWaveInstanceConfig(id).save(waveInstanceFile);
@@ -130,16 +136,17 @@ public class WaveManager {
 
         }
 
+        getWaveInstance(id).getZombieList().clear();
         for(String zombieName : waveInstanceConfig.getKeys(false)) {
 
-            Double weight = waveInstanceConfig.getDouble("path");
+            Double weight = waveInstanceConfig.getDouble(zombieName);
 
             if(!ZombieManager.getManager().getZombieInstance(zombieName).getName().equals(zombieName)) {
                 Bukkit.getConsoleSender().sendMessage("§4BŁĄD §cNie można było wczytać wartości zombie z§f" + zombieName + " §cpliku fali §f" + waveInstanceFile + "§c! Takie zombie nie istnieje!");
                 continue;
             }
 
-            getWaveInstance(id).getZombieList().put(weight, zombieName);
+            getWaveInstance(id).add(weight, zombieName);
 
         }
 

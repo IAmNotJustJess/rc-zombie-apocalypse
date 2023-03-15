@@ -1166,6 +1166,7 @@ public class WaveDefaultSettings {
 
 
         for(int i = 1; i <= 80; i++) {
+            WaveManager.getManager().reloadWaveInstanceConfig(i);
             WaveManager.getManager().saveWaveInstanceConfig(i);
         }
 

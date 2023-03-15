@@ -1,13 +1,8 @@
 package roulycraft.zombieapocalypse.commands;
 
 import net.kyori.adventure.audience.Audience;
-import net.kyori.adventure.text.Component;
-import net.kyori.adventure.text.format.TextColor;
-import net.kyori.adventure.text.format.TextDecoration;
 import net.kyori.adventure.text.minimessage.MiniMessage;
-import net.kyori.adventure.text.serializer.legacy.LegacyComponentSerializer;
 import org.bukkit.Location;
-import org.bukkit.Material;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 
@@ -15,14 +10,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-import org.bukkit.inventory.ItemStack;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
-import roulycraft.zombieapocalypse.managers.GameManager;
+import roulycraft.zombieapocalypse.game.GameManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.zombie.ZombieInstance;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
-
-import static net.kyori.adventure.text.format.Style.style;
 
 public class MainCommand implements CommandExecutor {
 
@@ -72,9 +64,10 @@ public class MainCommand implements CommandExecutor {
                     if (args.length == 1) {
                         sender.sendMessage(miniMessage.deserialize("<newline>"+symbolColour+"== "+headlineColour+"<bold>Komendy Podstawowe "+pluginName+" "+symbolColour+"==<newline>"));
                         sender.sendMessage(miniMessage.deserialize(commandColour+"/za help "+symbolColour+"- "+headlineColour+"Pomoc ogólna."));
-                        sender.sendMessage(miniMessage.deserialize(commandColour+"/za leave "+symbolColour+"- "+headlineColour+"Wyjście z areny."));
+                        sender.sendMessage(miniMessage.deserialize(commandColour+"/za join <instancja> "+symbolColour+"- "+headlineColour+"Dołączenia na konkretną arenę. [Komenda do testów]"));
+                        sender.sendMessage(miniMessage.deserialize(commandColour+"/za leave "+symbolColour+"- "+headlineColour+"Wychodzi z areny, na której jesteś. [Komenda do testów]"));
+                        sender.sendMessage(miniMessage.deserialize(commandColour+"/za tb <id> <poziom> "+symbolColour+"- "+headlineColour+"Wybiera ci broń, ID 1-15, Poziom 0-3 [Komenda do testów]"));
                         if (player.isOp() || player.hasPermission("za.ct")) {
-                            sender.sendMessage(miniMessage.deserialize(commandColour+"/za join <instancja> "+symbolColour+"- "+headlineColour+"Dołączenia na konkretną arenę."));
                             sender.sendMessage(miniMessage.deserialize(commandColour+"/za help ct "+symbolColour+"- "+headlineColour+"Pomoc tworzeniu aren."));
                             sender.sendMessage(miniMessage.deserialize(commandColour+"/za help debug "+symbolColour+"- "+headlineColour+"Pomoc w testowaniu lub debugowaniu aren."));
                             return true;
@@ -99,8 +92,28 @@ public class MainCommand implements CommandExecutor {
                         }
                     }
                 }
-
-                case "ct":
+                case "join": {
+                    if(args.length == 2) {
+                        if(GameManager.getManager().getGameInstance(args[1]) == null){
+                            break;
+                        }
+                        GameManager.getManager().addPlayer((Player) player, args[1]);
+                    }
+                    break;
+                }
+                case "leave": {
+                    GameManager.getManager().removePlayer((Player) player);
+                    break;
+                }
+                case "tb": {
+                    if(args.length != 3) {
+                        break;
+                    }
+                    String weapon = args[1]+":"+args[2];
+                    GameManager.getManager().changePlayerWeapon((Player) player, weapon);
+                    break;
+                }
+                case "ct": {
 
                     if (!player.isOp() || !player.hasPermission("za.ct")) {
                         sender.sendMessage(miniMessage.deserialize(missingPermissionMessage));
@@ -203,7 +216,7 @@ public class MainCommand implements CommandExecutor {
                                     case "add":
 
                                         GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().add(p.getLocation());
-                                        GameManager.getManager().getGameInstanceConfig(args[1]).set(("playerSpawnLocs." + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1)), p.getLocation());
+                                        GameManager.getManager().getGameInstanceConfig(args[1]).set(("zombieSpawnLocs." + (GameManager.getManager().getGameInstance(args[1]).getZombieSpawnLocs().size() - 1)), p.getLocation());
 
                                         GameManager.getManager().saveGameInstanceConfig(args[1]);
 
@@ -271,9 +284,10 @@ public class MainCommand implements CommandExecutor {
 
                                 sender.sendMessage(miniMessage.deserialize(missingArgumentsMessage));
                                 return true;
+                        }
                     }
                 }
-                case "debug":
+                case "debug": {
 
                     if (!player.isOp() || !player.hasPermission("za.ct")) {
                         sender.sendMessage(miniMessage.deserialize(missingPermissionMessage));
@@ -341,6 +355,7 @@ public class MainCommand implements CommandExecutor {
                             return true;
 
                     }
+                }
             }
 
         }

@@ -3,12 +3,14 @@ package roulycraft.zombieapocalypse;
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.MiniMessage;
 import org.bukkit.Bukkit;
-import org.bukkit.command.ConsoleCommandSender;
+import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import roulycraft.zombieapocalypse.commands.MainCommand;
-import roulycraft.zombieapocalypse.managers.*;
+import roulycraft.zombieapocalypse.game.*;
+import roulycraft.zombieapocalypse.players.PlayerListener;
 import roulycraft.zombieapocalypse.utility.SoundSplitter;
+import roulycraft.zombieapocalypse.waves.WaveDefaultSettings;
 import roulycraft.zombieapocalypse.waves.WaveManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedDefaultSettings;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
@@ -16,6 +18,7 @@ import roulycraft.zombieapocalypse.weapons.ranged.RangedWeaponInterpreter;
 import roulycraft.zombieapocalypse.zombie.*;
 
 import java.io.File;
+import java.util.Iterator;
 import java.util.Objects;
 
 public final class ZombieApocalypse extends JavaPlugin {
@@ -23,6 +26,15 @@ public final class ZombieApocalypse extends JavaPlugin {
     @Override
     public void onEnable() {
 
+        for (Iterator<KeyedBossBar> it = Bukkit.getBossBars(); it.hasNext(); ) {
+
+            KeyedBossBar bar = it.next();
+
+            if(bar.getKey().getKey().contains("zabossbar.")) {
+                bar.removeAll();
+            }
+
+        }
         GameManager.injectPlugin(this);
         ZombieManager.injectPlugin(this);
         MainCommand.injectPlugin(this);
@@ -39,6 +51,7 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         getServer().getPluginManager().registerEvents(new ZombieListener(), this);
         getServer().getPluginManager().registerEvents(new RangedWeaponInterpreter(), this);
+        getServer().getPluginManager().registerEvents(new PlayerListener(), this);
 
         Audience console = (Audience) Bukkit.getConsoleSender();
         MiniMessage miniMessage = MiniMessage.miniMessage();
@@ -69,7 +82,53 @@ public final class ZombieApocalypse extends JavaPlugin {
         console.sendMessage(miniMessage.deserialize(""));
 
         File rangedFolder = new File(this.getDataFolder() + File.separator + "instances" + File.separator + "weapons" + File.separator + "ranged");
+        File waveFolder = new File(this.getDataFolder() + File.separator + "instances" + File.separator + "waves");
 
+        console.sendMessage(miniMessage.deserialize(""));
+        console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Inicjowanie listy broni dalekosiężnej! <blue>=="));
+        console.sendMessage(miniMessage.deserialize(""));
+
+        if(!waveFolder.exists()) {
+
+            if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                console.sendMessage(miniMessage.deserialize("<gold>INFO! <yellow>Nie znaleziono folderu <white>waves<yellow>! Tworzę domyślną konfigurację folderu <white>waves<yellow>..."));
+                console.sendMessage(miniMessage.deserialize(""));
+            }
+
+            WaveDefaultSettings.loadDefaultSettings();
+
+        }
+
+        File[] waveFileList = waveFolder.listFiles();
+        assert waveFileList != null;
+
+        if(waveFolder.exists()) {
+
+            for (File waveInstanceFile : waveFileList) {
+
+                String waveInstanceName = waveInstanceFile.getName().substring(0, waveInstanceFile.getName().length() - 4);
+
+                if (WaveManager.getManager().loadWaveInstanceConfig(Integer.valueOf(waveInstanceName))) {
+
+                    if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                        console.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Poprawnie zinicjonowano instancję fali o ID: <white>" + waveInstanceName + "<green>!"));
+                    }
+
+                }
+
+                else {
+
+                    if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                        console.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Inicjacja instancji fali o ID: <white>" + waveInstanceName + "<red> nie powiodła się!"));
+                    }
+
+                }
+            }
+        }
+
+        console.sendMessage(miniMessage.deserialize(""));
+        console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Zakończono inicjowanie listy fal! <blue>=="));
+        console.sendMessage(miniMessage.deserialize(""));
 
         console.sendMessage(miniMessage.deserialize(""));
         console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Inicjowanie listy broni dalekosiężnej! <blue>=="));

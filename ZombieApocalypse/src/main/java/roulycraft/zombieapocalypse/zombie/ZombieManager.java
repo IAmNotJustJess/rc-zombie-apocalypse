@@ -21,6 +21,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.UUID;
 
 import static org.bukkit.Material.*;
 
@@ -795,7 +796,7 @@ public class ZombieManager {
 
     }
 
-    public static Zombie spawnZombie(Location loc, String name, Boolean countTowardsKills, String instanceName) {
+    public static UUID spawnZombie(Location loc, String name, Boolean countTowardsKills, String instanceName) {
 
         Entity zombie = loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
 
@@ -843,8 +844,7 @@ public class ZombieManager {
         ((Zombie) zombie).getEquipment().setBootsDropChance(0f);
 
         ZombieListener.insertMap(NamespacedKey.fromString(zombie.getMetadata("bossbarKey").get(0).asString(), plugin));
-
-        return (Zombie) zombie;
+        return zombie.getUniqueId();
     }
 }
 

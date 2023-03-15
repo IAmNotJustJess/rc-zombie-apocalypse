@@ -2,26 +2,21 @@ plugin:
   version: 0 #DO NOT CHANGE THIS - IT MAY BREAK AUTOMATIC UPDATES
 
 settings:
-
   logZombieLoad: true
   logRangedLoad: true
   logArenaLoad: true
-
   logGameStateChanges: true
-
   minPlayersPerArena: 1
   maxPlayersPerArena: 32
-
   startCountdownAtPlayers: 1
-  countdownTime: 60
+  countdownTime: 5
   countdownReductionPlayers: 2
-  countdownReduceTo: 10
-
-  delayBeforeNextWave: 100 #in ticks (20 ticks - 1 second)
+  countdownReduceTo: 5
+  delayBeforeNextWave: 5
   newWaveZombieKills: 45
   gameOverAfter: 240
-
-  spawnZombiesDelay: 40 #in ticks
+  spawnZombiesDelay: 2
+  waveCount: 80
 
 messages:
   plugin:
@@ -49,31 +44,27 @@ messages:
   arena:
     playerJoinLobby: "%player% dołącza do areny." # %player% - Player
     playerLeaveLobby: "%player% opuszcza arenę." # %player% - Player
-
     minimumPlayersReached: "Na arenie jest wystarczająca ilość graczy! Odliczanie rozpoczęte!"
     reductionPlayersReached: "Arena jest pełna! Odliczanie skrócone!"
     arenaCountdown: "Arena rozpocznie się za %time%." # %time% - Time until the arena starts
-
+    weaponChange: "Wybrano broń %weapon% o poziomie %level%§r! Otrzymasz ją na następnej fali!" # %weapon% - selected weapon, %level% - level of the weapon
     arenaBeginExplenationTitles: "Witaj na%nl%Twoje zadania:%nl%Twoje zadania:%nl%Twoje zadania:"  # %nl% - Split for multiple titles
     arenaBeginExplenationSubtitles: "Zombie Apocalypse!%nl%Przetrwaj jak najdłużej!%nl%Zabijaj zombie!%nl%" # %nl% - Split for multiple subtitles
     arenaBeginExplenationMessages: "Witaj na ZombieApocalypse (Java Reworked Edition)!%br%%br%Obecnie grasz na zamkniętych testach alpha!%nl% 
     Przetrwaj jak najdłużej walcząć z licznymi falami Zombie.%br%%br%Im większa fala, tym silniejsze stają się zombie%br%Aktualnie gra kończy się po 80 fali!%nl%
     Zabijaj jak najwięcej zombie!%br%%br%Po zabiciu wymaganej ilości kolejna fala rozpocznie się automatycznie.%br%Zmieniaj bronie (jak narazie) pod komendą /za tb <id> <poziom>, ID: 1 - 15, Poziom 0 - 3" # %nl% - Split for multiple messages, %br% - Split for multiple rows of messages
-
     arenaBeginTitle: "Powodzenia!"
     arenaBeginSubtitle: "Start za 5 sekund!"
     arenaBeginMessages: "Powodzenia!%br%%br%Pierwsza fala rozpoczenie się za 5 sekund!" # %br% - Split for multiple rows of messages
-
     nextWave: "Następna fala: %wave%" # %wave% - Next wave
     nextWaveTitle: "Fala %wave%" # %wave% - Next wave
     nextWaveSubtitle10s: "Zombie stają się potężniejsze..."
-
     waveBeaten: "Fala %wave% zakończona! Kolejna fala za 5 sekund..." # %wave% - Wave beaten
     waveTimeout: "Czas się kończy! Pozostało %time% do przegranej!" # %time% - Time till losing
-
     playerDeathTitle: "Umarłeś! Odrodzenie nastąpi po starcie kolejnej fali!"
     playerDeathSubtitle: "Umarłeś! Odrodzenie nastąpi po starcie kolejnej fali!"
-    playerDeathMessage: "Umarłeś! Odrodzenie nastąpi po starcie kolejnej fali!"
-
+    playerDeathMessage: "%player% został zabity! Zostało %alive% żywycych graczy!" # %player% - player, %alive% - alive players
     defeat: "Przegrana... Zombie was pokonały..."
+    defeatTitle: "Przegrana.."
     victory: "Zwycięstwo! Zombie zostały pokonane!"
+    victoryTitle: "Zwycięstwo!"
