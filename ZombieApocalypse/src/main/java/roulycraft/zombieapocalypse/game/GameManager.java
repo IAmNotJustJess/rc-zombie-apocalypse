@@ -221,6 +221,7 @@ public class GameManager {
         bossbarList.put(name, bar);
 
         bar.setProgress(1.0);
+        getRandomPlayer(name).getWorld().setGameRule(GameRule.NATURAL_REGENERATION, false);
 
         for(UUID uuid : gameInstance.getPlayers()) {
             Player player = Bukkit.getPlayer(uuid);
@@ -281,6 +282,13 @@ public class GameManager {
             lastPlayerLocs.remove(uuid);
 
             playerStats.remove(uuid);
+
+            player.setGameMode(GameMode.ADVENTURE);
+
+            player.setHealth(20);
+            player.setFoodLevel(20);
+            player.setExp(0f);
+            player.setLevel(0);
         }
 
         gameInstance.getPlayers().clear();
@@ -322,15 +330,21 @@ public class GameManager {
             return;
         }
 
-        Integer hp = playerStats.get(player.getUniqueId()).getHp();
+        int hp = playerStats.get(player.getUniqueId()).getHp();
+        int maxhp = playerStats.get(player.getUniqueId()).getMaxHP();
+        double hpPercentage = (double) hp/(double) maxhp * 20;
 
         String bar = plugin.getConfig().getString("messages.formats.playerActionBar")
             .replace("%hp1%", String.valueOf(hp))
-            .replace("%hp2%", String.valueOf(playerStats.get(player.getUniqueId()).getMaxHP()));
+            .replace("%hp2%", String.valueOf(maxhp));
         MiniMessage miniMessage = MiniMessage.miniMessage();
-        if(hp < 0){
+        if(hp <= 1.0){
+            hpPercentage = 1.0;
+        }
+        if(hp <= 0.0){
             bar = "";
         }
+        player.setHealth(hpPercentage);
 
 
         ((Audience) player).sendActionBar(miniMessage.deserialize(bar));
@@ -553,6 +567,11 @@ public class GameManager {
         player.getInventory().clear();
         player.setGameMode(GameMode.ADVENTURE);
 
+        player.setHealth(20);
+        player.setFoodLevel(20);
+        player.setExp(0f);
+        player.setLevel(0);
+
         lastPlayerLocs.put(player.getUniqueId(), player.getLocation());
         player.teleport(gameInstance.getLobby());
 
@@ -614,7 +633,6 @@ public class GameManager {
         }
 
         playerStats.remove(player.getUniqueId());
-        gameInstance.getPlayers().remove(player.getUniqueId());
 
         player.getInventory().clear();
 
@@ -630,12 +648,21 @@ public class GameManager {
 
         playerStats.remove(player.getUniqueId());
 
-        player.setFireTicks(0);
-
-        if((gameInstance.gameState == GameState.ACTIVE || gameInstance.gameState == GameState.STARTING && gameInstance.getPlayers().size() == 0)) {
+        if(gameInstance.gameState == GameState.ACTIVE || gameInstance.gameState == GameState.STARTING) {
             KeyedBossBar bar = bossbarList.get(gameInstance.getName());
             bar.removePlayer(player);
+        }
 
+        player.setFireTicks(0);
+        player.setHealth(20.0);
+        player.setFoodLevel(20);
+        player.setExp(0f);
+        player.setLevel(0);
+        player.setGameMode(GameMode.SURVIVAL);
+
+        gameInstance.getPlayers().remove(player.getUniqueId());
+
+        if((gameInstance.gameState == GameState.ACTIVE || gameInstance.gameState == GameState.STARTING) && gameInstance.getPlayers().size() == 0) {
             endArena(
                 gameInstance.getName(),
                 0
@@ -925,5 +952,22 @@ public class GameManager {
 
         }
         return true;
+    }
+    public Player getRandomPlayer(String name) {
+        GameInstance gameInstance = getGameInstance(name);
+
+        List<UUID> list = gameInstance.getPlayers();
+
+        for(UUID uuid : list) {
+            if(Bukkit.getPlayer(uuid).getGameMode() != GameMode.ADVENTURE)
+                list.remove(uuid);
+        }
+
+        int playerIndex = new Random().nextInt(list.size());
+        if(list.size() == 1){
+            playerIndex = 0;
+        }
+
+        return Bukkit.getPlayer(list.get(playerIndex));
     }
 }

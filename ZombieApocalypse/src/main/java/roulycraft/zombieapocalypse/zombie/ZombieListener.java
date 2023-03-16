@@ -224,30 +224,4 @@ public class ZombieListener implements Listener {
 
         }
     }
-
-    @EventHandler
-    public void onPlayerDamage(EntityDamageByEntityEvent event) {
-
-        if(event.getEntity().getType() != EntityType.PLAYER || event.getDamager().getType() != EntityType.ZOMBIE || !event.getDamager().getMetadata("ZA").get(0).asBoolean()) {
-            return;
-        }
-
-        event.setDamage(0.0);
-
-        Player player = (Player) event.getEntity();
-        Zombie zombie = (Zombie) event.getDamager();
-
-        int damage = zombie.getMetadata("damage").get(0).asInt();
-        int hp = GameManager.getManager().playerStats.get(player.getUniqueId()).getHp();
-        int maxhp = GameManager.getManager().playerStats.get(player.getUniqueId()).getMaxHP();
-
-        hp -= damage;
-        GameManager.getManager().playerStats.get(player.getUniqueId()).setHp(hp);
-        GameManager.getManager().displayPlayerActionBar(player);
-
-        if(hp <= 0) {
-            hp = 0;
-            GameManager.getManager().playerDeath(player);
-        }
-    }
 }
