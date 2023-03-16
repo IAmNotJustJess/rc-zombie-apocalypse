@@ -10,11 +10,13 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.metadata.FixedMetadataValue;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
+import roulycraft.zombieapocalypse.game.GameManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -798,7 +800,7 @@ public class ZombieManager {
 
     public static UUID spawnZombie(Location loc, String name, Boolean countTowardsKills, String instanceName) {
 
-        Entity zombie = loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
+        Zombie zombie = (Zombie) loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
 
         zombie.setCustomName(ZombieManager.getManager().getZombieInstance(name).getDisplayName());
         zombie.setCustomNameVisible(true);
@@ -826,22 +828,30 @@ public class ZombieManager {
             zombie.setMetadata("countTowardKills", new FixedMetadataValue(plugin, 0));
         }
 
-        ((Zombie) zombie).getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(ZombieManager.getManager().getZombieInstance(name).getSpeed()/10);
+        zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(ZombieManager.getManager().getZombieInstance(name).getSpeed()/10);
 
-        ((Zombie) zombie).setAdult();
+        zombie.setAdult();
+        zombie.setRemoveWhenFarAway(false);
 
-        ((Zombie) zombie).getEquipment().setItemInMainHand(new ItemStack(Material.AIR, 0));
-        ((Zombie) zombie).getEquipment().setItemInOffHand(new ItemStack(Material.AIR, 0));
+        zombie.getEquipment().setItemInMainHand(new ItemStack(Material.AIR, 0));
+        zombie.getEquipment().setItemInOffHand(new ItemStack(Material.AIR, 0));
 
-        ((Zombie) zombie).getEquipment().setHelmet(ZombieManager.getManager().getZombieInstance(name).getHelmet());
-        ((Zombie) zombie).getEquipment().setChestplate(ZombieManager.getManager().getZombieInstance(name).getChestplate());
-        ((Zombie) zombie).getEquipment().setLeggings(ZombieManager.getManager().getZombieInstance(name).getLeggings());
-        ((Zombie) zombie).getEquipment().setBoots(ZombieManager.getManager().getZombieInstance(name).getBoots());
+        zombie.getEquipment().setHelmet(ZombieManager.getManager().getZombieInstance(name).getHelmet());
+        zombie.getEquipment().setChestplate(ZombieManager.getManager().getZombieInstance(name).getChestplate());
+        zombie.getEquipment().setLeggings(ZombieManager.getManager().getZombieInstance(name).getLeggings());
+        zombie.getEquipment().setBoots(ZombieManager.getManager().getZombieInstance(name).getBoots());
 
-        ((Zombie) zombie).getEquipment().setHelmetDropChance(0f);
-        ((Zombie) zombie).getEquipment().setChestplateDropChance(0f);
-        ((Zombie) zombie).getEquipment().setLeggingsDropChance(0f);
-        ((Zombie) zombie).getEquipment().setBootsDropChance(0f);
+        zombie.getEquipment().setHelmetDropChance(0f);
+        zombie.getEquipment().setChestplateDropChance(0f);
+        zombie.getEquipment().setLeggingsDropChance(0f);
+        zombie.getEquipment().setBootsDropChance(0f);
+
+        if (!instanceName.equals("")) {
+            Player player = GameManager.getManager().getRandomPlayer(instanceName);
+            if(player.getGameMode() == GameMode.ADVENTURE){
+                zombie.setTarget(player);
+            }
+        }
 
         ZombieListener.insertMap(NamespacedKey.fromString(zombie.getMetadata("bossbarKey").get(0).asString(), plugin));
         return zombie.getUniqueId();
