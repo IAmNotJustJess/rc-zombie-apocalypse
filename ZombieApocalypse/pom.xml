@@ -6,7 +6,7 @@
 
     <groupId>roulycraft</groupId>
     <artifactId>ZombieApocalypse</artifactId>
-    <version>0.1.4a</version>
+    <version>0.1.5a</version>
     <packaging>jar</packaging>
 
     <name>ZombieApocalypse</name>

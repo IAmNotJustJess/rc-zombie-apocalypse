@@ -848,7 +848,7 @@ public class ZombieManager {
 
         if (!instanceName.equals("")) {
             Player player = GameManager.getManager().getRandomPlayer(instanceName);
-            if(player.getGameMode() == GameMode.ADVENTURE){
+            if(player != null){
                 zombie.setTarget(player);
             }
         }

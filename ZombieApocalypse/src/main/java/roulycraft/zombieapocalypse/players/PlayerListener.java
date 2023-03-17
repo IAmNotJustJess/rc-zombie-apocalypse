@@ -1,8 +1,6 @@
 package roulycraft.zombieapocalypse.players;
 
-import org.bukkit.entity.EntityType;
-import org.bukkit.entity.Player;
-import org.bukkit.entity.Zombie;
+import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -29,14 +27,25 @@ public class PlayerListener implements Listener {
     @EventHandler
     public void onPlayerDamage(EntityDamageByEntityEvent event) {
 
-        if(event.getEntity().getType() == EntityType.PLAYER && event.getDamager().getType() == EntityType.PLAYER &&
-            GameManager.getManager().playerStats.containsKey(event.getEntity().getUniqueId()) && GameManager.getManager().playerStats.containsKey(event.getDamager().getUniqueId())) {
-            event.setCancelled(true);
-            return;
+        if(event.getEntity() instanceof Player && GameManager.getManager().playerStats.containsKey(event.getEntity().getUniqueId())) {
+            if(event.getDamager() instanceof Projectile) {
+                Projectile projectile = (Projectile) event.getDamager();
+                if(projectile.getShooter() instanceof Player) {
+                    Player damager = (Player) projectile.getShooter();
+                    if(GameManager.getManager().playerStats.containsKey(damager.getUniqueId())) {
+                        event.setCancelled(true);
+                        return;
+                    }
+                }
+            }
+            else if(event.getDamager() instanceof Player && GameManager.getManager().playerStats.containsKey(event.getDamager().getUniqueId())) {
+                event.setCancelled(true);
+                return;
+            }
         }
 
-        if(event.getEntity().getType() != EntityType.PLAYER
-            || event.getDamager().getType() != EntityType.ZOMBIE
+        if(!(event.getEntity() instanceof Player)
+            || !(event.getDamager() instanceof Zombie)
             || !event.getDamager().getMetadata("ZA").get(0).asBoolean()
             || !GameManager.getManager().playerStats.containsKey(event.getEntity().getUniqueId())) {
             return;

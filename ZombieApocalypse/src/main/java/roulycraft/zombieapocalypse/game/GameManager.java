@@ -117,7 +117,9 @@ public class GameManager {
                 spawnZombieInArena(name);
 
             }
-        }.runTaskLater(plugin, plugin.getConfig().getLong("settings.spawnZombiesDelay") * 20);
+        }.runTaskLater(plugin,
+                       (long) (plugin.getConfig().getDouble("settings.spawnZombiesDelay") * 20)
+        );
     }
     private void startArenaCountdown(String name) {
 
@@ -956,11 +958,11 @@ public class GameManager {
     public Player getRandomPlayer(String name) {
         GameInstance gameInstance = getGameInstance(name);
 
-        List<UUID> list = gameInstance.getPlayers();
+        List<UUID> list = new ArrayList<>();
 
-        for(UUID uuid : list) {
-            if(Bukkit.getPlayer(uuid).getGameMode() != GameMode.ADVENTURE)
-                list.remove(uuid);
+        for(UUID uuid : gameInstance.getPlayers()) {
+            if(Bukkit.getPlayer(uuid).getGameMode() == GameMode.ADVENTURE)
+                list.add(uuid);
         }
 
         int playerIndex = new Random().nextInt(list.size());
