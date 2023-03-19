@@ -35,13 +35,14 @@ public final class ZombieApocalypse extends JavaPlugin {
             }
 
         }
+        SoundSplitter.injectPlugin(this);
+        MainCommand.injectPlugin(this);
         GameManager.injectPlugin(this);
         ZombieManager.injectPlugin(this);
-        MainCommand.injectPlugin(this);
         ZombieListener.injectPlugin(this);
+        ZombieDefaultSettings.injectPlugin(this);
         RangedWeaponInterpreter.injectPlugin(this);
         RangedManager.injectPlugin(this);
-        SoundSplitter.injectPlugin(this);
         RangedDefaultSettings.injectPlugin(this);
         WaveManager.injectPlugin(this);
         WaveDefaultSettings.injectPlugin(this);
@@ -59,7 +60,7 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         console.sendMessage(miniMessage.deserialize("<gold>==== <yellow>Trwa proces inicjacji <green>ZombieApocalypse<yellow>! <gold>===="));
 
-        File zombieFile = new File(this.getDataFolder() + File.separator + "zombie.yml");
+        File zombieFile = new File(this.getDataFolder() + File.separator + "instances" + File.separator + "zombies");
 
         console.sendMessage(miniMessage.deserialize(""));
         console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Inicjowanie listy zombie! <blue>=="));
@@ -68,15 +69,40 @@ public final class ZombieApocalypse extends JavaPlugin {
         if(!zombieFile.exists()) {
 
             if(this.getConfig().getBoolean("settings.logZombieLoad")) {
-                console.sendMessage(miniMessage.deserialize("<gold>INFO! <yellow>Nie znaleziono pliku! Tworzę domyślną konfigurację pliku <white>zombie.yml<yellow>..."));
+                console.sendMessage(miniMessage.deserialize("<gold>INFO! <yellow>Nie znaleziono folderu <white> zombies<yellow>! Tworzę domyślną konfigurację folder <white>zombies<yellow>..."));
                 console.sendMessage(miniMessage.deserialize(""));
             }
 
-            ZombieManager.getManager().createDefaultZombieInstances();
+            ZombieDefaultSettings.getManager().loadDefaultSettings();
 
         }
 
-        ZombieManager.getManager().loadZombieInstanceConfig();
+        File[] zombieFileList = zombieFile.listFiles();
+        assert zombieFileList != null;
+
+        if(zombieFile.exists()) {
+
+            for (File zombieInstanceFile : zombieFileList) {
+
+                String zombieInstanceName = zombieInstanceFile.getName().substring(0, zombieInstanceFile.getName().length() - 4);
+
+                if (ZombieManager.getManager().loadZombieInstanceConfig(zombieInstanceName)) {
+
+                    if(this.getConfig().getBoolean("settings.logZombieLoad")) {
+                        console.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Poprawnie zinicjonowano zombie <white>" + zombieInstanceName + "<green>!"));
+                    }
+
+                }
+
+                else {
+
+                    if(this.getConfig().getBoolean("settings.logZombieLoad")) {
+                        console.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Inicjacja zombie <white>" + zombieInstanceName + "<red> nie powiodła się!"));
+                    }
+
+                }
+            }
+        }
 
         console.sendMessage(miniMessage.deserialize(""));
         console.sendMessage(miniMessage.deserialize("<blue>== <aqua>Zakończono inicjowanie listy zombie! <blue>=="));
@@ -91,7 +117,7 @@ public final class ZombieApocalypse extends JavaPlugin {
 
         if(!waveFolder.exists()) {
 
-            if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+            if(this.getConfig().getBoolean("settings.logWaveLoad")) {
                 console.sendMessage(miniMessage.deserialize("<gold>INFO! <yellow>Nie znaleziono folderu <white>waves<yellow>! Tworzę domyślną konfigurację folderu <white>waves<yellow>..."));
                 console.sendMessage(miniMessage.deserialize(""));
             }
@@ -111,7 +137,7 @@ public final class ZombieApocalypse extends JavaPlugin {
 
                 if (WaveManager.getManager().loadWaveInstanceConfig(Integer.valueOf(waveInstanceName))) {
 
-                    if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                    if(this.getConfig().getBoolean("settings.logWaveLoad")) {
                         console.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Poprawnie zinicjonowano instancję fali o ID: <white>" + waveInstanceName + "<green>!"));
                     }
 
@@ -119,7 +145,7 @@ public final class ZombieApocalypse extends JavaPlugin {
 
                 else {
 
-                    if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                    if(this.getConfig().getBoolean("settings.logWaveLoad")) {
                         console.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Inicjacja instancji fali o ID: <white>" + waveInstanceName + "<red> nie powiodła się!"));
                     }
 
@@ -174,8 +200,10 @@ public final class ZombieApocalypse extends JavaPlugin {
 
             RangedManager.getManager().parseRangedInstancesAsItems();
 
-            console.sendMessage(miniMessage.deserialize(""));
-            console.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Poprawnie zparsowano pliki na przedmioty!"));
+            if(this.getConfig().getBoolean("settings.logRangedLoad")) {
+                console.sendMessage(miniMessage.deserialize(""));
+                console.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Poprawnie zparsowano pliki na przedmioty!"));
+            }
 
 
             console.sendMessage(miniMessage.deserialize(""));

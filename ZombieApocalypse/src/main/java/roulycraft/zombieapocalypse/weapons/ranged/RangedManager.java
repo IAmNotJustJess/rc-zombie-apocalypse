@@ -10,6 +10,7 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.persistence.PersistentDataType;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
+import roulycraft.zombieapocalypse.utility.StringSerialisation;
 
 import java.io.File;
 import java.io.IOException;
@@ -39,23 +40,6 @@ public class RangedManager {
         secondaryColours[2] = plugin.getConfig().getString("messages.plugin.guns.level2.secondary");
         secondaryColours[3] = plugin.getConfig().getString("messages.plugin.guns.level3.secondary");
 
-        for(int i = 0; i < 4; i++) {
-            String[] ranged = (primaryColours[i]).split("");
-            String helper = "§x";
-            for(int j = 2; j < 8; j++) {
-                helper += "§"+ranged[j];
-            }
-            primaryColours[i] = helper;
-        }
-
-        for(int i = 0; i < 4; i++) {
-            String[] ranged = (secondaryColours[i]).split("");
-            String helper = "§x";
-            for(int j = 2; j < 8; j++) {
-                helper += "§"+ranged[j];
-            }
-            secondaryColours[i] = helper;
-        }
     }
 
     private RangedManager() {
@@ -297,10 +281,6 @@ public class RangedManager {
 
     public void reloadRangedInstanceConfig(Integer id) {
 
-        if (rangedInstanceFile == null) {
-            rangedInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "weapons" + File.separator + "ranged", (id + ".yml"));
-        }
-
         rangedInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "weapons" + File.separator + "ranged", (id + ".yml"));
         rangedInstanceConfig = YamlConfiguration.loadConfiguration(rangedInstanceFile);
 
@@ -439,7 +419,10 @@ public class RangedManager {
             item = new ItemStack(rangedInstance.getItem());
             ItemMeta im = item.getItemMeta();
 
-            im.setDisplayName(rangedInstance.getName()+" "+secondaryColours[rangedInstance.getLevel()]+"| "+primaryColours[rangedInstance.getLevel()]+rangedInstance.getClipSize());
+            String itemName = rangedInstance.getName()+" "+secondaryColours[rangedInstance.getLevel()]+"| "+primaryColours[rangedInstance.getLevel()]+rangedInstance.getClipSize();
+            itemName = StringSerialisation.deserialise(itemName);
+
+            im.setDisplayName(itemName);
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "zaGun"), PersistentDataType.INTEGER, 1);
 

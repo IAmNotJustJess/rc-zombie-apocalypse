@@ -22,6 +22,7 @@ import org.bukkit.scheduler.BukkitRunnable;
 import org.bukkit.util.Vector;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.utility.SoundSplitter;
+import roulycraft.zombieapocalypse.utility.StringSerialisation;
 
 import java.util.*;
 
@@ -92,6 +93,8 @@ public class RangedWeaponInterpreter implements Listener {
 
         String[] displayName = itemMeta.getDisplayName().split("\\|");
 
+        displayName[0] = StringSerialisation.serialise(displayName[0]);
+
         switch(reloadType) {
 
             case "multipleBullets": {
@@ -149,7 +152,9 @@ public class RangedWeaponInterpreter implements Listener {
 
                                     itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecialTracker"), PersistentDataType.INTEGER, 0);
 
-                                    itemMeta.setDisplayName(displayName[0]+secondaryColours[level]+"| "+primaryColours[level]+currentAmmo[0]);
+                                    String itemName = StringSerialisation.deserialise(displayName[0]+secondaryColours[level]+"| "+primaryColours[level]+currentAmmo[0]);
+
+                                    itemMeta.setDisplayName(itemName);
 
                                     item.setItemMeta(itemMeta);
 
@@ -226,7 +231,9 @@ public class RangedWeaponInterpreter implements Listener {
 
                         itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecialTracker"), PersistentDataType.INTEGER, 0);
 
-                        itemMeta.setDisplayName(displayName[0]+secondaryColours[level]+"| "+primaryColours[level]+clipSize);
+                        String itemName = StringSerialisation.deserialise(displayName[0]+secondaryColours[level]+"| "+primaryColours[level]+clipSize);
+
+                        itemMeta.setDisplayName(itemName);
 
                         item.setItemMeta(itemMeta);
 
@@ -761,8 +768,11 @@ public class RangedWeaponInterpreter implements Listener {
                         Integer level = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
 
                         String[] displayName = itemMeta.getDisplayName().split("\\|");
+                        displayName[0] = StringSerialisation.serialise(displayName[0]);
 
-                        itemMeta.setDisplayName(displayName[0]+secondaryColours[level]+"| "+primaryColours[level]+currentAmmo[0]);
+                        String itemName = StringSerialisation.deserialise(displayName[0]+secondaryColours[level]+"| "+primaryColours[level]+currentAmmo[0]);
+
+                        itemMeta.setDisplayName(itemName);
 
                         String actionType = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING);
                         Integer actionSpecial = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "actionSpecial"), PersistentDataType.INTEGER);
@@ -916,22 +926,5 @@ public class RangedWeaponInterpreter implements Listener {
         secondaryColours[2] = plugin.getConfig().getString("messages.plugin.guns.level2.secondary");
         secondaryColours[3] = plugin.getConfig().getString("messages.plugin.guns.level3.secondary");
 
-        for(int i = 0; i < 4; i++) {
-            String[] ranged = (primaryColours[i]).split("");
-            String helper = "§x";
-            for(int j = 2; j < 8; j++) {
-                helper += "§"+ranged[j];
-            }
-            primaryColours[i] = helper;
-        }
-
-        for(int i = 0; i < 4; i++) {
-            String[] ranged = (secondaryColours[i]).split("");
-            String helper = "§x";
-            for(int j = 2; j < 8; j++) {
-                helper += "§"+ranged[j];
-            }
-            secondaryColours[i] = helper;
-        }
     }
 }

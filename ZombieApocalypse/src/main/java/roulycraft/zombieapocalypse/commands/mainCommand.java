@@ -40,6 +40,7 @@ public class MainCommand implements CommandExecutor {
         String noArgumentsMessage = "<dark_red>BŁĄD! <red>Wpisz /za help by wyświetlić listę argumentów!";
         String missingInstanceNameMessage = "<dark_red>BŁĄD! <red>Wprowadź nazwę areny!";
         String missingZombieMessage = "<dark_red>BŁĄD! <red>Wprowadź nazwę zombie!";
+        String arenaDoesNotExist = "<dark_red>BŁĄD! <red>Arena nie istnieje!";
 
         if (!(sender instanceof Player)) {
 
@@ -95,6 +96,7 @@ public class MainCommand implements CommandExecutor {
                 case "join": {
                     if(args.length == 2) {
                         if(GameManager.getManager().getGameInstance(args[1]) == null){
+                            sender.sendMessage(miniMessage.deserialize(arenaDoesNotExist));
                             break;
                         }
                         GameManager.getManager().addPlayer((Player) player, args[1]);

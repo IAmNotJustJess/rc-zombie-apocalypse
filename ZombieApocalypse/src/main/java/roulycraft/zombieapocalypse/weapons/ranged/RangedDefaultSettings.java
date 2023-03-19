@@ -18,15 +18,6 @@ public class RangedDefaultSettings {
         rangedLvl[2] = plugin.getConfig().getString("messages.plugin.guns.level2.primary");
         rangedLvl[3] = plugin.getConfig().getString("messages.plugin.guns.level3.primary");
 
-        for(int i = 0; i < 4; i++) {
-            String[] ranged = (rangedLvl[i]).split("");
-            String helper = "§x";
-            for(int j = 2; j < 8; j++) {
-                helper += "§"+ranged[j];
-            }
-            rangedLvl[i] = helper;
-        }
-
     }
 
     public static void loadDefaultSettings() {
