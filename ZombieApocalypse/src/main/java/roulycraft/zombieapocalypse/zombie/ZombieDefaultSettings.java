@@ -1,9 +1,15 @@
 package roulycraft.zombieapocalypse.zombie;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Color;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.SkullMeta;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
+
+import java.util.UUID;
 
 import static org.bukkit.Material.*;
 
@@ -214,6 +220,58 @@ public class ZombieDefaultSettings {
 
         ZombieManager.getManager().createZombieInstance("magma0", (zombieLvl0 + "<#b04a0a>Magmowy"), 120, 15, 3.4f, "magma", new ItemStack(MAGMA_BLOCK, 1), chestplate, leggings, boots, 20);
 
+        color = Color.fromRGB(159, 224, 153);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("slime0", (zombieLvl0 + "<#9fe099>Szlamowy"), 60, 10, 3.4f, "slime", new ItemStack(SLIME_BLOCK, 1), chestplate, leggings, boots, 10);
+
+        color = Color.fromRGB(227, 237, 133);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("electric0", (zombieLvl0 + "<#e3ed85>Elektryczny"), 75, 15, 3.4f, "electric", new ItemStack(YELLOW_STAINED_GLASS, 1), chestplate, leggings, boots, 15);
+
+        color = Color.fromRGB(237, 198, 69);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("hive0", (zombieLvl0 + "<#e3ed85>Rój"), 90, 15, 3.0f, "beehive0", new ItemStack(BEE_NEST, 1), chestplate, leggings, boots, 20);
+
+        color = Color.fromRGB(224, 206, 102);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("hiveling0", (zombieLvl0 + "<#f4ce66>Rójnik"), 10, 5, 4.2f, "", new ItemStack(YELLOW_WOOL, 1), chestplate, leggings, boots, 5);
+
         ZombieManager.getManager().createZombieInstance("default1", (zombieLvl1 + "<#43bc6c>Zwykły"), 40, 15, 3.2f, "", new ItemStack(AIR, 1), new ItemStack(AIR, 1), leggings1, new ItemStack(AIR, 1), 10);
 
         color = Color.fromRGB(255, 255, 255);
@@ -358,6 +416,58 @@ public class ZombieDefaultSettings {
         boots.setItemMeta(bootsMeta);
 
         ZombieManager.getManager().createZombieInstance("magma1", (zombieLvl1 + "<#b04a0a>Magmowy"), 240, 22, 3.2f, "magma", new ItemStack(MAGMA_BLOCK, 1), chestplate, leggings1, boots, 25);
+
+        color = Color.fromRGB(159, 224, 153);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("slime1", (zombieLvl1 + "<#9fe099>Szlamowy"), 120, 15, 3.2f, "slime", new ItemStack(SLIME_BLOCK, 1), chestplate, leggings1, boots, 15);
+
+        color = Color.fromRGB(227, 237, 133);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("electric1", (zombieLvl1 + "<#e3ed85>Elektryczny"), 150, 20, 3.2f, "electric", new ItemStack(YELLOW_STAINED_GLASS, 1), chestplate, leggings1, boots, 25);
+
+        color = Color.fromRGB(237, 198, 69);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("hive1", (zombieLvl1 + "<#e3ed85>Rój"), 180, 25, 2.9f, "beehive1", new ItemStack(BEE_NEST, 1), chestplate, leggings1, boots, 30);
+
+        color = Color.fromRGB(224, 206, 102);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("hiveling1", (zombieLvl1 + "<#f4ce66>Rójnik"), 20, 7, 4.1f, "", new ItemStack(YELLOW_WOOL, 1), chestplate, leggings1, boots, 10);
 
         ZombieManager.getManager().createZombieInstance("default2", (zombieLvl2 + "<#43bc6c>Zwykły"), 60, 20, 3.0f, "", new ItemStack(AIR, 1), new ItemStack(AIR, 1), leggings2, new ItemStack(AIR, 1), 15);
 
@@ -504,6 +614,58 @@ public class ZombieDefaultSettings {
 
         ZombieManager.getManager().createZombieInstance("magma2", (zombieLvl2 + "<#b04a0a>Magmowy"), 360, 30, 3.0f, "magma", new ItemStack(MAGMA_BLOCK, 1), chestplate, leggings2, boots, 30);
 
+        color = Color.fromRGB(159, 224, 153);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("slime2", (zombieLvl2 + "<#9fe099>Szlamowy"), 180, 25, 3.0f, "slime", new ItemStack(SLIME_BLOCK, 1), chestplate, leggings2, boots, 25);
+
+        color = Color.fromRGB(227, 237, 133);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("electric2", (zombieLvl2 + "<#e3ed85>Elektryczny"), 225, 25, 3.0f, "electric", new ItemStack(YELLOW_STAINED_GLASS, 1), chestplate, leggings2, boots, 25);
+
+        color = Color.fromRGB(237, 198, 69);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("hive2", (zombieLvl2 + "<#e3ed85>Rój"), 270, 25, 2.8f, "beehive2", new ItemStack(BEE_NEST, 1), chestplate, leggings2, boots, 30);
+
+        color = Color.fromRGB(224, 206, 102);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("hiveling2", (zombieLvl2 + "<#f4ce66>Rójnik"), 30, 15, 4.0f, "", new ItemStack(YELLOW_WOOL, 1), chestplate, leggings2, boots, 15);
+
         ZombieManager.getManager().createZombieInstance("default3", (zombieLvl3 + "<#43bc6c>Zwykły"), 80, 25, 2.8f, "", new ItemStack(AIR, 1), new ItemStack(AIR, 1), leggings3, new ItemStack(AIR, 1), 20);
 
         color = Color.fromRGB(255, 255, 255);
@@ -648,6 +810,58 @@ public class ZombieDefaultSettings {
         boots.setItemMeta(bootsMeta);
 
         ZombieManager.getManager().createZombieInstance("magma3", (zombieLvl3 + "<#b04a0a>Magmowy"), 480, 37, 2.8f, "magma", new ItemStack(MAGMA_BLOCK, 1), chestplate, leggings3, boots, 40);
+
+        color = Color.fromRGB(159, 224, 153);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("slime3", (zombieLvl3 + "<#9fe099>Szlamowy"), 240, 30, 2.8f, "slime", new ItemStack(SLIME_BLOCK, 1), chestplate, leggings3, boots, 45);
+
+        color = Color.fromRGB(227, 237, 133);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("electric3", (zombieLvl3 + "<#e3ed85>Elektryczny"), 300, 30, 2.8f, "electric", new ItemStack(YELLOW_STAINED_GLASS, 1), chestplate, leggings3, boots, 50);
+
+        color = Color.fromRGB(237, 198, 69);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("hive3", (zombieLvl3 + "<#e3ed85>Rój"), 360, 30, 2.7f, "beehive3", new ItemStack(BEE_NEST, 1), chestplate, leggings3, boots, 40);
+
+        color = Color.fromRGB(224, 206, 102);
+
+        helmetMeta.setColor(color);
+        chestplateMeta.setColor(color);
+        leggingsMeta.setColor(color);
+        bootsMeta.setColor(color);
+        helmet.setItemMeta(helmetMeta);
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        ZombieManager.getManager().createZombieInstance("hiveling3", (zombieLvl3 + "<#f4ce66>Rójnik"), 40, 20, 4.0f, "", new ItemStack(YELLOW_WOOL, 1), chestplate, leggings3, boots, 20);
 
     }
 }
