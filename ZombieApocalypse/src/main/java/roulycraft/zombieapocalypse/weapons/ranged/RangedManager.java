@@ -1,6 +1,7 @@
 package roulycraft.zombieapocalypse.weapons.ranged;
 
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.NamespacedKey;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -166,7 +167,7 @@ public class RangedManager {
         Integer id,
         String name,
         Integer level,
-        ItemStack item,
+        Material item,
         Integer minDmg,
         Integer maxDmg,
         Integer projectileType,
@@ -237,7 +238,7 @@ public class RangedManager {
 
         reloadRangedInstanceConfig(id);
         getRangedInstanceConfig(id).set((level+".name"), name);
-        getRangedInstanceConfig(id).set((level+".item"), item);
+        getRangedInstanceConfig(id).set((level+".item"), String.valueOf(item));
         getRangedInstanceConfig(id).set((level+".minDmg"), minDmg);
         getRangedInstanceConfig(id).set((level+".maxDmg"), maxDmg);
         getRangedInstanceConfig(id).set((level+".projectileType"), projectileType);
@@ -340,7 +341,7 @@ public class RangedManager {
                         id,
                         rangedInstanceConfig.getString(i+".name"),
                         i,
-                        rangedInstanceConfig.getItemStack(i+".item"),
+                        Material.valueOf(rangedInstanceConfig.getString(i+".item")),
                         rangedInstanceConfig.getInt(i+".minDmg"),
                         rangedInstanceConfig.getInt(i+".maxDmg"),
                         rangedInstanceConfig.getInt(i+".projectileType"),
@@ -377,7 +378,7 @@ public class RangedManager {
 
             getInstance(id, i).setName(rangedInstanceConfig.getString(i+".name"));
             getInstance(id, i).setLevel(i); // Prolly not needed
-            getInstance(id, i).setItem(rangedInstanceConfig.getItemStack(i+".item"));
+            getInstance(id, i).setItem(Material.valueOf(rangedInstanceConfig.getString(i+".item")));
             getInstance(id, i).setMinDmg(rangedInstanceConfig.getInt(i+".minDmg"));
             getInstance(id, i).setMaxDmg(rangedInstanceConfig.getInt(i+".maxDmg"));
             getInstance(id, i).setProjectileType(rangedInstanceConfig.getInt(i+".projectileType"));
@@ -416,7 +417,7 @@ public class RangedManager {
 
         for (RangedInstance rangedInstance : this.rangedInstanceList) {
 
-            item = new ItemStack(rangedInstance.getItem());
+            item = new ItemStack(rangedInstance.getItem(), 1);
             ItemMeta im = item.getItemMeta();
 
             String itemName = rangedInstance.getName()+" "+secondaryColours[rangedInstance.getLevel()]+"| "+primaryColours[rangedInstance.getLevel()]+rangedInstance.getClipSize();

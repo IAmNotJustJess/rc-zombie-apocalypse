@@ -1,12 +1,11 @@
 package roulycraft.zombieapocalypse.weapons.ranged;
 
 import org.bukkit.Material;
-import org.bukkit.inventory.ItemStack;
 
 public class RangedInstance {
     private final Integer id;
     private String name = "Broń";
-    private ItemStack item = new ItemStack(Material.IRON_HORSE_ARMOR, 1);
+    private Material item = Material.IRON_HORSE_ARMOR;
     private Integer level = 0;
     private Integer minDmg = 1;
     private Integer maxDmg = 1;
@@ -41,7 +40,7 @@ public class RangedInstance {
         Integer id,
         String name,
         Integer level,
-        ItemStack item,
+        Material item,
         Integer minDmg,
         Integer maxDmg,
         Integer projectileType,
@@ -107,7 +106,7 @@ public class RangedInstance {
         return this.name;
     }
 
-    public ItemStack getItem() {
+    public Material getItem() {
         return this.item;
     }
 
@@ -215,7 +214,7 @@ public class RangedInstance {
         this.name = name;
     }
 
-    public void setItem (ItemStack item) {
+    public void setItem (Material item) {
         this.item = item;
     }
 

@@ -110,7 +110,7 @@ public class ZombieListener implements Listener {
     @EventHandler
     public void onZombieIgnite(EntityCombustEvent event) {
 
-        if(event.getEntity().getType() != EntityType.ZOMBIE){
+        if(event.getEntity().getType() != EntityType.ZOMBIE || event.getEntity().getMetadata("ZA").size() != 1){
             return;
         }
 
@@ -131,7 +131,7 @@ public class ZombieListener implements Listener {
         LivingEntity lentity = (LivingEntity) event.getEntity();
         Player player = null;
 
-        if(entity.getType() != EntityType.ZOMBIE || !entity.getMetadata("ZA").get(0).asBoolean()) {
+        if(entity.getType() != EntityType.ZOMBIE || event.getEntity().getMetadata("ZA").size() != 1 || !entity.getMetadata("ZA").get(0).asBoolean()) {
             return;
         }
 
