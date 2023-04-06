@@ -2039,6 +2039,679 @@ public class RangedDefaultSettings {
             );
 
         } // ID: 15
+
+        {
+
+            RangedManager.getManager().createRangedInstance(
+
+                16,
+                rangedLvl[0]+"Precyzyjna Strzelba",
+                0,
+                Material.IRON_HORSE_ARMOR,
+                2,
+                3,
+                0,
+                0.8,
+                8,
+                1,
+                0.15,
+                0.5,
+                1.6,
+                67.0,
+                1,
+                0.9,
+                0.4,
+                4,
+                0.6,
+                "multipleBullets-1",
+                "pumpAction",
+                1.0,
+                1,
+                0,
+                0.0,
+                "ENTITY_WITHER_SHOOT|1|2|0;ENTITY_GENERIC_EXPLODE|1|2|0;ENTITY_IRON_GOLEM_ATTACK|1|2|0",
+                "ENTITY_IRON_GOLEM_ATTACK|1|1.5|0;BLOCK_STONE_PLACE|1|1.5|0",
+                "BLOCK_PISTON_CONTRACT|0.5|2|8;BLOCK_PISTON_EXTEND|0.5|2|16"
+
+            );
+            RangedManager.getManager().createRangedInstance(
+
+                16,
+                rangedLvl[1]+"Precyzyjna Strzelba",
+                1,
+                Material.IRON_HORSE_ARMOR,
+                2,
+                3,
+                0,
+                0.8,
+                9,
+                1,
+                0.15,
+                0.46,
+                1.6,
+                67.0,
+                1,
+                0.9,
+                0.4,
+                4,
+                0.6,
+                "multipleBullets-1",
+                "pumpAction",
+                1.0,
+                1,
+                0,
+                0.0,
+                "ENTITY_WITHER_SHOOT|1|2|0;ENTITY_GENERIC_EXPLODE|1|2|0;ENTITY_IRON_GOLEM_ATTACK|1|2|0",
+                "ENTITY_IRON_GOLEM_ATTACK|1|1.5|0;BLOCK_STONE_PLACE|1|1.5|0",
+                "BLOCK_PISTON_CONTRACT|0.5|2|8;BLOCK_PISTON_EXTEND|0.5|2|16"
+
+            );
+            RangedManager.getManager().createRangedInstance(
+
+                16,
+                rangedLvl[2]+"Precyzyjna Strzelba",
+                2,
+                Material.IRON_HORSE_ARMOR,
+                2,
+                3,
+                0,
+                0.8,
+                10,
+                1,
+                0.15,
+                0.43,
+                1.6,
+                67.0,
+                1,
+                0.9,
+                0.4,
+                5,
+                0.6,
+                "multipleBullets-1",
+                "pumpAction",
+                1.0,
+                1,
+                0,
+                0.0,
+                "ENTITY_WITHER_SHOOT|1|2|0;ENTITY_GENERIC_EXPLODE|1|2|0;ENTITY_IRON_GOLEM_ATTACK|1|2|0",
+                "ENTITY_IRON_GOLEM_ATTACK|1|1.5|0;BLOCK_STONE_PLACE|1|1.5|0",
+                "BLOCK_PISTON_CONTRACT|0.5|2|8;BLOCK_PISTON_EXTEND|0.5|2|16"
+
+            );
+            RangedManager.getManager().createRangedInstance(
+
+                16,
+                rangedLvl[3]+"Precyzyjna Strzelba",
+                3,
+                Material.IRON_HORSE_ARMOR,
+                2,
+                3,
+                0,
+                0.8,
+                12,
+                1,
+                0.15,
+                0.40,
+                1.6,
+                67.0,
+                1,
+                0.9,
+                0.4,
+                5,
+                0.6,
+                "multipleBullets-1",
+                "pumpAction",
+                1.0,
+                1,
+                0,
+                0.0,
+                "ENTITY_WITHER_SHOOT|1|2|0;ENTITY_GENERIC_EXPLODE|1|2|0;ENTITY_IRON_GOLEM_ATTACK|1|2|0",
+                "ENTITY_IRON_GOLEM_ATTACK|1|1.5|0;BLOCK_STONE_PLACE|1|1.5|0",
+                "BLOCK_PISTON_CONTRACT|0.5|2|8;BLOCK_PISTON_EXTEND|0.5|2|16"
+
+            );
+
+        } // ID: 16
+
+        {
+            RangedManager.getManager().createRangedInstance(
+
+                17,
+                rangedLvl[0]+"Trój-Strzałowa Kusza",
+                0,
+                Material.IRON_HORSE_ARMOR,
+                12,
+                16,
+                2,
+                2.0,
+                3,
+                1,
+                0.0,
+                0.05,
+                0.05,
+                0.0,
+                3,
+                0.5,
+                0.6,
+                1,
+                2.6,
+                "clip",
+                "slide",
+                0.8,
+                2,
+                1,
+                0.65,
+                "ENTITY_GHAST_SHOOT|0.1|2|0;ENTITY_ARROW_SHOOT|1|2|0;ENTITY_ARROW_SHOOT|0.3|1|0",
+                "BLOCK_WOOD_BREAK|1|0.75|6;BLOCK_WOOD_BREAK|1|0.75|12;BLOCK_WOOD_BREAK|1|0.75|18;ITEM_CROSSBOW_LOADING_MIDDLE|1|0.5|36",
+                "ITEM_CROSSBOW_LOADING_END|1|1|10"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                17,
+                rangedLvl[1]+"Trój-Strzałowa Kusza",
+                1,
+                Material.IRON_HORSE_ARMOR,
+                14,
+                18,
+                2,
+                2.0,
+                3,
+                1,
+                0.0,
+                0.05,
+                0.05,
+                0.0,
+                3,
+                0.5,
+                0.6,
+                1,
+                2.6,
+                "clip",
+                "slide",
+                0.8,
+                2,
+                1,
+                0.65,
+                "ENTITY_GHAST_SHOOT|0.1|2|0;ENTITY_ARROW_SHOOT|1|2|0;ENTITY_ARROW_SHOOT|0.3|1|0",
+                "BLOCK_WOOD_BREAK|1|0.75|6;BLOCK_WOOD_BREAK|1|0.75|12;BLOCK_WOOD_BREAK|1|0.75|18;ITEM_CROSSBOW_LOADING_MIDDLE|1|0.5|36",
+                "ITEM_CROSSBOW_LOADING_END|1|1|10"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                17,
+                rangedLvl[2]+"Trój-Strzałowa Kusza",
+                2,
+                Material.IRON_HORSE_ARMOR,
+                16,
+                20,
+                2,
+                2.0,
+                3,
+                1,
+                0.0,
+                0.05,
+                0.05,
+                0.0,
+                3,
+                0.5,
+                0.6,
+                1,
+                2.4,
+                "clip",
+                "slide",
+                0.8,
+                2,
+                1,
+                0.65,
+                "ENTITY_GHAST_SHOOT|0.1|2|0;ENTITY_ARROW_SHOOT|1|2|0;ENTITY_ARROW_SHOOT|0.3|1|0",
+                "BLOCK_WOOD_BREAK|1|0.75|6;BLOCK_WOOD_BREAK|1|0.75|12;BLOCK_WOOD_BREAK|1|0.75|18;ITEM_CROSSBOW_LOADING_MIDDLE|1|0.5|36",
+                "ITEM_CROSSBOW_LOADING_END|1|1|10"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                17,
+                rangedLvl[3]+"Trój-Strzałowa Kusza",
+                3,
+                Material.IRON_HORSE_ARMOR,
+                18,
+                24,
+                2,
+                2.0,
+                3,
+                1,
+                0.0,
+                0.05,
+                0.05,
+                0.0,
+                3,
+                0.5,
+                0.6,
+                1,
+                2.4,
+                "clip",
+                "slide",
+                0.8,
+                2,
+                1,
+                0.65,
+                "ENTITY_GHAST_SHOOT|0.1|2|0;ENTITY_ARROW_SHOOT|1|2|0;ENTITY_ARROW_SHOOT|0.3|1|0",
+                "BLOCK_WOOD_BREAK|1|0.75|6;BLOCK_WOOD_BREAK|1|0.75|12;BLOCK_WOOD_BREAK|1|0.75|18;ITEM_CROSSBOW_LOADING_MIDDLE|1|0.5|36",
+                "ITEM_CROSSBOW_LOADING_END|1|1|10"
+
+            );
+
+        } // ID: 17
+
+        {
+            RangedManager.getManager().createRangedInstance(
+
+                18,
+                rangedLvl[0]+"Pięciostrzałowiec",
+                0,
+                Material.IRON_HORSE_ARMOR,
+                2,
+                6,
+                0,
+                1.0,
+                5,
+                1,
+                0.0,
+                0.2,
+                1.3,
+                25.0,
+                1,
+                0.5,
+                0.5,
+                4,
+                2.2,
+                "clip",
+                "slide",
+                0.6,
+                0,
+                2,
+                0.1,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0;ENTITY_WITHER_SHOOT|1|1.75|0",
+                "BLOCK_WOODEN_TRAPDOOR_OPEN|1|1.5|4;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.5|36",
+                "BLOCK_WOODEN_BUTTON_CLICK_ON|1|2|4"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                18,
+                rangedLvl[1]+"Pięciostrzałowiec",
+                1,
+                Material.IRON_HORSE_ARMOR,
+                3,
+                6,
+                0,
+                1.0,
+                5,
+                1,
+                0.0,
+                0.2,
+                1.3,
+                25.0,
+                1,
+                0.5,
+                0.5,
+                4,
+                2.2,
+                "clip",
+                "slide",
+                0.6,
+                0,
+                2,
+                0.0875,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0;ENTITY_WITHER_SHOOT|1|1.75|0",
+                "BLOCK_WOODEN_TRAPDOOR_OPEN|1|1.5|4;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.5|36",
+                "BLOCK_WOODEN_BUTTON_CLICK_ON|1|2|4"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                18,
+                rangedLvl[2]+"Pięciostrzałowiec",
+                2,
+                Material.IRON_HORSE_ARMOR,
+                3,
+                6,
+                0,
+                1.0,
+                5,
+                1,
+                0.0,
+                0.2,
+                1.3,
+                25.0,
+                1,
+                0.5,
+                0.5,
+                5,
+                2.2,
+                "clip",
+                "slide",
+                0.6,
+                0,
+                2,
+                0.075,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0;ENTITY_WITHER_SHOOT|1|1.75|0",
+                "BLOCK_WOODEN_TRAPDOOR_OPEN|1|1.5|4;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.5|36",
+                "BLOCK_WOODEN_BUTTON_CLICK_ON|1|2|4"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                18,
+                rangedLvl[3]+"Pięciostrzałowiec",
+                3,
+                Material.IRON_HORSE_ARMOR,
+                3,
+                7,
+                0,
+                1.0,
+                5,
+                1,
+                0.0,
+                0.2,
+                1.3,
+                25.0,
+                1,
+                0.5,
+                0.5,
+                5,
+                2.2,
+                "clip",
+                "slide",
+                0.6,
+                0,
+                2,
+                0.075,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ARMOR_STAND_HIT|1|2|0;ENTITY_WITHER_SHOOT|1|1.75|0",
+                "BLOCK_WOODEN_TRAPDOOR_OPEN|1|1.5|4;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.5|36",
+                "BLOCK_WOODEN_BUTTON_CLICK_ON|1|2|4"
+
+            );
+
+        } // ID: 18
+
+        {
+            RangedManager.getManager().createRangedInstance(
+
+                19,
+                rangedLvl[0]+"Seryjny Karabin Szturmowy",
+                0,
+                Material.IRON_HORSE_ARMOR,
+                6,
+                12,
+                0,
+                1.0,
+                1,
+                2,
+                0.15,
+                0.3,
+                1.5,
+                10.0,
+                1,
+                0.5,
+                0.6,
+                16,
+                2.6,
+                "clip",
+                "slide",
+                0.5,
+                0,
+                0,
+                0.0,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_BLAZE_HURT|1|2|0",
+                "BLOCK_WOODEN_BUTTON_CLICK_ON|1|2|4;BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|8;BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|10;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.25|36",
+                "BLOCK_PISTON_EXTEND|0.35|2|4;BLOCK_PISTON_CONTRACT|0.35|2|4"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                19,
+                rangedLvl[1]+"Seryjny Karabin Szturmowy",
+                1,
+                Material.IRON_HORSE_ARMOR,
+                8,
+                12,
+                0,
+                1.0,
+                1,
+                2,
+                0.15,
+                0.3,
+                1.5,
+                10.0,
+                1,
+                0.5,
+                0.6,
+                16,
+                2.6,
+                "clip",
+                "slide",
+                0.5,
+                0,
+                0,
+                0.0,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_BLAZE_HURT|1|2|0",
+                "BLOCK_WOODEN_BUTTON_CLICK_ON|1|2|4;BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|8;BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|10;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.25|36",
+                "BLOCK_PISTON_EXTEND|0.35|2|4;BLOCK_PISTON_CONTRACT|0.35|2|4"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                19,
+                rangedLvl[2]+"Seryjny Karabin Szturmowy",
+                2,
+                Material.IRON_HORSE_ARMOR,
+                8,
+                14,
+                0,
+                1.0,
+                1,
+                2,
+                0.15,
+                0.3,
+                1.5,
+                10.0,
+                1,
+                0.5,
+                0.6,
+                18,
+                2.4,
+                "clip",
+                "slide",
+                0.5,
+                0,
+                0,
+                0.0,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_BLAZE_HURT|1|2|0",
+                "BLOCK_WOODEN_BUTTON_CLICK_ON|1|2|4;BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|8;BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|10;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.25|32",
+                "BLOCK_PISTON_EXTEND|0.35|2|4;BLOCK_PISTON_CONTRACT|0.35|2|4"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                19,
+                rangedLvl[3]+"Seryjny Karabin Szturmowy",
+                3,
+                Material.IRON_HORSE_ARMOR,
+                8,
+                16,
+                0,
+                1.0,
+                1,
+                2,
+                0.15,
+                0.3,
+                1.5,
+                10.0,
+                1,
+                0.5,
+                0.6,
+                20,
+                2.4,
+                "clip",
+                "slide",
+                0.5,
+                0,
+                0,
+                0.0,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_BLAZE_HURT|1|2|0",
+                "BLOCK_WOODEN_BUTTON_CLICK_ON|1|2|4;BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|8;BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|10;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.25|32",
+                "BLOCK_PISTON_EXTEND|0.35|2|4;BLOCK_PISTON_CONTRACT|0.35|2|4"
+
+            );
+
+        } // ID: 19
+
+        {
+            RangedManager.getManager().createRangedInstance(
+
+                20,
+                rangedLvl[0]+"Niestabilny Pistolet",
+                0,
+                Material.IRON_HORSE_ARMOR,
+                1,
+                10,
+                1,
+                1.0,
+                1,
+                1,
+                0.0,
+                0.5,
+                1.5,
+                30.0,
+                1,
+                0.75,
+                0.4,
+                7,
+                1.6,
+                "clip",
+                "slide",
+                0.5,
+                0,
+                0,
+                0.0,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|0.5|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
+                "BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|8;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.25|26",
+                "BLOCK_PISTON_CONTRACT|0.35|2|4"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                20,
+                rangedLvl[1]+"Niestabilny Pistolet",
+                1,
+                Material.IRON_HORSE_ARMOR,
+                1,
+                14,
+                1,
+                1.0,
+                1,
+                1,
+                0.0,
+                0.5,
+                1.5,
+                30.0,
+                1,
+                0.75,
+                0.4,
+                7,
+                1.6,
+                "clip",
+                "slide",
+                0.5,
+                0,
+                0,
+                0.0,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|0.5|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
+                "BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|8;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.25|26",
+                "BLOCK_PISTON_CONTRACT|0.35|2|4"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                20,
+                rangedLvl[2]+"Niestabilny Pistolet",
+                2,
+                Material.IRON_HORSE_ARMOR,
+                1,
+                17,
+                1,
+                1.0,
+                1,
+                1,
+                0.0,
+                0.5,
+                1.5,
+                30.0,
+                1,
+                0.75,
+                0.4,
+                7,
+                1.6,
+                "clip",
+                "slide",
+                0.5,
+                0,
+                0,
+                0.0,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|0.5|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
+                "BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|8;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.25|26",
+                "BLOCK_PISTON_CONTRACT|0.35|2|4"
+
+            );
+
+            RangedManager.getManager().createRangedInstance(
+
+                20,
+                rangedLvl[3]+"Niestabilny Pistolet",
+                3,
+                Material.IRON_HORSE_ARMOR,
+                1,
+                25,
+                1,
+                1.0,
+                1,
+                1,
+                0.0,
+                0.5,
+                1.5,
+                30.0,
+                1,
+                0.75,
+                0.4,
+                7,
+                1.6,
+                "clip",
+                "slide",
+                0.5,
+                0,
+                0,
+                0.0,
+                "ENTITY_GHAST_SHOOT|0.2|1.5|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|0.5|0;ENTITY_ZOMBIE_ATTACK_WOODEN_DOOR|1|2|0",
+                "BLOCK_IRON_TRAPDOOR_OPEN|1|1.25|8;BLOCK_IRON_TRAPDOOR_CLOSE|1|1.25|26",
+                "BLOCK_PISTON_CONTRACT|0.35|2|4"
+
+            );
+
+        } // ID: 20
     }
 
 }

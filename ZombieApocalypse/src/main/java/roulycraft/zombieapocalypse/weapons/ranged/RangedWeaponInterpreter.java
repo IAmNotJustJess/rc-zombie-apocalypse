@@ -140,6 +140,7 @@ public class RangedWeaponInterpreter implements Listener {
                                         return;
                                     }
 
+                                    currentAmmo[0] = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER);
                                     currentAmmo[0] += reloadTypeSpecial;
 
                                     if(currentAmmo[0] >= clipSize) {
@@ -516,7 +517,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                         case 2:
 
-                            entity = player.launchProjectile(Arrow.class, vector); // Make sure that eggs don't chickens
+                            entity = player.launchProjectile(Arrow.class, vector);
                             break;
 
                         default:
@@ -761,6 +762,7 @@ public class RangedWeaponInterpreter implements Listener {
 
                         }
 
+                        currentAmmo[0] = itemMeta.getPersistentDataContainer().get(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER);
                         currentAmmo[0] -= 1;
 
                         itemMeta.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER, currentAmmo[0]);

@@ -33,6 +33,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.0, "slowing0");
             waveInstance.add(0.0, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(0.0, "slime0");
+            waveInstance.add(0.0, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 1
         {
             waveInstance = WaveManager.getManager().getWaveInstance(2);
@@ -48,6 +51,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.0, "slowing0");
             waveInstance.add(0.0, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(0.0, "slime0");
+            waveInstance.add(0.0, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 2
         {
             waveInstance = WaveManager.getManager().getWaveInstance(3);
@@ -63,6 +69,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.0, "slowing0");
             waveInstance.add(0.0, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(0.2, "slime0");
+            waveInstance.add(0.0, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 3
         {
             waveInstance = WaveManager.getManager().getWaveInstance(4);
@@ -78,6 +87,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.0, "slowing0");
             waveInstance.add(0.0, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(0.3, "slime0");
+            waveInstance.add(0.0, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 4
         {
             waveInstance = WaveManager.getManager().getWaveInstance(5);
@@ -93,6 +105,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.2, "slowing0");
             waveInstance.add(0.0, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(0.3, "slime0");
+            waveInstance.add(0.0, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 5
         {
             waveInstance = WaveManager.getManager().getWaveInstance(6);
@@ -108,6 +123,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.2, "slowing0");
             waveInstance.add(0.0, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(0.5, "slime0");
+            waveInstance.add(0.0, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 6
         {
             waveInstance = WaveManager.getManager().getWaveInstance(7);
@@ -123,6 +141,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.2, "slowing0");
             waveInstance.add(0.0, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(0.5, "slime0");
+            waveInstance.add(0.0, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 7
         {
             waveInstance = WaveManager.getManager().getWaveInstance(8);
@@ -138,6 +159,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.5, "slowing0");
             waveInstance.add(0.0, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(0.75, "slime0");
+            waveInstance.add(0.1, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 8
         {
             waveInstance = WaveManager.getManager().getWaveInstance(9);
@@ -153,6 +177,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.5, "slowing0");
             waveInstance.add(0.1, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(1.0, "slime0");
+            waveInstance.add(0.2, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 9
         {
             waveInstance = WaveManager.getManager().getWaveInstance(10);
@@ -168,6 +195,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.5, "slowing0");
             waveInstance.add(0.3, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(1.0, "slime0");
+            waveInstance.add(0.5, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 10
         {
             waveInstance = WaveManager.getManager().getWaveInstance(11);
@@ -183,6 +213,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.5, "slowing0");
             waveInstance.add(0.3, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(2.0, "slime0");
+            waveInstance.add(1.0, "electric0");
+            waveInstance.add(0.0, "hive0");
         } // 11
         {
             waveInstance = WaveManager.getManager().getWaveInstance(12);
@@ -198,6 +231,9 @@ public class WaveDefaultSettings {
             waveInstance.add(0.5, "slowing0");
             waveInstance.add(0.3, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(3.0, "slime0");
+            waveInstance.add(2.0, "electric0");
+            waveInstance.add(0.1, "hive0");
         } // 12
         {
             waveInstance = WaveManager.getManager().getWaveInstance(13);
@@ -213,6 +249,9 @@ public class WaveDefaultSettings {
             waveInstance.add(1.0, "slowing0");
             waveInstance.add(0.3, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(3.5, "slime0");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(0.25, "hive0");
         } // 13
         {
             waveInstance = WaveManager.getManager().getWaveInstance(14);
@@ -228,6 +267,9 @@ public class WaveDefaultSettings {
             waveInstance.add(1.0, "slowing0");
             waveInstance.add(0.5, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(3.5, "slime0");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(0.5, "hive0");
         } // 14
         {
             waveInstance = WaveManager.getManager().getWaveInstance(15);
@@ -243,6 +285,9 @@ public class WaveDefaultSettings {
             waveInstance.add(1.0, "slowing0");
             waveInstance.add(0.5, "void0");
             waveInstance.add(0.0, "magma0");
+            waveInstance.add(3.5, "slime0");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.0, "hive0");
         } // 15
         {
             waveInstance = WaveManager.getManager().getWaveInstance(16);
@@ -258,6 +303,9 @@ public class WaveDefaultSettings {
             waveInstance.add(1.0, "slowing0");
             waveInstance.add(0.5, "void0");
             waveInstance.add(0.1, "magma0");
+            waveInstance.add(3.5, "slime0");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.0, "hive0");
         } // 16
         {
             waveInstance = WaveManager.getManager().getWaveInstance(17);
@@ -288,6 +336,9 @@ public class WaveDefaultSettings {
             waveInstance.add(1.25, "slowing0");
             waveInstance.add(0.75, "void0");
             waveInstance.add(0.5, "magma0");
+            waveInstance.add(3.5, "slime0");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.0, "hive0");
         } // 18
         {
             waveInstance = WaveManager.getManager().getWaveInstance(19);
@@ -303,6 +354,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.0, "slowing0");
             waveInstance.add(1.5, "void0");
             waveInstance.add(1.0, "magma0");
+            waveInstance.add(3.5, "slime0");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.5, "hive0");
         } // 19
         {
             waveInstance = WaveManager.getManager().getWaveInstance(20);
@@ -318,6 +372,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.5, "slowing0");
             waveInstance.add(1.5, "void0");
             waveInstance.add(1.25, "magma0");
+            waveInstance.add(3.5, "slime0");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.5, "hive0");
         } // 20
         {
             waveInstance = WaveManager.getManager().getWaveInstance(21);
@@ -333,6 +390,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.5, "slowing0");
             waveInstance.add(1.5, "void0");
             waveInstance.add(1.25, "magma0");
+            waveInstance.add(3.5, "slime0");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.5, "hive0");
         } // 21
         {
             waveInstance = WaveManager.getManager().getWaveInstance(22);
@@ -348,6 +408,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.5, "slowing0");
             waveInstance.add(1.5, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime0");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.5, "hive0");
         } // 22
         {
             waveInstance = WaveManager.getManager().getWaveInstance(23);
@@ -363,6 +426,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.5, "slowing0");
             waveInstance.add(1.5, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime0");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.5, "hive0");
         } // 23
         {
             waveInstance = WaveManager.getManager().getWaveInstance(24);
@@ -378,6 +444,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.5, "slowing0");
             waveInstance.add(1.5, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.5, "hive0");
         } // 24
         {
             waveInstance = WaveManager.getManager().getWaveInstance(25);
@@ -393,6 +462,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.5, "slowing0");
             waveInstance.add(1.75, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.5, "hive0");
         } // 25
         {
             waveInstance = WaveManager.getManager().getWaveInstance(26);
@@ -408,6 +480,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.5, "slowing0");
             waveInstance.add(1.75, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.5, "hive0");
         } // 26
         {
             waveInstance = WaveManager.getManager().getWaveInstance(27);
@@ -423,6 +498,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.5, "slowing0");
             waveInstance.add(1.75, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric0");
+            waveInstance.add(1.5, "hive0");
         } // 27
         {
             waveInstance = WaveManager.getManager().getWaveInstance(28);
@@ -438,6 +516,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.5, "slowing0");
             waveInstance.add(2.0, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive0");
         } // 28
         {
             waveInstance = WaveManager.getManager().getWaveInstance(29);
@@ -453,6 +534,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.75, "slowing0");
             waveInstance.add(2.0, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive0");
         } // 29
         {
             waveInstance = WaveManager.getManager().getWaveInstance(30);
@@ -468,6 +552,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.75, "slowing1");
             waveInstance.add(2.0, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive0");
         } // 30
         {
             waveInstance = WaveManager.getManager().getWaveInstance(31);
@@ -483,6 +570,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.75, "slowing1");
             waveInstance.add(2.0, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive0");
         } // 31
         {
             waveInstance = WaveManager.getManager().getWaveInstance(32);
@@ -498,6 +588,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.75, "slowing1");
             waveInstance.add(2.0, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive0");
         } // 32
         {
             waveInstance = WaveManager.getManager().getWaveInstance(33);
@@ -513,6 +606,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.75, "slowing1");
             waveInstance.add(2.25, "void0");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive0");
         } // 33
         {
             waveInstance = WaveManager.getManager().getWaveInstance(34);
@@ -528,6 +624,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.75, "slowing1");
             waveInstance.add(2.5, "void1");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 34
         {
             waveInstance = WaveManager.getManager().getWaveInstance(35);
@@ -543,6 +642,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.75, "slowing1");
             waveInstance.add(2.5, "void1");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 35
         {
             waveInstance = WaveManager.getManager().getWaveInstance(36);
@@ -558,6 +660,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.75, "slowing1");
             waveInstance.add(2.5, "void1");
             waveInstance.add(1.5, "magma0");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 36
         {
             waveInstance = WaveManager.getManager().getWaveInstance(37);
@@ -573,6 +678,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.75, "slowing1");
             waveInstance.add(2.5, "void1");
             waveInstance.add(1.5, "magma1");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 37
         {
             waveInstance = WaveManager.getManager().getWaveInstance(38);
@@ -588,6 +696,9 @@ public class WaveDefaultSettings {
             waveInstance.add(3.0, "slowing1");
             waveInstance.add(3.0, "void1");
             waveInstance.add(2.5, "magma1");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 38
         {
             waveInstance = WaveManager.getManager().getWaveInstance(39);
@@ -603,6 +714,9 @@ public class WaveDefaultSettings {
             waveInstance.add(3.0, "slowing1");
             waveInstance.add(3.0, "void1");
             waveInstance.add(2.5, "magma1");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 39
         {
             waveInstance = WaveManager.getManager().getWaveInstance(40);
@@ -618,6 +732,9 @@ public class WaveDefaultSettings {
             waveInstance.add(4.0, "slowing1");
             waveInstance.add(4.0, "void1");
             waveInstance.add(4.5, "magma1");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 40
         {
             waveInstance = WaveManager.getManager().getWaveInstance(41);
@@ -633,6 +750,9 @@ public class WaveDefaultSettings {
             waveInstance.add(4.0, "slowing1");
             waveInstance.add(4.0, "void1");
             waveInstance.add(4.5, "magma1");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 41
         {
             waveInstance = WaveManager.getManager().getWaveInstance(42);
@@ -648,6 +768,9 @@ public class WaveDefaultSettings {
             waveInstance.add(4.0, "slowing1");
             waveInstance.add(4.0, "void1");
             waveInstance.add(5.0, "magma1");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 42
         {
             waveInstance = WaveManager.getManager().getWaveInstance(43);
@@ -663,6 +786,9 @@ public class WaveDefaultSettings {
             waveInstance.add(4.0, "slowing1");
             waveInstance.add(4.0, "void1");
             waveInstance.add(5.0, "magma1");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 43
         {
             waveInstance = WaveManager.getManager().getWaveInstance(44);
@@ -678,6 +804,9 @@ public class WaveDefaultSettings {
             waveInstance.add(4.0, "slowing1");
             waveInstance.add(4.0, "void1");
             waveInstance.add(5.0, "magma1");
+            waveInstance.add(3.5, "slime1");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 44
         {
             waveInstance = WaveManager.getManager().getWaveInstance(45);
@@ -693,6 +822,9 @@ public class WaveDefaultSettings {
             waveInstance.add(5.0, "slowing1");
             waveInstance.add(5.0, "void1");
             waveInstance.add(5.0, "magma1");
+            waveInstance.add(3.5, "slime2");
+            waveInstance.add(2.5, "electric1");
+            waveInstance.add(1.5, "hive1");
         } // 45
         {
             waveInstance = WaveManager.getManager().getWaveInstance(46);
@@ -708,6 +840,9 @@ public class WaveDefaultSettings {
             waveInstance.add(5.0, "slowing1");
             waveInstance.add(5.0, "void1");
             waveInstance.add(5.0, "magma1");
+            waveInstance.add(4.0, "slime2");
+            waveInstance.add(3.0, "electric1");
+            waveInstance.add(2.0, "hive1");
         } // 46
         {
             waveInstance = WaveManager.getManager().getWaveInstance(47);
@@ -723,6 +858,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing1");
             waveInstance.add(6.0, "void1");
             waveInstance.add(6.0, "magma1");
+            waveInstance.add(4.0, "slime2");
+            waveInstance.add(3.0, "electric2");
+            waveInstance.add(2.0, "hive1");
         } // 47
         {
             waveInstance = WaveManager.getManager().getWaveInstance(48);
@@ -738,6 +876,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing1");
             waveInstance.add(6.0, "void1");
             waveInstance.add(6.0, "magma1");
+            waveInstance.add(4.0, "slime2");
+            waveInstance.add(3.0, "electric2");
+            waveInstance.add(2.0, "hive1");
         } // 48
         {
             waveInstance = WaveManager.getManager().getWaveInstance(49);
@@ -753,6 +894,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing2");
             waveInstance.add(6.0, "void1");
             waveInstance.add(6.0, "magma1");
+            waveInstance.add(4.0, "slime2");
+            waveInstance.add(3.0, "electric2");
+            waveInstance.add(2.0, "hive1");
         } // 49
         {
             waveInstance = WaveManager.getManager().getWaveInstance(50);
@@ -768,6 +912,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing2");
             waveInstance.add(6.0, "void1");
             waveInstance.add(6.0, "magma1");
+            waveInstance.add(5.0, "slime2");
+            waveInstance.add(4.0, "electric2");
+            waveInstance.add(3.0, "hive1");
         } // 50
         {
             waveInstance = WaveManager.getManager().getWaveInstance(51);
@@ -783,6 +930,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing2");
             waveInstance.add(6.0, "void2");
             waveInstance.add(6.0, "magma1");
+            waveInstance.add(5.0, "slime2");
+            waveInstance.add(4.0, "electric2");
+            waveInstance.add(3.0, "hive1");
         } // 51
         {
             waveInstance = WaveManager.getManager().getWaveInstance(52);
@@ -798,6 +948,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing2");
             waveInstance.add(6.0, "void2");
             waveInstance.add(6.0, "magma1");
+            waveInstance.add(5.0, "slime2");
+            waveInstance.add(4.0, "electric2");
+            waveInstance.add(3.0, "hive1");
         } // 52
         {
             waveInstance = WaveManager.getManager().getWaveInstance(53);
@@ -813,6 +966,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.0, "magma1");
+            waveInstance.add(5.0, "slime2");
+            waveInstance.add(4.0, "electric2");
+            waveInstance.add(3.0, "hive1");
         } // 53
         {
             waveInstance = WaveManager.getManager().getWaveInstance(54);
@@ -828,6 +984,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.0, "magma1");
+            waveInstance.add(5.0, "slime2");
+            waveInstance.add(4.0, "electric2");
+            waveInstance.add(3.0, "hive2");
         } // 54
         {
             waveInstance = WaveManager.getManager().getWaveInstance(55);
@@ -843,6 +1002,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.0, "magma1");
+            waveInstance.add(5.0, "slime2");
+            waveInstance.add(4.0, "electric2");
+            waveInstance.add(3.0, "hive2");
         } // 55
         {
             waveInstance = WaveManager.getManager().getWaveInstance(56);
@@ -858,6 +1020,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.0, "magma1");
+            waveInstance.add(5.0, "slime2");
+            waveInstance.add(4.0, "electric2");
+            waveInstance.add(3.0, "hive2");
         } // 56
         {
             waveInstance = WaveManager.getManager().getWaveInstance(57);
@@ -873,6 +1038,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.0, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.0, "magma2");
+            waveInstance.add(5.0, "slime2");
+            waveInstance.add(4.0, "electric2");
+            waveInstance.add(3.0, "hive2");
         } // 57
         {
             waveInstance = WaveManager.getManager().getWaveInstance(58);
@@ -888,6 +1056,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(5.0, "slime2");
+            waveInstance.add(5.0, "electric2");
+            waveInstance.add(4.0, "hive2");
         } // 58
         {
             waveInstance = WaveManager.getManager().getWaveInstance(59);
@@ -903,6 +1074,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(5.0, "slime2");
+            waveInstance.add(5.0, "electric2");
+            waveInstance.add(4.0, "hive2");
         } // 59
         {
             waveInstance = WaveManager.getManager().getWaveInstance(60);
@@ -918,6 +1092,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.0, "slime2");
+            waveInstance.add(5.0, "electric2");
+            waveInstance.add(5.0, "hive2");
         } // 60
         {
             waveInstance = WaveManager.getManager().getWaveInstance(61);
@@ -933,6 +1110,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.0, "slime2");
+            waveInstance.add(6.0, "electric2");
+            waveInstance.add(6.0, "hive2");
         } // 61
         {
             waveInstance = WaveManager.getManager().getWaveInstance(62);
@@ -948,6 +1128,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.5, "slime2");
+            waveInstance.add(6.5, "electric2");
+            waveInstance.add(6.5, "hive2");
         } // 62
         {
             waveInstance = WaveManager.getManager().getWaveInstance(63);
@@ -963,6 +1146,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.5, "slime2");
+            waveInstance.add(6.5, "electric2");
+            waveInstance.add(6.5, "hive2");
         } // 63
         {
             waveInstance = WaveManager.getManager().getWaveInstance(64);
@@ -978,6 +1164,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.5, "slime2");
+            waveInstance.add(6.5, "electric2");
+            waveInstance.add(6.5, "hive2");
         } // 64
         {
             waveInstance = WaveManager.getManager().getWaveInstance(65);
@@ -993,6 +1182,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.5, "slime3");
+            waveInstance.add(6.5, "electric2");
+            waveInstance.add(6.5, "hive2");
         } // 65
         {
             waveInstance = WaveManager.getManager().getWaveInstance(66);
@@ -1007,6 +1199,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.5, "slime3");
+            waveInstance.add(6.5, "electric2");
+            waveInstance.add(6.5, "hive2");
         } // 66
         {
             waveInstance = WaveManager.getManager().getWaveInstance(67);
@@ -1021,6 +1216,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing2");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.5, "slime3");
+            waveInstance.add(6.5, "electric2");
+            waveInstance.add(6.5, "hive2");
         } // 67
         {
             waveInstance = WaveManager.getManager().getWaveInstance(68);
@@ -1035,6 +1233,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing3");
             waveInstance.add(6.5, "void2");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.5, "slime3");
+            waveInstance.add(6.5, "electric2");
+            waveInstance.add(6.5, "hive2");
         } // 68
         {
             waveInstance = WaveManager.getManager().getWaveInstance(69);
@@ -1049,6 +1250,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing3");
             waveInstance.add(6.5, "void3");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.5, "slime3");
+            waveInstance.add(6.5, "electric3");
+            waveInstance.add(6.5, "hive2");
         } // 69
         {
             waveInstance = WaveManager.getManager().getWaveInstance(70);
@@ -1062,6 +1266,9 @@ public class WaveDefaultSettings {
             waveInstance.add(6.5, "slowing3");
             waveInstance.add(6.5, "void3");
             waveInstance.add(6.5, "magma2");
+            waveInstance.add(6.5, "slime3");
+            waveInstance.add(6.5, "electric3");
+            waveInstance.add(6.5, "hive2");
         } // 70
         {
             waveInstance = WaveManager.getManager().getWaveInstance(71);
@@ -1073,6 +1280,9 @@ public class WaveDefaultSettings {
             waveInstance.add(5.0, "slowing3");
             waveInstance.add(5.0, "void3");
             waveInstance.add(6.0, "magma2");
+            waveInstance.add(5.0, "slime3");
+            waveInstance.add(5.0, "electric3");
+            waveInstance.add(6.0, "hive2");
         } // 71
         {
             waveInstance = WaveManager.getManager().getWaveInstance(72);
@@ -1084,6 +1294,9 @@ public class WaveDefaultSettings {
             waveInstance.add(5.0, "slowing3");
             waveInstance.add(5.0, "void3");
             waveInstance.add(6.0, "magma2");
+            waveInstance.add(5.0, "slime3");
+            waveInstance.add(5.0, "electric3");
+            waveInstance.add(6.0, "hive2");
         } // 72
         {
             waveInstance = WaveManager.getManager().getWaveInstance(73);
@@ -1095,6 +1308,9 @@ public class WaveDefaultSettings {
             waveInstance.add(5.0, "slowing3");
             waveInstance.add(5.0, "void3");
             waveInstance.add(6.0, "magma2");
+            waveInstance.add(5.0, "slime3");
+            waveInstance.add(5.0, "electric3");
+            waveInstance.add(6.0, "hive3");
         } // 73
         {
             waveInstance = WaveManager.getManager().getWaveInstance(74);
@@ -1105,6 +1321,9 @@ public class WaveDefaultSettings {
             waveInstance.add(5.0, "slowing3");
             waveInstance.add(5.0, "void3");
             waveInstance.add(6.0, "magma3");
+            waveInstance.add(5.0, "slime3");
+            waveInstance.add(5.0, "electric3");
+            waveInstance.add(6.0, "hive3");
         } // 74
         {
             waveInstance = WaveManager.getManager().getWaveInstance(75);
@@ -1115,6 +1334,9 @@ public class WaveDefaultSettings {
             waveInstance.add(3.0, "slowing3");
             waveInstance.add(3.0, "void3");
             waveInstance.add(5.0, "magma3");
+            waveInstance.add(3.0, "slime3");
+            waveInstance.add(3.0, "electric3");
+            waveInstance.add(5.0, "hive3");
         } // 75
         {
             waveInstance = WaveManager.getManager().getWaveInstance(76);
@@ -1125,6 +1347,9 @@ public class WaveDefaultSettings {
             waveInstance.add(3.0, "slowing3");
             waveInstance.add(3.0, "void3");
             waveInstance.add(3.0, "magma3");
+            waveInstance.add(3.0, "slime3");
+            waveInstance.add(3.0, "electric3");
+            waveInstance.add(4.0, "hive3");
         } // 76
         {
             waveInstance = WaveManager.getManager().getWaveInstance(77);
@@ -1135,6 +1360,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.0, "slowing3");
             waveInstance.add(2.0, "void3");
             waveInstance.add(2.0, "magma3");
+            waveInstance.add(2.0, "slime3");
+            waveInstance.add(2.0, "electric3");
+            waveInstance.add(3.0, "hive3");
         } // 77
         {
             waveInstance = WaveManager.getManager().getWaveInstance(78);
@@ -1145,6 +1373,9 @@ public class WaveDefaultSettings {
             waveInstance.add(2.0, "slowing3");
             waveInstance.add(2.0, "void3");
             waveInstance.add(2.0, "magma3");
+            waveInstance.add(2.0, "slime3");
+            waveInstance.add(2.0, "electric3");
+            waveInstance.add(3.0, "hive3");
         } // 78
         {
             waveInstance = WaveManager.getManager().getWaveInstance(79);
@@ -1154,6 +1385,9 @@ public class WaveDefaultSettings {
             waveInstance.add(3.0, "slowing3");
             waveInstance.add(3.0, "void3");
             waveInstance.add(3.0, "magma3");
+            waveInstance.add(3.0, "slime3");
+            waveInstance.add(3.0, "electric3");
+            waveInstance.add(3.0, "hive3");
         } // 79
         {
             waveInstance = WaveManager.getManager().getWaveInstance(80);
@@ -1163,6 +1397,9 @@ public class WaveDefaultSettings {
             waveInstance.add(4.0, "slowing3");
             waveInstance.add(3.0, "void3");
             waveInstance.add(2.0, "magma3");
+            waveInstance.add(3.0, "slime3");
+            waveInstance.add(3.0, "electric3");
+            waveInstance.add(2.0, "hive3");
         } // 80
 
         for(int i = 1; i <= 80; i++) {
