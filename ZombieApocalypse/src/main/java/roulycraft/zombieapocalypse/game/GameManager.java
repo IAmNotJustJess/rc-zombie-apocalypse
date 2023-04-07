@@ -71,7 +71,8 @@ public class GameManager {
 
             if (res > 0) {
                 left = mid + 1;
-            } else {
+            }
+            else {
                 right = mid - 1;
             }
         }
@@ -104,8 +105,7 @@ public class GameManager {
         GameInstance gameInstance = getGameInstance(name);
 
         new BukkitRunnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
 
                 if (!arenaCountdownList.containsKey(name)) {
                     return;
@@ -119,17 +119,13 @@ public class GameManager {
                 spawnZombieInArena(name);
 
             }
-        }.runTaskLater(
-                plugin,
-                (long) (plugin.getConfig().getDouble("settings.spawnZombiesDelay") * 20)
-        );
+        }.runTaskLater(plugin, (long) (plugin.getConfig().getDouble("settings.spawnZombiesDelay") * 20));
     }
 
     private void startArenaCountdown(String name) {
 
         new BukkitRunnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
 
                 if (!arenaCountdownList.containsKey(name)) {
 
@@ -144,10 +140,10 @@ public class GameManager {
                 if (currentDelay > 0) {
 
                     startArenaCountdown(name);
-                    sendGameMessage(MessageType.COUNTDOWN, null, name, new String[]{""}
-                    );
+                    sendGameMessage(MessageType.COUNTDOWN, null, name, new String[]{""});
 
-                } else {
+                }
+                else {
 
                     if (getGameInstance(name).getPlayers().size() < 1) {
                         return;
@@ -163,8 +159,7 @@ public class GameManager {
     private void startWaveCountdown(String name) {
 
         new BukkitRunnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
 
                 if (!arenaCountdownList.containsKey(name)) {
                     return;
@@ -199,7 +194,8 @@ public class GameManager {
 
                 if (currentDelay > 0) {
                     startWaveCountdown(name);
-                } else {
+                }
+                else {
                     arenaCountdownList.remove(name);
                     endArena(name, 1);
                 }
@@ -225,14 +221,10 @@ public class GameManager {
         String bossbarFormat = plugin.getConfig().getString("messages.formats.bossbarFormat");
 
         bossbarFormat = bossbarFormat.replace("%wave%", "1");
-        bossbarFormat = bossbarFormat.replace("%zombie1%", "0").replace(
-                "%zombie2%", Integer.toString(plugin.getConfig().getInt("settings.newWaveZombieKills")));
-        bossbarFormat = bossbarFormat.replace(
-                "%time%", MinuteSecondsFormat.convert(plugin.getConfig().getInt("settings.gameOverAfter")));
+        bossbarFormat = bossbarFormat.replace("%zombie1%", "0").replace("%zombie2%", Integer.toString(plugin.getConfig().getInt("settings.newWaveZombieKills")));
+        bossbarFormat = bossbarFormat.replace("%time%", MinuteSecondsFormat.convert(plugin.getConfig().getInt("settings.gameOverAfter")));
 
-        KeyedBossBar bar = Bukkit.createBossBar(
-                new NamespacedKey(plugin, ("zabossbar." + gameInstance.getName())),
-                StringSerialisation.deserialise(bossbarFormat), BarColor.WHITE, BarStyle.SOLID);
+        KeyedBossBar bar = Bukkit.createBossBar(new NamespacedKey(plugin, ("zabossbar." + gameInstance.getName())), StringSerialisation.deserialise(bossbarFormat), BarColor.WHITE, BarStyle.SOLID);
         bossbarList.put(name, bar);
 
         bar.setProgress(1.0);
@@ -255,8 +247,7 @@ public class GameManager {
         gameInstance.setGameState(GameState.FINISHED);
 
         new BukkitRunnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
                 resetArena(name);
             }
         }.runTaskLater(plugin, 100L);
@@ -339,21 +330,9 @@ public class GameManager {
                 String zombie = Integer.toString(gameInstance.getZombieKills());
                 String time = MinuteSecondsFormat.convert(arenaCountdownList.get(name));
 
-                bossbarFormat = bossbarFormat.replace(
-                        "%wave%",
-                        wave
-                );
-                bossbarFormat = bossbarFormat.replace(
-                        "%zombie1%",
-                        zombie
-                ).replace(
-                        "%zombie2%",
-                        Integer.toString(plugin.getConfig().getInt("settings.newWaveZombieKills"))
-                );
-                bossbarFormat = bossbarFormat.replace(
-                        "%time%",
-                        time
-                );
+                bossbarFormat = bossbarFormat.replace("%wave%", wave);
+                bossbarFormat = bossbarFormat.replace("%zombie1%", zombie).replace("%zombie2%", Integer.toString(plugin.getConfig().getInt("settings.newWaveZombieKills")));
+                bossbarFormat = bossbarFormat.replace("%time%", time);
 
                 bossBar.setProgress(currentSeconds / maxSeconds);
                 bossBar.setTitle(StringSerialisation.deserialise(bossbarFormat));
@@ -371,16 +350,14 @@ public class GameManager {
             case 2: {
                 bossBar.setProgress(0.0);
                 bossBar.setColor(BarColor.RED);
-                bossBar.setTitle(
-                        StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.defeatBossbar")));
+                bossBar.setTitle(StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.defeatBossbar")));
                 break;
             }
 
             case 3: {
                 bossBar.setProgress(0.0);
                 bossBar.setColor(BarColor.GREEN);
-                bossBar.setTitle(
-                        StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.victoryBossbar")));
+                bossBar.setTitle(StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.victoryBossbar")));
                 break;
             }
         }
@@ -397,9 +374,7 @@ public class GameManager {
         int maxhp = playerStats.get(player.getUniqueId()).getMaxHP();
         double hpPercentage = (double) hp / (double) maxhp * 20;
 
-        String bar = plugin.getConfig().getString("messages.formats.playerActionBar")
-                .replace("%hp1%", String.valueOf(hp))
-                .replace("%hp2%", String.valueOf(maxhp));
+        String bar = plugin.getConfig().getString("messages.formats.playerActionBar").replace("%hp1%", String.valueOf(hp)).replace("%hp2%", String.valueOf(maxhp));
         MiniMessage miniMessage = MiniMessage.miniMessage();
         if (hp <= 1.0) {
             hpPercentage = 1.0;
@@ -417,12 +392,10 @@ public class GameManager {
     private void givePlayerLoadout(Player player) {
 
         new BukkitRunnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
 
                 String[] weapon = playerStats.get(player.getUniqueId()).getSelectedRanged().split(":");
-                ItemStack item = RangedManager.getManager().getGun(
-                        Integer.parseInt(weapon[0]), Integer.parseInt(weapon[1]));
+                ItemStack item = RangedManager.getManager().getGun(Integer.parseInt(weapon[0]), Integer.parseInt(weapon[1]));
 
                 player.getInventory().clear();
                 player.getInventory().setItem(0, item);
@@ -435,12 +408,9 @@ public class GameManager {
 
         GameInstance gameInstance = getGameInstance(name);
 
-        String[] splitTitles = plugin.getConfig().getString("messages.arena.arenaBeginExplenationTitles").split(
-                "%break%");
-        String[] splitSubtitles = plugin.getConfig().getString("messages.arena.arenaBeginExplenationSubtitles").split(
-                "%break%");
-        String[] splitMessages = plugin.getConfig().getString("messages.arena.arenaBeginExplenationMessages").split(
-                "%break%");
+        String[] splitTitles = plugin.getConfig().getString("messages.arena.arenaBeginExplenationTitles").split("%break%");
+        String[] splitSubtitles = plugin.getConfig().getString("messages.arena.arenaBeginExplenationSubtitles").split("%break%");
+        String[] splitMessages = plugin.getConfig().getString("messages.arena.arenaBeginExplenationMessages").split("%break%");
 
         gameInstance.setGameState(GameState.ACTIVE);
 
@@ -449,8 +419,7 @@ public class GameManager {
             int finalI = i;
             new BukkitRunnable() {
 
-                @Override
-                public void run() {
+                @Override public void run() {
 
                     String[] message = {splitTitles[finalI], splitSubtitles[finalI], splitMessages[finalI]};
 
@@ -463,8 +432,7 @@ public class GameManager {
 
         new BukkitRunnable() {
 
-            @Override
-            public void run() {
+            @Override public void run() {
                 sendGameMessage(MessageType.START, null, name, new String[]{""});
             }
         }.runTaskLaterAsynchronously(plugin, 100L * (splitTitles.length - 1));
@@ -472,8 +440,7 @@ public class GameManager {
         new BukkitRunnable() {
 
 
-            @Override
-            public void run() {
+            @Override public void run() {
 
                 for (UUID uuid : gameInstance.getPlayers()) {
                     KeyedBossBar bar = bossbarList.get(name);
@@ -510,14 +477,12 @@ public class GameManager {
         sendGameMessage(MessageType.WAVE_BEATEN, null, name, new String[]{""});
 
         new BukkitRunnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
 
                 startWave(name, wave);
 
             }
-        }.runTaskLater(plugin, (long) (plugin.getConfig().getDouble("settings.delayBeforeNextWave") * 20)
-        );
+        }.runTaskLater(plugin, (long) (plugin.getConfig().getDouble("settings.delayBeforeNextWave") * 20));
 
     }
 
@@ -543,8 +508,7 @@ public class GameManager {
     private void registerPlayerStats(Player player, String name, String loadout, String selectedWeapon) {
 
         new BukkitRunnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
 
                 int hp;
                 double speed;
@@ -560,22 +524,7 @@ public class GameManager {
                 damageModifier = 1.0;
                 spreadModifier = 1.0;
 
-                playerStats.put(
-                        player.getUniqueId(),
-                        new PlayerInstance(
-                                player,
-                                name,
-                                true,
-                                selectedWeapon,
-                                hp,
-                                hp,
-                                speed,
-                                speedModifier,
-                                ammoModifier,
-                                damageModifier,
-                                spreadModifier
-                        )
-                );
+                playerStats.put(player.getUniqueId(), new PlayerInstance(player, name, true, selectedWeapon, hp, hp, speed, speedModifier, ammoModifier, damageModifier, spreadModifier));
             }
         }.runTaskAsynchronously(plugin);
     }
@@ -598,10 +547,9 @@ public class GameManager {
 
         if (alivePlayers == 0) {
             endArena(playerInstance.getInArena(), 1);
-        } else {
-            sendGameMessage(
-                    MessageType.PLAYER_DEATH, player, playerInstance.getInArena(),
-                    new String[]{"", "", "", Integer.toString(alivePlayers)});
+        }
+        else {
+            sendGameMessage(MessageType.PLAYER_DEATH, player, playerInstance.getInArena(), new String[]{"", "", "", Integer.toString(alivePlayers)});
         }
     }
 
@@ -652,8 +600,7 @@ public class GameManager {
         gameInstance.getPlayers().add(player.getUniqueId());
         sendGameMessage(MessageType.PLAYER_JOIN, player, name, new String[]{""});
 
-        if (gameInstance.getPlayers().size() >= plugin.getConfig().getInt("settings.startCountdownAtPlayers") &&
-                !arenaCountdownList.containsKey(name)) {
+        if (gameInstance.getPlayers().size() >= plugin.getConfig().getInt("settings.startCountdownAtPlayers") && !arenaCountdownList.containsKey(name)) {
 
             gameInstance.setGameState(GameState.COUNTDOWN);
             arenaCountdownList.put(gameInstance.getName(), plugin.getConfig().getInt("settings.countdownTime") + 1);
@@ -662,9 +609,7 @@ public class GameManager {
 
         }
 
-        if (gameInstance.getPlayers().size() >= plugin.getConfig().getInt("settings.countdownReductionPlayers") &&
-                arenaCountdownList.containsKey(name) &&
-                arenaCountdownList.get(name) > plugin.getConfig().getInt("settings.countdownReduceTo")) {
+        if (gameInstance.getPlayers().size() >= plugin.getConfig().getInt("settings.countdownReductionPlayers") && arenaCountdownList.containsKey(name) && arenaCountdownList.get(name) > plugin.getConfig().getInt("settings.countdownReduceTo")) {
 
             sendGameMessage(MessageType.REDUCE_COUNTDOWN, null, name, new String[]{""});
             arenaCountdownList.put(gameInstance.getName(), plugin.getConfig().getInt("settings.countdownReduceTo") + 1);
@@ -683,14 +628,12 @@ public class GameManager {
 
         String[] split = weapon.split(":");
 
-        if (Integer.parseInt(split[0]) < 1 || Integer.parseInt(split[0]) > 20 || Integer.parseInt(
-                split[1]) < 0 || Integer.parseInt(split[1]) > 3) {
+        if (Integer.parseInt(split[0]) < 1 || Integer.parseInt(split[0]) > 20 || Integer.parseInt(split[1]) < 0 || Integer.parseInt(split[1]) > 3) {
             player.sendMessage("§4BŁĄD! §cNie ma takiej broni");
             return;
         }
 
-        String name = RangedManager.getManager().getRangedInstance(
-                Integer.parseInt(split[0]), Integer.parseInt(split[1])).getName();
+        String name = RangedManager.getManager().getRangedInstance(Integer.parseInt(split[0]), Integer.parseInt(split[1])).getName();
 
         sendGameMessage(MessageType.CHANGE_WEAPON, player, "", new String[]{"", name, split[1]});
         playerStats.get(player.getUniqueId()).setSelectedRanged(weapon);
@@ -740,15 +683,11 @@ public class GameManager {
 
         gameInstance.getPlayers().remove(player.getUniqueId());
 
-        if (gameInstance.gameState == GameState.COUNTDOWN && gameInstance.getPlayers().size() < plugin.getConfig().getInt(
-                "settings.startCountdownAtPlayers")) {
+        if (gameInstance.gameState == GameState.COUNTDOWN && gameInstance.getPlayers().size() < plugin.getConfig().getInt("settings.startCountdownAtPlayers")) {
             arenaCountdownList.remove(gameInstance.getName());
         }
         if ((gameInstance.gameState == GameState.ACTIVE || gameInstance.gameState == GameState.STARTING) && gameInstance.getPlayers().size() == 0) {
-            endArena(
-                    gameInstance.getName(),
-                    0
-            );
+            endArena(gameInstance.getName(), 0);
         }
     }
 
@@ -765,15 +704,12 @@ public class GameManager {
                 message[0] += plugin.getConfig().getString("messages.arena.playerJoinLobby");
                 message[0] += " ";
                 message[0] += plugin.getConfig().getString("messages.formats.arenaPlayersFormat");
-                message[0] = message[0].replace("%min%", Integer.toString(gameInstance.getPlayers().size()))
-                        .replace("%max%", plugin.getConfig().getString("settings.maxPlayersPerArena"))
-                        .replace("%player%", player.getName());
+                message[0] = message[0].replace("%min%", Integer.toString(gameInstance.getPlayers().size())).replace("%max%", plugin.getConfig().getString("settings.maxPlayersPerArena")).replace("%player%", player.getName());
 
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.BLOCK_WOODEN_DOOR_OPEN, SoundCategory.PLAYERS, 10, 2f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.BLOCK_WOODEN_DOOR_OPEN, SoundCategory.PLAYERS, 10, 2f);
                 }
                 break;
             }
@@ -784,15 +720,12 @@ public class GameManager {
                 message[0] += plugin.getConfig().getString("messages.arena.playerLeaveLobby");
                 message[0] += " ";
                 message[0] += plugin.getConfig().getString("messages.formats.arenaPlayersFormat");
-                message[0] = message[0].replace("%min%", Integer.toString(gameInstance.getPlayers().size()))
-                        .replace("%max%", plugin.getConfig().getString("settings.maxPlayersPerArena"))
-                        .replace("%player%", player.getName());
+                message[0] = message[0].replace("%min%", Integer.toString(gameInstance.getPlayers().size())).replace("%max%", plugin.getConfig().getString("settings.maxPlayersPerArena")).replace("%player%", player.getName());
 
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.BLOCK_WOODEN_DOOR_CLOSE, SoundCategory.PLAYERS, 10, 2f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.BLOCK_WOODEN_DOOR_CLOSE, SoundCategory.PLAYERS, 10, 2f);
                 }
                 break;
             }
@@ -803,9 +736,7 @@ public class GameManager {
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 10,
-                            0.5f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.ENTITY_EXPERIENCE_ORB_PICKUP, SoundCategory.PLAYERS, 10, 0.5f);
                 }
                 break;
             }
@@ -816,8 +747,7 @@ public class GameManager {
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 10, 0.75f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 10, 0.75f);
                 }
                 break;
             }
@@ -825,10 +755,7 @@ public class GameManager {
 
                 String countdownString = plugin.getConfig().getString("messages.arena.arenaCountdownSubtitle");
                 Integer countdown = arenaCountdownList.get(name);
-                countdownString = countdownString.replace(
-                                "%phase%", String.valueOf(
-                                        (double) countdown / (double) plugin.getConfig().getInt("settings.countdownTime")))
-                        .replace("%time%", String.valueOf(countdown));
+                countdownString = countdownString.replace("%phase%", String.valueOf((double) countdown / (double) plugin.getConfig().getInt("settings.countdownTime"))).replace("%time%", String.valueOf(countdown));
                 countdownString = StringSerialisation.deserialise(countdownString);
                 String time = PolishNumberConverter.convert(countdown, "sekundę", "sekundy", "sekund");
 
@@ -840,13 +767,10 @@ public class GameManager {
                     if (countdown % 10 == 0 || countdown < 10) {
                         ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
                         if (countdown < 10) {
-                            playerUUID.playSound(
-                                    playerUUID.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, SoundCategory.PLAYERS, 10,
-                                    (float) (1.5 - (countdown * 0.05)));
-                        } else {
-                            playerUUID.playSound(
-                                    playerUUID.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, SoundCategory.PLAYERS, 10,
-                                    1f);
+                            playerUUID.playSound(playerUUID.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, SoundCategory.PLAYERS, 10, (float) (1.5 - (countdown * 0.05)));
+                        }
+                        else {
+                            playerUUID.playSound(playerUUID.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, SoundCategory.PLAYERS, 10, 1f);
                         }
                     }
                     playerUUID.sendTitle("", countdownString, 0, 25, 0);
@@ -856,8 +780,7 @@ public class GameManager {
             case CHANGE_WEAPON: {
 
                 message[0] = plugin.getConfig().getString("messages.arena.weaponChange");
-                message[0] = message[0].replace("%weapon%", message[1])
-                        .replace("%level%", message[2]);
+                message[0] = message[0].replace("%weapon%", message[1]).replace("%level%", message[2]);
 
                 player.playSound(player.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 10, 2f);
 
@@ -873,33 +796,26 @@ public class GameManager {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[2]));
                     playerUUID.sendTitle(message[0], message[1], 0, 105, 0);
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.ENTITY_CHICKEN_EGG, SoundCategory.PLAYERS, 10, 0.75f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.ENTITY_CHICKEN_EGG, SoundCategory.PLAYERS, 10, 0.75f);
                 }
                 break;
             }
             case START: {
-                String title = StringSerialisation.deserialise(
-                        plugin.getConfig().getString("messages.arena.arenaBeginTitle"));
-                String subtitle = StringSerialisation.deserialise(
-                        plugin.getConfig().getString("messages.arena.arenaBeginSubtitle"));
+                String title = StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.arenaBeginTitle"));
+                String subtitle = StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.arenaBeginSubtitle"));
                 message[0] = plugin.getConfig().getString("messages.arena.arenaBeginMessages");
 
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
                     playerUUID.sendTitle(title, subtitle, 0, 60, 30);
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 10, 1.5f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.ENTITY_PLAYER_LEVELUP, SoundCategory.PLAYERS, 10, 1.5f);
                     for (int i = 0; i < 5; i++) {
                         new BukkitRunnable() {
 
-                            @Override
-                            public void run() {
+                            @Override public void run() {
 
-                                playerUUID.playSound(
-                                        playerUUID.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, SoundCategory.PLAYERS, 10,
-                                        1f);
+                                playerUUID.playSound(playerUUID.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, SoundCategory.PLAYERS, 10, 1f);
 
                             }
                         }.runTaskLaterAsynchronously(plugin, (20L * i));
@@ -914,8 +830,7 @@ public class GameManager {
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.ENTITY_WITHER_DEATH, SoundCategory.PLAYERS, 10, 1.25f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.ENTITY_WITHER_DEATH, SoundCategory.PLAYERS, 10, 1.25f);
                 }
                 break;
             }
@@ -924,40 +839,33 @@ public class GameManager {
                 message[0] = plugin.getConfig().getString("messages.arena.nextWave");
                 message[0] = message[0].replace("%wave%", Integer.toString(gameInstance.getWave()));
 
-                String title = StringSerialisation.deserialise(
-                        plugin.getConfig().getString("messages.arena.nextWaveTitle"));
+                String title = StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.nextWaveTitle"));
                 title = title.replace("%wave%", Integer.toString(gameInstance.getWave()));
                 String subtitle = "";
 
                 if ((gameInstance.getWave() - 1) % 10 == 0 && gameInstance.getWave() != 1) {
-                    subtitle = StringSerialisation.deserialise(
-                            plugin.getConfig().getString("messages.arena.nextWaveSubtitle10s"));
+                    subtitle = StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.nextWaveSubtitle10s"));
                 }
 
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
                     playerUUID.sendTitle(title, subtitle, 10, 40, 10);
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.ENTITY_WITHER_SPAWN, SoundCategory.PLAYERS, 10, 0.5f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.ENTITY_WITHER_SPAWN, SoundCategory.PLAYERS, 10, 0.5f);
                 }
                 break;
             }
             case PLAYER_DEATH: {
 
                 message[0] = plugin.getConfig().getString("messages.arena.playerDeathMessage");
-                message[1] = StringSerialisation.deserialise(
-                        plugin.getConfig().getString("messages.arena.playerDeathTitle"));
-                message[2] = StringSerialisation.deserialise(
-                        plugin.getConfig().getString("messages.arena.playerDeathSubtitle"));
-                message[0] = message[0].replace("%player%", player.getName())
-                        .replace("%alive%", message[3]);
+                message[1] = StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.playerDeathTitle"));
+                message[2] = StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.playerDeathSubtitle"));
+                message[0] = message[0].replace("%player%", player.getName()).replace("%alive%", message[3]);
 
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.ENTITY_GUARDIAN_HURT, SoundCategory.PLAYERS, 10, 2f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.ENTITY_GUARDIAN_HURT, SoundCategory.PLAYERS, 10, 2f);
                 }
                 player.sendTitle(message[1], message[2], 0, 40, 20);
                 break;
@@ -973,36 +881,31 @@ public class GameManager {
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, SoundCategory.PLAYERS, 10, 2f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.BLOCK_NOTE_BLOCK_HAT, SoundCategory.PLAYERS, 10, 2f);
                 }
                 break;
             }
             case VICTORY: {
 
                 message[0] = plugin.getConfig().getString("messages.arena.victory");
-                message[1] = StringSerialisation.deserialise(
-                        plugin.getConfig().getString("messages.arena.victoryTitle"));
+                message[1] = StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.victoryTitle"));
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
                     playerUUID.sendTitle(message[1], "", 0, 40, 60);
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.MUSIC_DISC_STAL, SoundCategory.RECORDS, 10, 1.0f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.MUSIC_DISC_STAL, SoundCategory.RECORDS, 10, 1.0f);
                 }
                 break;
             }
             case DEFEAT: {
 
                 message[0] = plugin.getConfig().getString("messages.arena.defeat");
-                message[1] = StringSerialisation.deserialise(
-                        plugin.getConfig().getString("messages.arena.defeatTitle"));
+                message[1] = StringSerialisation.deserialise(plugin.getConfig().getString("messages.arena.defeatTitle"));
                 for (UUID uuid : gameInstance.getPlayers()) {
                     Player playerUUID = Bukkit.getPlayer(uuid);
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
                     playerUUID.sendTitle(message[1], "", 0, 40, 60);
-                    playerUUID.playSound(
-                            playerUUID.getLocation(), Sound.MUSIC_DISC_WARD, SoundCategory.RECORDS, 10, 1.0f);
+                    playerUUID.playSound(playerUUID.getLocation(), Sound.MUSIC_DISC_WARD, SoundCategory.RECORDS, 10, 1.0f);
                 }
                 break;
             }
@@ -1065,13 +968,11 @@ public class GameManager {
 
     public void reloadGameInstanceConfig(String name) {
         if (gameInstanceFile == null) {
-            gameInstanceFile = new File(
-                    plugin.getDataFolder() + File.separator + "instances" + File.separator + "arenas", (name + ".yml"));
+            gameInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "arenas", (name + ".yml"));
         }
 
         gameInstanceConfig = YamlConfiguration.loadConfiguration(gameInstanceFile);
-        gameInstanceFile = new File(
-                plugin.getDataFolder() + File.separator + "instances" + File.separator + "arenas", (name + ".yml"));
+        gameInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "arenas", (name + ".yml"));
     }
 
     public FileConfiguration getGameInstanceConfig(String name) {
@@ -1089,8 +990,7 @@ public class GameManager {
             getGameInstanceConfig(name).save(gameInstanceFile);
         } catch (IOException ex) {
             ConsoleCommandSender console = Bukkit.getConsoleSender();
-            console.sendMessage(
-                    "§4BŁĄD KRYTYCZNY §cNie można było zapisać konfiguracji instancji areny do §f" + gameInstanceFile);
+            console.sendMessage("§4BŁĄD KRYTYCZNY §cNie można było zapisać konfiguracji instancji areny do §f" + gameInstanceFile);
             console.sendMessage(String.valueOf(ex));
         }
     }
@@ -1114,8 +1014,7 @@ public class GameManager {
             getGameInstance(name).setLobby(gameInstanceConfig.getLocation("lobby"));
         }
 
-        if (gameInstanceConfig.getString("displayName") != null || Objects.equals(
-                gameInstanceConfig.getString("displayName"), "-")) {
+        if (gameInstanceConfig.getString("displayName") != null || Objects.equals(gameInstanceConfig.getString("displayName"), "-")) {
             getGameInstance(name).setDisplayName(gameInstanceConfig.getString("displayName"));
         }
 
@@ -1141,8 +1040,7 @@ public class GameManager {
         List<UUID> list = new ArrayList<>();
 
         for (UUID uuid : gameInstance.getPlayers()) {
-            if (Bukkit.getPlayer(uuid).getGameMode() == GameMode.ADVENTURE)
-                list.add(uuid);
+            if (Bukkit.getPlayer(uuid).getGameMode() == GameMode.ADVENTURE) list.add(uuid);
         }
 
         int playerIndex = new Random().nextInt(list.size());

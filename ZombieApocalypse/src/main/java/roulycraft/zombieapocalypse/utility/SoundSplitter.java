@@ -42,16 +42,9 @@ public class SoundSplitter {
             }
 
             new BukkitRunnable() {
-                @Override
-                public void run() {
+                @Override public void run() {
 
-                    playerWorld.playSound(
-                            player.getLocation(),
-                            Sound.valueOf(soundInfo[0]),
-                            SoundCategory.PLAYERS,
-                            Float.parseFloat(soundInfo[1]),
-                            Float.parseFloat(soundInfo[2])
-                    );
+                    playerWorld.playSound(player.getLocation(), Sound.valueOf(soundInfo[0]), SoundCategory.PLAYERS, Float.parseFloat(soundInfo[1]), Float.parseFloat(soundInfo[2]));
                 }
             }.runTaskLater(plugin, Long.parseLong(soundInfo[3]));
 

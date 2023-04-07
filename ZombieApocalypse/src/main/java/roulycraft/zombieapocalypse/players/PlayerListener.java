@@ -13,14 +13,12 @@ import roulycraft.zombieapocalypse.zombie.ZombieSpecial;
 
 public class PlayerListener implements Listener {
 
-    @EventHandler
-    public void onQuit(PlayerQuitEvent event) {
+    @EventHandler public void onQuit(PlayerQuitEvent event) {
 
         GameManager.getManager().removePlayer(event.getPlayer());
     }
 
-    @EventHandler
-    public void onFoodChange(FoodLevelChangeEvent event) {
+    @EventHandler public void onFoodChange(FoodLevelChangeEvent event) {
 
         if (GameManager.getManager().playerStats.containsKey(event.getEntity().getUniqueId())) {
             event.setCancelled(true);
@@ -53,11 +51,9 @@ public class PlayerListener implements Listener {
         }
     }
 
-    @EventHandler
-    public void onPlayerDamage(EntityDamageByEntityEvent event) {
+    @EventHandler public void onPlayerDamage(EntityDamageByEntityEvent event) {
 
-        if (event.getEntity() instanceof Player && GameManager.getManager().playerStats.containsKey(
-                event.getEntity().getUniqueId())) {
+        if (event.getEntity() instanceof Player && GameManager.getManager().playerStats.containsKey(event.getEntity().getUniqueId())) {
             if (event.getDamager() instanceof Projectile) {
                 Projectile projectile = (Projectile) event.getDamager();
                 if (projectile.getShooter() instanceof Player) {
@@ -67,17 +63,14 @@ public class PlayerListener implements Listener {
                         return;
                     }
                 }
-            } else if (event.getDamager() instanceof Player && GameManager.getManager().playerStats.containsKey(
-                    event.getDamager().getUniqueId())) {
+            }
+            else if (event.getDamager() instanceof Player && GameManager.getManager().playerStats.containsKey(event.getDamager().getUniqueId())) {
                 event.setCancelled(true);
                 return;
             }
         }
 
-        if (!(event.getEntity() instanceof Player)
-                || !(event.getDamager() instanceof Zombie)
-                || !event.getDamager().getMetadata("ZA").get(0).asBoolean()
-                || !GameManager.getManager().playerStats.containsKey(event.getEntity().getUniqueId())) {
+        if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Zombie) || !event.getDamager().getMetadata("ZA").get(0).asBoolean() || !GameManager.getManager().playerStats.containsKey(event.getEntity().getUniqueId())) {
             return;
         }
 
@@ -104,9 +97,9 @@ public class PlayerListener implements Listener {
         player.setHealth(hpPercentage);
         if (hp <= 0) {
             GameManager.getManager().playerDeath(player);
-        } else {
-            ZombieSpecial.getManager().onPlayerDamageEffect(
-                    zombie.getMetadata("special").get(0).asString(), zombie.getLocation(), player);
+        }
+        else {
+            ZombieSpecial.getManager().onPlayerDamageEffect(zombie.getMetadata("special").get(0).asString(), zombie.getLocation(), player);
         }
     }
 }

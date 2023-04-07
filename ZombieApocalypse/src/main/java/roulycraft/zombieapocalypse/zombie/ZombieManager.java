@@ -57,8 +57,7 @@ public class ZombieManager {
             }
         }
 
-        zombieInstance = new ZombieInstance(
-                name, displayName, health, damage, speed, special, helmet, chestplate, leggings, boots, xpReward);
+        zombieInstance = new ZombieInstance(name, displayName, health, damage, speed, special, helmet, chestplate, leggings, boots, xpReward);
         this.zombieInstanceList.add(zombieInstance);
         this.zombieInstanceList.sort(Comparator.comparing(ZombieInstance::getName));
 
@@ -91,7 +90,8 @@ public class ZombieManager {
 
             if (result > 0) {
                 left = mid + 1;
-            } else {
+            }
+            else {
                 right = mid - 1;
             }
         }
@@ -101,8 +101,7 @@ public class ZombieManager {
 
     public void reloadZombieInstanceConfig(String name) {
 
-        zombieInstanceFile = new File(
-                plugin.getDataFolder() + File.separator + "instances" + File.separator + "zombies", (name + ".yml"));
+        zombieInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "zombies", (name + ".yml"));
         zombieInstanceConfig = YamlConfiguration.loadConfiguration(zombieInstanceFile);
     }
 
@@ -145,20 +144,9 @@ public class ZombieManager {
             getZombieInstance(name).setXPReward(zombieInstanceConfig.getInt("xpReward"));
 
             return true;
-        } else {
-            createZombieInstance(
-                    name,
-                    zombieInstanceConfig.getString("displayName"),
-                    zombieInstanceConfig.getInt("health"),
-                    zombieInstanceConfig.getInt("damage"),
-                    (float) zombieInstanceConfig.getDouble("speed"),
-                    zombieInstanceConfig.getString("special"),
-                    zombieInstanceConfig.getItemStack("helmet"),
-                    zombieInstanceConfig.getItemStack("chestplate"),
-                    zombieInstanceConfig.getItemStack("leggings"),
-                    zombieInstanceConfig.getItemStack("boots"),
-                    zombieInstanceConfig.getInt("xpReward")
-            );
+        }
+        else {
+            createZombieInstance(name, zombieInstanceConfig.getString("displayName"), zombieInstanceConfig.getInt("health"), zombieInstanceConfig.getInt("damage"), (float) zombieInstanceConfig.getDouble("speed"), zombieInstanceConfig.getString("special"), zombieInstanceConfig.getItemStack("helmet"), zombieInstanceConfig.getItemStack("chestplate"), zombieInstanceConfig.getItemStack("leggings"), zombieInstanceConfig.getItemStack("boots"), zombieInstanceConfig.getInt("xpReward"));
 
             return true;
 
@@ -173,21 +161,11 @@ public class ZombieManager {
         zombie.setCustomNameVisible(true);
 
         zombie.setMetadata("ZA", new FixedMetadataValue(plugin, true));
-        zombie.setMetadata(
-                "health",
-                new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
-        zombie.setMetadata(
-                "maxHealth",
-                new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
-        zombie.setMetadata(
-                "damage",
-                new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getDamage()));
-        zombie.setMetadata(
-                "xpReward",
-                new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getXPReward()));
-        zombie.setMetadata(
-                "special",
-                new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getSpecial()));
+        zombie.setMetadata("health", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
+        zombie.setMetadata("maxHealth", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
+        zombie.setMetadata("damage", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getDamage()));
+        zombie.setMetadata("xpReward", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getXPReward()));
+        zombie.setMetadata("special", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getSpecial()));
 
         zombie.setMetadata("instanceName", new FixedMetadataValue(plugin, instanceName));
 
@@ -200,12 +178,12 @@ public class ZombieManager {
 
         if (countTowardsKills) {
             zombie.setMetadata("countTowardKills", new FixedMetadataValue(plugin, 1));
-        } else {
+        }
+        else {
             zombie.setMetadata("countTowardKills", new FixedMetadataValue(plugin, 0));
         }
 
-        zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(
-                ZombieManager.getManager().getZombieInstance(name).getSpeed() / 10);
+        zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(ZombieManager.getManager().getZombieInstance(name).getSpeed() / 10);
 
         zombie.setAdult();
         zombie.setRemoveWhenFarAway(false);

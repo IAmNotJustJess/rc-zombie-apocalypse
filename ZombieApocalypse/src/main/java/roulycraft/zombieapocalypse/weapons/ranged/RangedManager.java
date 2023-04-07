@@ -66,13 +66,11 @@ public class RangedManager {
 
         while (left <= right) {
             int mid = left + (right - left) / 2;
-            int foundId = rangedInstanceItemList.get(mid).getItemMeta().getPersistentDataContainer().get(
-                    new NamespacedKey(plugin, "id"), PersistentDataType.INTEGER);
+            int foundId = rangedInstanceItemList.get(mid).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "id"), PersistentDataType.INTEGER);
 
             if (foundId == id) {
 
-                int foundLevel = rangedInstanceItemList.get(mid).getItemMeta().getPersistentDataContainer().get(
-                        new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
+                int foundLevel = rangedInstanceItemList.get(mid).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
                 int offset = (mid - foundLevel);
 
                 for (int i = 0; i < 4; i++) {
@@ -84,7 +82,8 @@ public class RangedManager {
 
             if (foundId < id) {
                 left = mid + 1;
-            } else {
+            }
+            else {
                 right = mid - 1;
             }
         }
@@ -94,8 +93,7 @@ public class RangedManager {
 
         while (left <= right) {
             int mid = left + (right - left) / 2;
-            int foundLevel = foundList.get(mid).getItemMeta().getPersistentDataContainer().get(
-                    new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
+            int foundLevel = foundList.get(mid).getItemMeta().getPersistentDataContainer().get(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER);
 
             if (foundLevel == level) {
                 return foundList.get(mid);
@@ -103,7 +101,8 @@ public class RangedManager {
 
             if (foundLevel < level) {
                 left = mid + 1;
-            } else {
+            }
+            else {
                 right = mid - 1;
             }
         }
@@ -134,7 +133,8 @@ public class RangedManager {
 
             if (foundId < id) {
                 left = mid + 1;
-            } else {
+            }
+            else {
                 right = mid - 1;
             }
         }
@@ -152,43 +152,15 @@ public class RangedManager {
 
             if (foundLevel < level) {
                 left = mid + 1;
-            } else {
+            }
+            else {
                 right = mid - 1;
             }
         }
         return null;
     }
 
-    public void createRangedInstance(
-            Integer id,
-            String name,
-            Integer level,
-            Material item,
-            Integer minDmg,
-            Integer maxDmg,
-            Integer projectileType,
-            Double projectileSpeed,
-            Integer pellets,
-            Integer burstAmount,
-            Double burstDelay,
-            Double bulletSpread,
-            Double bulletAdditiveSpread,
-            Double spreadPercentage,
-            Integer zoomAmount,
-            Double zoomSpreadMultiplier,
-            Double delayBetweenShots,
-            Integer clipSize,
-            Double reloadSpeed,
-            String reloadType,
-            String actionType,
-            Double actionDelay,
-            Integer actionSpecial,
-            Integer shootingPatternType,
-            Double shootingPatternOffset,
-            String shootingSound,
-            String reloadingSound,
-            String actionSound
-    ) {
+    public void createRangedInstance(Integer id, String name, Integer level, Material item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Integer burstAmount, Double burstDelay, Double bulletSpread, Double bulletAdditiveSpread, Double spreadPercentage, Integer zoomAmount, Double zoomSpreadMultiplier, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay, Integer actionSpecial, Integer shootingPatternType, Double shootingPatternOffset, String shootingSound, String reloadingSound, String actionSound) {
 
         if (level < 0 || level >= 4) {
             return;
@@ -196,41 +168,11 @@ public class RangedManager {
 
         for (RangedInstance checkIfExists : this.rangedInstanceList) {
             if (checkIfExists.getId().equals(id)) {
-                if (checkIfExists.getLevel().equals(level))
-                    return;
+                if (checkIfExists.getLevel().equals(level)) return;
             }
         }
 
-        RangedInstance rangedInstance = new RangedInstance(
-                id,
-                name,
-                level,
-                item,
-                minDmg,
-                maxDmg,
-                projectileType,
-                projectileSpeed,
-                pellets,
-                burstAmount,
-                burstDelay,
-                bulletSpread,
-                bulletAdditiveSpread,
-                spreadPercentage,
-                zoomAmount,
-                zoomSpreadMultiplier,
-                delayBetweenShots,
-                clipSize,
-                reloadSpeed,
-                reloadType,
-                actionType,
-                actionDelay,
-                actionSpecial,
-                shootingPatternType,
-                shootingPatternOffset,
-                shootingSound,
-                reloadingSound,
-                actionSound
-        );
+        RangedInstance rangedInstance = new RangedInstance(id, name, level, item, minDmg, maxDmg, projectileType, projectileSpeed, pellets, burstAmount, burstDelay, bulletSpread, bulletAdditiveSpread, spreadPercentage, zoomAmount, zoomSpreadMultiplier, delayBetweenShots, clipSize, reloadSpeed, reloadType, actionType, actionDelay, actionSpecial, shootingPatternType, shootingPatternOffset, shootingSound, reloadingSound, actionSound);
 
         reloadRangedInstanceConfig(id);
         getRangedInstanceConfig(id).set((level + ".name"), name);
@@ -278,9 +220,7 @@ public class RangedManager {
 
     public void reloadRangedInstanceConfig(Integer id) {
 
-        rangedInstanceFile = new File(
-                plugin.getDataFolder() + File.separator + "instances" + File.separator + "weapons" + File.separator + "ranged",
-                (id + ".yml"));
+        rangedInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "weapons" + File.separator + "ranged", (id + ".yml"));
         rangedInstanceConfig = YamlConfiguration.loadConfiguration(rangedInstanceFile);
 
     }
@@ -311,8 +251,7 @@ public class RangedManager {
 
         } catch (IOException ex) {
             ConsoleCommandSender console = Bukkit.getConsoleSender();
-            console.sendMessage(
-                    "§4BŁĄD KRYTYCZNY §cNie można było zapisać konfiguracji instancji broni do §f" + rangedInstanceFile);
+            console.sendMessage("§4BŁĄD KRYTYCZNY §cNie można było zapisać konfiguracji instancji broni do §f" + rangedInstanceFile);
             console.sendMessage(String.valueOf(ex));
 
         }
@@ -329,46 +268,17 @@ public class RangedManager {
 
         for (int i = 0; i < 4; i++) {
 
-            if (!rangedInstanceList.contains(getRangedInstance(id, i)) &&
-                    !rangedInstanceConfig.getString(i + ".name").isEmpty()) {
+            if (!rangedInstanceList.contains(getRangedInstance(id, i)) && !rangedInstanceConfig.getString(i + ".name").isEmpty()) {
 
 
                 RangedInstance rangedInstance = new RangedInstance(
 
-                        id,
-                        rangedInstanceConfig.getString(i + ".name"),
-                        i,
-                        Material.valueOf(rangedInstanceConfig.getString(i + ".item")),
-                        rangedInstanceConfig.getInt(i + ".minDmg"),
-                        rangedInstanceConfig.getInt(i + ".maxDmg"),
-                        rangedInstanceConfig.getInt(i + ".projectileType"),
-                        rangedInstanceConfig.getDouble(i + ".projectileSpeed"),
-                        rangedInstanceConfig.getInt(i + ".pellets"),
-                        rangedInstanceConfig.getInt(i + ".burstAmount"),
-                        rangedInstanceConfig.getDouble(i + ".burstDelay"),
-                        rangedInstanceConfig.getDouble(i + ".bulletSpread"),
-                        rangedInstanceConfig.getDouble(i + ".bulletAdditiveSpread"),
-                        rangedInstanceConfig.getDouble(i + ".spreadPercentage"),
-                        rangedInstanceConfig.getInt(i + ".zoomAmount"),
-                        rangedInstanceConfig.getDouble(i + ".zoomSpreadMultiplier"),
-                        rangedInstanceConfig.getDouble(i + ".delayBetweenShots"),
-                        rangedInstanceConfig.getInt(i + ".clipSize"),
-                        rangedInstanceConfig.getDouble(i + ".reloadSpeed"),
-                        rangedInstanceConfig.getString(i + ".reloadType"),
-                        rangedInstanceConfig.getString(i + ".actionType"),
-                        rangedInstanceConfig.getDouble(i + ".actionDelay"),
-                        rangedInstanceConfig.getInt(i + ".actionSpecial"),
-                        rangedInstanceConfig.getInt(i + ".shootingPatternType"),
-                        rangedInstanceConfig.getDouble(i + ".shootingPatternOffset"),
-                        rangedInstanceConfig.getString(i + ".shootingSound"),
-                        rangedInstanceConfig.getString(i + ".reloadingSound"),
-                        rangedInstanceConfig.getString(i + ".actionSound")
+                        id, rangedInstanceConfig.getString(i + ".name"), i, Material.valueOf(rangedInstanceConfig.getString(i + ".item")), rangedInstanceConfig.getInt(i + ".minDmg"), rangedInstanceConfig.getInt(i + ".maxDmg"), rangedInstanceConfig.getInt(i + ".projectileType"), rangedInstanceConfig.getDouble(i + ".projectileSpeed"), rangedInstanceConfig.getInt(i + ".pellets"), rangedInstanceConfig.getInt(i + ".burstAmount"), rangedInstanceConfig.getDouble(i + ".burstDelay"), rangedInstanceConfig.getDouble(i + ".bulletSpread"), rangedInstanceConfig.getDouble(i + ".bulletAdditiveSpread"), rangedInstanceConfig.getDouble(i + ".spreadPercentage"), rangedInstanceConfig.getInt(i + ".zoomAmount"), rangedInstanceConfig.getDouble(i + ".zoomSpreadMultiplier"), rangedInstanceConfig.getDouble(i + ".delayBetweenShots"), rangedInstanceConfig.getInt(i + ".clipSize"), rangedInstanceConfig.getDouble(i + ".reloadSpeed"), rangedInstanceConfig.getString(i + ".reloadType"), rangedInstanceConfig.getString(i + ".actionType"), rangedInstanceConfig.getDouble(i + ".actionDelay"), rangedInstanceConfig.getInt(i + ".actionSpecial"), rangedInstanceConfig.getInt(i + ".shootingPatternType"), rangedInstanceConfig.getDouble(i + ".shootingPatternOffset"), rangedInstanceConfig.getString(i + ".shootingSound"), rangedInstanceConfig.getString(i + ".reloadingSound"), rangedInstanceConfig.getString(i + ".actionSound")
 
                 );
 
                 rangedInstanceList.add(rangedInstance);
-                rangedInstanceList.sort(
-                        Comparator.comparing(RangedInstance::getId).thenComparing(RangedInstance::getLevel));
+                rangedInstanceList.sort(Comparator.comparing(RangedInstance::getId).thenComparing(RangedInstance::getLevel));
 
                 continue;
 
@@ -425,97 +335,49 @@ public class RangedManager {
 
             im.getPersistentDataContainer().set(new NamespacedKey(plugin, "zaGun"), PersistentDataType.INTEGER, 1);
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "id"), PersistentDataType.INTEGER, rangedInstance.getId());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER, rangedInstance.getLevel());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "id"), PersistentDataType.INTEGER, rangedInstance.getId());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "level"), PersistentDataType.INTEGER, rangedInstance.getLevel());
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "minDmg"), PersistentDataType.INTEGER, rangedInstance.getMinDmg());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "maxDmg"), PersistentDataType.INTEGER, rangedInstance.getMaxDmg());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "minDmg"), PersistentDataType.INTEGER, rangedInstance.getMinDmg());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "maxDmg"), PersistentDataType.INTEGER, rangedInstance.getMaxDmg());
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "projectileType"), PersistentDataType.INTEGER,
-                    rangedInstance.getProjectileType());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "projectileSpeed"), PersistentDataType.DOUBLE,
-                    rangedInstance.getProjectileSpeed());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "projectileType"), PersistentDataType.INTEGER, rangedInstance.getProjectileType());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "projectileSpeed"), PersistentDataType.DOUBLE, rangedInstance.getProjectileSpeed());
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "pellets"), PersistentDataType.INTEGER, rangedInstance.getPellets());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "pellets"), PersistentDataType.INTEGER, rangedInstance.getPellets());
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "burstAmount"), PersistentDataType.INTEGER,
-                    rangedInstance.getBurstAmount());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "burstDelay"), PersistentDataType.DOUBLE, rangedInstance.getBurstDelay());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "burstAmount"), PersistentDataType.INTEGER, rangedInstance.getBurstAmount());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "burstDelay"), PersistentDataType.DOUBLE, rangedInstance.getBurstDelay());
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "bulletSpread"), PersistentDataType.DOUBLE,
-                    rangedInstance.getBulletSpread());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "additiveBulletSpread"), PersistentDataType.DOUBLE,
-                    rangedInstance.getAdditiveBulletSpread());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "spreadPercentage"), PersistentDataType.DOUBLE,
-                    rangedInstance.getSpreadPercentage());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "bulletSpread"), PersistentDataType.DOUBLE, rangedInstance.getBulletSpread());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "additiveBulletSpread"), PersistentDataType.DOUBLE, rangedInstance.getAdditiveBulletSpread());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "spreadPercentage"), PersistentDataType.DOUBLE, rangedInstance.getSpreadPercentage());
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "zoomAmount"), PersistentDataType.INTEGER,
-                    rangedInstance.getZoomAmount());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "zoomSpreadMultiplier"), PersistentDataType.DOUBLE,
-                    rangedInstance.getZoomSpreadMultiplier());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "zoomAmount"), PersistentDataType.INTEGER, rangedInstance.getZoomAmount());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "zoomSpreadMultiplier"), PersistentDataType.DOUBLE, rangedInstance.getZoomSpreadMultiplier());
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "delayBetweenShots"), PersistentDataType.DOUBLE,
-                    rangedInstance.getDelayBetweenShots());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "delayBetweenShots"), PersistentDataType.DOUBLE, rangedInstance.getDelayBetweenShots());
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER, rangedInstance.getClipSize());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER, rangedInstance.getClipSize());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "reloadSpeed"), PersistentDataType.DOUBLE,
-                    rangedInstance.getReloadSpeed());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "reloadType"), PersistentDataType.STRING, rangedInstance.getReloadType());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "currentAmmo"), PersistentDataType.INTEGER, rangedInstance.getClipSize());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "clipSize"), PersistentDataType.INTEGER, rangedInstance.getClipSize());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "reloadSpeed"), PersistentDataType.DOUBLE, rangedInstance.getReloadSpeed());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "reloadType"), PersistentDataType.STRING, rangedInstance.getReloadType());
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING, rangedInstance.getActionType());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE,
-                    rangedInstance.getActionDelay());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "actionSpecial"), PersistentDataType.INTEGER,
-                    rangedInstance.getActionSpecial());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "actionSpecialTracker"), PersistentDataType.INTEGER, 0);
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionType"), PersistentDataType.STRING, rangedInstance.getActionType());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionDelay"), PersistentDataType.DOUBLE, rangedInstance.getActionDelay());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecial"), PersistentDataType.INTEGER, rangedInstance.getActionSpecial());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSpecialTracker"), PersistentDataType.INTEGER, 0);
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "shootingPatternType"), PersistentDataType.INTEGER,
-                    rangedInstance.getShootingPatternType());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "shootingPatternOffset"), PersistentDataType.DOUBLE,
-                    rangedInstance.getShootingPatternOffset());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingPatternType"), PersistentDataType.INTEGER, rangedInstance.getShootingPatternType());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingPatternOffset"), PersistentDataType.DOUBLE, rangedInstance.getShootingPatternOffset());
 
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "shootingSound"), PersistentDataType.STRING,
-                    rangedInstance.getShootingSound());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "reloadingSound"), PersistentDataType.STRING,
-                    rangedInstance.getReloadingSound());
-            im.getPersistentDataContainer().set(
-                    new NamespacedKey(plugin, "actionSound"), PersistentDataType.STRING,
-                    rangedInstance.getActionSound());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "shootingSound"), PersistentDataType.STRING, rangedInstance.getShootingSound());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "reloadingSound"), PersistentDataType.STRING, rangedInstance.getReloadingSound());
+            im.getPersistentDataContainer().set(new NamespacedKey(plugin, "actionSound"), PersistentDataType.STRING, rangedInstance.getActionSound());
 
             im.setUnbreakable(true);
 
-            im.addItemFlags(
-                    ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS,
-                    ItemFlag.HIDE_DYE, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS,
-                    ItemFlag.HIDE_UNBREAKABLE);
+            im.addItemFlags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_DESTROYS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_ENCHANTS, ItemFlag.HIDE_DYE, ItemFlag.HIDE_PLACED_ON, ItemFlag.HIDE_POTION_EFFECTS, ItemFlag.HIDE_UNBREAKABLE);
 
             item.setItemMeta(im);
 

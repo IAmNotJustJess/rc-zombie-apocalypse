@@ -34,8 +34,7 @@ public class ZombieSpecial {
     private void disableZoomCountdown(Player player) {
 
         new BukkitRunnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
 
                 if (!disableZoomList.containsKey(player)) {
 
@@ -51,7 +50,8 @@ public class ZombieSpecial {
 
                     disableZoomCountdown(player);
 
-                } else {
+                }
+                else {
 
                     disableZoomList.remove(player);
 
@@ -71,17 +71,14 @@ public class ZombieSpecial {
 
                 location.getWorld().playSound(location, Sound.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 0.2f, 0.5f);
 
-                player.getWorld().spawnParticle(Particle.BLOCK_CRACK, player.getLocation(), 50, 0.5, 1, 0.5, 0.3,
-                        new ItemStack(Material.PACKED_ICE, 1).getType().createBlockData()
-                );
-                player.getWorld().spawnParticle(Particle.BLOCK_DUST, player.getLocation(), 20, 0.5, 1, 0.5, 0.3,
-                        new ItemStack(Material.SNOW_BLOCK, 1).getType().createBlockData()
-                );
+                player.getWorld().spawnParticle(Particle.BLOCK_CRACK, player.getLocation(), 50, 0.5, 1, 0.5, 0.3, new ItemStack(Material.PACKED_ICE, 1).getType().createBlockData());
+                player.getWorld().spawnParticle(Particle.BLOCK_DUST, player.getLocation(), 20, 0.5, 1, 0.5, 0.3, new ItemStack(Material.SNOW_BLOCK, 1).getType().createBlockData());
 
                 if (!disableZoomList.containsKey(player)) {
                     disableZoomList.put(player, duration);
                     disableZoomCountdown(player);
-                } else if (disableZoomList.get(player) < duration) {
+                }
+                else if (disableZoomList.get(player) < duration) {
                     disableZoomList.put(player, duration);
                 }
 
@@ -93,10 +90,8 @@ public class ZombieSpecial {
 
                 location.getWorld().playSound(location, Sound.ENTITY_WITHER_SHOOT, SoundCategory.HOSTILE, 0.2f, 1.5f);
 
-                player.getWorld().spawnParticle(Particle.BLOCK_CRACK, player.getLocation(), 50, 0.5, 1, 0.5, 0.3,
-                        new ItemStack(Material.PURPLE_STAINED_GLASS, 1).getType().createBlockData());
-                player.getWorld().spawnParticle(Particle.BLOCK_DUST, player.getLocation(), 20, 0.5, 1, 0.5, 0.3,
-                        new ItemStack(Material.BLACK_STAINED_GLASS, 1).getType().createBlockData());
+                player.getWorld().spawnParticle(Particle.BLOCK_CRACK, player.getLocation(), 50, 0.5, 1, 0.5, 0.3, new ItemStack(Material.PURPLE_STAINED_GLASS, 1).getType().createBlockData());
+                player.getWorld().spawnParticle(Particle.BLOCK_DUST, player.getLocation(), 20, 0.5, 1, 0.5, 0.3, new ItemStack(Material.BLACK_STAINED_GLASS, 1).getType().createBlockData());
 
                 player.setVelocity(location.toVector().subtract(player.getLocation().toVector()).normalize().multiply(power));
 
@@ -123,23 +118,15 @@ public class ZombieSpecial {
 
                 location.getWorld().playSound(location, Sound.ENTITY_GENERIC_EXPLODE, SoundCategory.HOSTILE, 1f, 1f);
 
-                location.getWorld().spawnParticle(Particle.FALLING_DUST, location, 50, aoe * 2, aoe * 2, aoe * 2, 0.3,
-                        new ItemStack(Material.TNT, 1).getType().createBlockData()
-                );
-                location.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, location, 50, aoe * 2, aoe * 2, aoe * 2, 0.3
-                );
+                location.getWorld().spawnParticle(Particle.FALLING_DUST, location, 50, aoe * 2, aoe * 2, aoe * 2, 0.3, new ItemStack(Material.TNT, 1).getType().createBlockData());
+                location.getWorld().spawnParticle(Particle.EXPLOSION_LARGE, location, 50, aoe * 2, aoe * 2, aoe * 2, 0.3);
 
-                affected.addAll(location.getWorld().getNearbyEntities(location, aoe * 2, aoe * 2, aoe * 2,
-                        (entity) -> entity.getType() == EntityType.PLAYER
-                ));
-                affected.addAll(location.getWorld().getNearbyEntities(location, aoe * 2, aoe * 2, aoe * 2,
-                        (entity) -> entity.getType() == EntityType.ZOMBIE
-                ));
+                affected.addAll(location.getWorld().getNearbyEntities(location, aoe * 2, aoe * 2, aoe * 2, (entity) -> entity.getType() == EntityType.PLAYER));
+                affected.addAll(location.getWorld().getNearbyEntities(location, aoe * 2, aoe * 2, aoe * 2, (entity) -> entity.getType() == EntityType.ZOMBIE));
 
 
                 new BukkitRunnable() {
-                    @Override
-                    public void run() {
+                    @Override public void run() {
                         for (Entity entity : affected) {
                             if (entity instanceof Player) {
                                 Player player = (Player) entity;
@@ -166,18 +153,12 @@ public class ZombieSpecial {
 
                 location.getWorld().playSound(location, Sound.BLOCK_GLASS_BREAK, SoundCategory.HOSTILE, 1f, 0.5f);
 
-                location.getWorld().spawnParticle(Particle.FALLING_DUST, location, 25, aoe, aoe, aoe, 0.3,
-                        new ItemStack(Material.PACKED_ICE, 1).getType().createBlockData()
-                );
-                location.getWorld().spawnParticle(Particle.FALLING_DUST, location, 70, aoe * 1.5, aoe * 1.5, aoe * 1.5,
-                        0.3, new ItemStack(Material.SNOW_BLOCK, 1).getType().createBlockData()
-                );
+                location.getWorld().spawnParticle(Particle.FALLING_DUST, location, 25, aoe, aoe, aoe, 0.3, new ItemStack(Material.PACKED_ICE, 1).getType().createBlockData());
+                location.getWorld().spawnParticle(Particle.FALLING_DUST, location, 70, aoe * 1.5, aoe * 1.5, aoe * 1.5, 0.3, new ItemStack(Material.SNOW_BLOCK, 1).getType().createBlockData());
                 location.getWorld().spawnParticle(Particle.CLOUD, location, 50, 0, 0, 0, 0.1);
 
                 List<Entity> affected = new ArrayList<>();
-                affected.addAll(location.getWorld().getNearbyEntities(location, aoe * 2, aoe * 2, aoe * 2,
-                        (entity) -> entity.getType() == EntityType.PLAYER
-                ));
+                affected.addAll(location.getWorld().getNearbyEntities(location, aoe * 2, aoe * 2, aoe * 2, (entity) -> entity.getType() == EntityType.PLAYER));
 
                 for (Entity entity : affected) {
 
@@ -185,17 +166,14 @@ public class ZombieSpecial {
 
                     player.addPotionEffect(new PotionEffect(PotionEffectType.SLOW, duration, amplifier, false, false));
 
-                    player.getWorld().spawnParticle(Particle.BLOCK_CRACK, player.getLocation(), 50, 0.5, 1, 0.5, 0.3,
-                            new ItemStack(Material.PACKED_ICE, 1).getType().createBlockData()
-                    );
-                    player.getWorld().spawnParticle(Particle.FALLING_DUST, player.getLocation(), 20, 0.5, 1, 0.5, 0.3,
-                            new ItemStack(Material.SNOW_BLOCK, 1).getType().createBlockData()
-                    );
+                    player.getWorld().spawnParticle(Particle.BLOCK_CRACK, player.getLocation(), 50, 0.5, 1, 0.5, 0.3, new ItemStack(Material.PACKED_ICE, 1).getType().createBlockData());
+                    player.getWorld().spawnParticle(Particle.FALLING_DUST, player.getLocation(), 20, 0.5, 1, 0.5, 0.3, new ItemStack(Material.SNOW_BLOCK, 1).getType().createBlockData());
 
                     if (!disableZoomList.containsKey(player)) {
                         disableZoomList.put(player, duration);
                         disableZoomCountdown(player);
-                    } else if (disableZoomList.get(player) < duration) {
+                    }
+                    else if (disableZoomList.get(player) < duration) {
                         disableZoomList.put(player, duration);
                     }
                 }
@@ -209,24 +187,19 @@ public class ZombieSpecial {
 
                 location.getWorld().playSound(location, Sound.ENTITY_WITHER_SHOOT, SoundCategory.HOSTILE, 1f, 1.5f);
 
-                location.getWorld().spawnParticle(Particle.FALLING_DUST, location, 100, aoe, aoe, aoe, 0.3,
-                        new ItemStack(Material.PURPLE_STAINED_GLASS, 1).getType().createBlockData());
-                location.getWorld().spawnParticle(Particle.FALLING_DUST, location, 40, aoe * 1.5, aoe * 1.5, aoe * 1.5,
-                        0.3, new ItemStack(Material.BLACK_STAINED_GLASS, 1).getType().createBlockData());
+                location.getWorld().spawnParticle(Particle.FALLING_DUST, location, 100, aoe, aoe, aoe, 0.3, new ItemStack(Material.PURPLE_STAINED_GLASS, 1).getType().createBlockData());
+                location.getWorld().spawnParticle(Particle.FALLING_DUST, location, 40, aoe * 1.5, aoe * 1.5, aoe * 1.5, 0.3, new ItemStack(Material.BLACK_STAINED_GLASS, 1).getType().createBlockData());
                 location.getWorld().spawnParticle(Particle.CLOUD, location, 50, 0, 0, 0, 0.1);
 
                 List<Entity> affected = new ArrayList<>();
-                affected.addAll(location.getWorld().getNearbyEntities(location, aoe * 2, aoe * 2, aoe * 2,
-                        (entity) -> entity.getType() == EntityType.PLAYER));
+                affected.addAll(location.getWorld().getNearbyEntities(location, aoe * 2, aoe * 2, aoe * 2, (entity) -> entity.getType() == EntityType.PLAYER));
 
                 for (Entity entity : affected) {
 
                     Player player = (Player) entity;
 
-                    player.getWorld().spawnParticle(Particle.BLOCK_CRACK, player.getLocation(), 50, 0.5, 1, 0.5, 0.3,
-                            new ItemStack(Material.PURPLE_STAINED_GLASS, 1).getType().createBlockData());
-                    player.getWorld().spawnParticle(Particle.BLOCK_DUST, player.getLocation(), 20, 0.5, 1, 0.5, 0.3,
-                            new ItemStack(Material.BLACK_STAINED_GLASS, 1).getType().createBlockData());
+                    player.getWorld().spawnParticle(Particle.BLOCK_CRACK, player.getLocation(), 50, 0.5, 1, 0.5, 0.3, new ItemStack(Material.PURPLE_STAINED_GLASS, 1).getType().createBlockData());
+                    player.getWorld().spawnParticle(Particle.BLOCK_DUST, player.getLocation(), 20, 0.5, 1, 0.5, 0.3, new ItemStack(Material.BLACK_STAINED_GLASS, 1).getType().createBlockData());
 
                     player.setVelocity(location.toVector().subtract(player.getLocation().toVector()).normalize().multiply(power));
 

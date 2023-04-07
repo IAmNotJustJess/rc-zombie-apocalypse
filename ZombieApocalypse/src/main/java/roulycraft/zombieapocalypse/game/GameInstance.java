@@ -191,8 +191,7 @@ public class GameInstance {
         if (this.gameState == gameState) return false;
 
         if (JavaPlugin.getProvidingPlugin(this.getClass()).getConfig().getBoolean("settings.logGameStateChange")) {
-            Bukkit.getConsoleSender().sendMessage(
-                    "§6INFO! §eStatus instancja areny §f" + this.getName() + " §ezostał zmieniony na: §f" + gameState + "§e!");
+            Bukkit.getConsoleSender().sendMessage("§6INFO! §eStatus instancja areny §f" + this.getName() + " §ezostał zmieniony na: §f" + gameState + "§e!");
         }
 
         this.gameState = gameState;

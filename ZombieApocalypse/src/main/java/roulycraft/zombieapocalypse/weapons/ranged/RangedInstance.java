@@ -36,36 +36,7 @@ public class RangedInstance {
         this.id = id;
     }
 
-    public RangedInstance(
-            Integer id,
-            String name,
-            Integer level,
-            Material item,
-            Integer minDmg,
-            Integer maxDmg,
-            Integer projectileType,
-            Double projectileSpeed,
-            Integer pellets,
-            Integer burstAmount,
-            Double burstDelay,
-            Double bulletSpread,
-            Double additiveBulletSpread,
-            Double spreadPercentage,
-            Integer zoomAmount,
-            Double zoomSpreadMultiplier,
-            Double delayBetweenShots,
-            Integer clipSize,
-            Double reloadSpeed,
-            String reloadType,
-            String actionType,
-            Double actionDelay,
-            Integer actionSpecial,
-            Integer shootingPatternType,
-            Double shootingPatternOffset,
-            String shootingSound,
-            String reloadingSound,
-            String actionSound
-    ) {
+    public RangedInstance(Integer id, String name, Integer level, Material item, Integer minDmg, Integer maxDmg, Integer projectileType, Double projectileSpeed, Integer pellets, Integer burstAmount, Double burstDelay, Double bulletSpread, Double additiveBulletSpread, Double spreadPercentage, Integer zoomAmount, Double zoomSpreadMultiplier, Double delayBetweenShots, Integer clipSize, Double reloadSpeed, String reloadType, String actionType, Double actionDelay, Integer actionSpecial, Integer shootingPatternType, Double shootingPatternOffset, String shootingSound, String reloadingSound, String actionSound) {
 
         this.id = id;
         this.name = name;

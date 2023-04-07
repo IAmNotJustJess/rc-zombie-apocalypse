@@ -45,9 +45,7 @@ public class ZombieListener implements Listener {
 
     private void deathParticles(BlockData blockData, Location loc) {
         loc.getWorld().spawnParticle(Particle.FALLING_DUST, loc, 50, 0.5, 1, 0.5, 0.3, blockData);
-        loc.getWorld().spawnParticle(
-                Particle.BLOCK_DUST, loc, 50, 0.5, 1, 0.5, 0.3,
-                new ItemStack(Material.REDSTONE_BLOCK, 1).getType().createBlockData());
+        loc.getWorld().spawnParticle(Particle.BLOCK_DUST, loc, 50, 0.5, 1, 0.5, 0.3, new ItemStack(Material.REDSTONE_BLOCK, 1).getType().createBlockData());
         loc.getWorld().spawnParticle(Particle.CLOUD, loc, 20, 0.5, 1, 0.5, 0.1);
         loc.getWorld().spawnParticle(Particle.SMOKE_LARGE, loc, 10, 0.5, 1, 0.5, 0.2);
 
@@ -58,11 +56,9 @@ public class ZombieListener implements Listener {
     private void zombieBossBarDecay(NamespacedKey key, Player player) {
 
         new BukkitRunnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
 
-                if (bossbarList.isEmpty() || bossbarList.get(key) == null || !bossbarList.get(key).containsKey(
-                        player) || !bossbarList.containsKey(key)) {
+                if (bossbarList.isEmpty() || bossbarList.get(key) == null || !bossbarList.get(key).containsKey(player) || !bossbarList.containsKey(key)) {
 
                     return;
 
@@ -76,7 +72,8 @@ public class ZombieListener implements Listener {
 
                     zombieBossBarDecay(key, player);
 
-                } else {
+                }
+                else {
 
                     bossbarList.get(key).remove(player);
                     Bukkit.getBossBar(key).removePlayer(player);
@@ -105,8 +102,7 @@ public class ZombieListener implements Listener {
 
     private void deleteZombieBossBar(NamespacedKey key) {
         new BukkitRunnable() {
-            @Override
-            public void run() {
+            @Override public void run() {
 
                 if (Bukkit.getBossBar(key) == null) {
                     return;
@@ -120,8 +116,7 @@ public class ZombieListener implements Listener {
         }.runTaskLaterAsynchronously(plugin, 15L);
     }
 
-    @EventHandler
-    public void onZombieIgnite(EntityCombustEvent event) {
+    @EventHandler public void onZombieIgnite(EntityCombustEvent event) {
 
         if (event.getEntity().getType() != EntityType.ZOMBIE || event.getEntity().getMetadata("ZA").size() != 1) {
             return;
@@ -162,23 +157,21 @@ public class ZombieListener implements Listener {
 
             if (!entity.getEquipment().getHelmet().getType().isAir()) {
                 data = entity.getEquipment().getHelmet().getType().createBlockData();
-            } else {
+            }
+            else {
                 data = new ItemStack(Material.GREEN_WOOL, 1).getType().createBlockData();
             }
             deathParticles(data, entity.getLocation().add(0, 1, 0));
 
             deleteZombieBossBar(namespacedKey);
-            GameManager.getManager().addScore(
-                    entity.getMetadata("instanceName").get(0).asString(), entity.getUniqueId());
-            ZombieSpecial.getManager().onZombieDeathEffect(
-                    entity.getMetadata("special").get(0).asString(), entity.getUniqueId(), entity.getLocation());
+            GameManager.getManager().addScore(entity.getMetadata("instanceName").get(0).asString(), entity.getUniqueId());
+            ZombieSpecial.getManager().onZombieDeathEffect(entity.getMetadata("special").get(0).asString(), entity.getUniqueId(), entity.getLocation());
             entity.remove();
 
         }
     }
 
-    @EventHandler
-    public void onZombieDamage(EntityDamageByEntityEvent event) {
+    @EventHandler public void onZombieDamage(EntityDamageByEntityEvent event) {
 
         if (event.getEntity().getType() != EntityType.ZOMBIE) {
             return;
@@ -188,8 +181,7 @@ public class ZombieListener implements Listener {
         LivingEntity lentity = (LivingEntity) event.getEntity();
         Player player = null;
 
-        if (entity.getType() != EntityType.ZOMBIE || event.getEntity().getMetadata(
-                "ZA").size() != 1 || !entity.getMetadata("ZA").get(0).asBoolean()) {
+        if (entity.getType() != EntityType.ZOMBIE || event.getEntity().getMetadata("ZA").size() != 1 || !entity.getMetadata("ZA").get(0).asBoolean()) {
             return;
         }
 
@@ -226,7 +218,8 @@ public class ZombieListener implements Listener {
             lentity.setMaximumNoDamageTicks(0);
 
             event.setDamage(damage);
-        } else {
+        }
+        else {
 
             player = (Player) event.getDamager();
 
@@ -260,22 +253,22 @@ public class ZombieListener implements Listener {
 
             event.setDamage(0);
 
-        } else {
+        }
+        else {
 
             BlockData data;
 
             if (!entity.getEquipment().getHelmet().getType().isAir()) {
                 data = entity.getEquipment().getHelmet().getType().createBlockData();
-            } else {
+            }
+            else {
                 data = new ItemStack(Material.GREEN_WOOL, 1).getType().createBlockData();
             }
             deathParticles(data, entity.getLocation().add(0, 1, 0));
 
             deleteZombieBossBar(namespacedKey);
-            GameManager.getManager().addScore(
-                    entity.getMetadata("instanceName").get(0).asString(), entity.getUniqueId());
-            ZombieSpecial.getManager().onZombieDeathEffect(
-                    entity.getMetadata("special").get(0).asString(), entity.getUniqueId(), entity.getLocation());
+            GameManager.getManager().addScore(entity.getMetadata("instanceName").get(0).asString(), entity.getUniqueId());
+            ZombieSpecial.getManager().onZombieDeathEffect(entity.getMetadata("special").get(0).asString(), entity.getUniqueId(), entity.getLocation());
             entity.remove();
 
         }
