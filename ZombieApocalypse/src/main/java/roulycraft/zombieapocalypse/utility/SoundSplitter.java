@@ -1,6 +1,5 @@
 package roulycraft.zombieapocalypse.utility;
 
-import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.SoundCategory;
 import org.bukkit.World;
@@ -17,6 +16,7 @@ public class SoundSplitter {
         plugin = p;
 
     }
+
     public static void playSplitSound(Player player, String normalisedSoundString) {
 
         World playerWorld = player.getWorld();
@@ -35,7 +35,7 @@ public class SoundSplitter {
 
             String[] soundInfo = sound.split("\\|");
 
-            if(soundInfo.length != 4) {
+            if (soundInfo.length != 4) {
 
                 continue;
 
@@ -46,11 +46,11 @@ public class SoundSplitter {
                 public void run() {
 
                     playerWorld.playSound(
-                        player.getLocation(),
-                        Sound.valueOf(soundInfo[0]),
-                        SoundCategory.PLAYERS,
-                        Float.parseFloat(soundInfo[1]),
-                        Float.parseFloat(soundInfo[2])
+                            player.getLocation(),
+                            Sound.valueOf(soundInfo[0]),
+                            SoundCategory.PLAYERS,
+                            Float.parseFloat(soundInfo[1]),
+                            Float.parseFloat(soundInfo[2])
                     );
                 }
             }.runTaskLater(plugin, Long.parseLong(soundInfo[3]));

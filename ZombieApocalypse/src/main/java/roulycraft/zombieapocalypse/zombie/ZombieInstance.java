@@ -38,20 +38,40 @@ public class ZombieInstance {
         return this.displayName;
     }
 
+    public void setDisplayName(String displayName) {
+        this.displayName = displayName;
+    }
+
     public Integer getHealth() {
         return this.health;
+    }
+
+    public void setHealth(Integer health) {
+        this.health = health;
     }
 
     public Integer getDamage() {
         return this.damage;
     }
 
+    public void setDamage(Integer damage) {
+        this.damage = damage;
+    }
+
     public Float getSpeed() {
         return this.speed;
     }
 
+    public void setSpeed(Float speed) {
+        this.speed = speed;
+    }
+
     public String getSpecial() {
         return this.special;
+    }
+
+    public void setSpecial(String special) {
+        this.special = special;
     }
 
     public ItemStack getHelmet() {
@@ -64,6 +84,10 @@ public class ZombieInstance {
         return i;
     }
 
+    public void setHelmet(ItemStack helmet) {
+        this.helmet = helmet;
+    }
+
     public ItemStack getChestplate() {
         ItemStack i = this.chestplate;
         ItemMeta im = i.getItemMeta();
@@ -72,6 +96,10 @@ public class ZombieInstance {
             i.setItemMeta(im);
         }
         return i;
+    }
+
+    public void setChestplate(ItemStack chestplate) {
+        this.chestplate = chestplate;
     }
 
     public ItemStack getLeggings() {
@@ -84,6 +112,10 @@ public class ZombieInstance {
         return i;
     }
 
+    public void setLeggings(ItemStack leggings) {
+        this.leggings = leggings;
+    }
+
     public ItemStack getBoots() {
         ItemStack i = this.boots;
         ItemMeta im = i.getItemMeta();
@@ -94,44 +126,12 @@ public class ZombieInstance {
         return i;
     }
 
-    public Integer getXPReward() {
-        return this.xpReward;
-    }
-
-    public void setDisplayName(String displayName) {
-        this.displayName = displayName;
-    }
-
-    public void setHealth(Integer health) {
-        this.health = health;
-    }
-
-    public void setDamage(Integer damage) {
-        this.damage = damage;
-    }
-
-    public void setSpeed(Float speed) {
-        this.speed = speed;
-    }
-
-    public void setSpecial(String special) {
-        this.special = special;
-    }
-
-    public void setHelmet(ItemStack helmet) {
-        this.helmet = helmet;
-    }
-
-    public void setChestplate(ItemStack chestplate) {
-        this.chestplate = chestplate;
-    }
-
-    public void setLeggings(ItemStack leggings) {
-        this.leggings = leggings;
-    }
-
     public void setBoots(ItemStack boots) {
         this.boots = boots;
+    }
+
+    public Integer getXPReward() {
+        return this.xpReward;
     }
 
     public void setXPReward(Integer xpReward) {

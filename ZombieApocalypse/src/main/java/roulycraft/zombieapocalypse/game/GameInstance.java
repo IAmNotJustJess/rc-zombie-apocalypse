@@ -11,11 +11,12 @@ public class GameInstance {
     // INSTANCE VALUES
     private final String name;
     private final List<UUID> players = new ArrayList<>();
+    private final HashMap<String, Boolean> selectedModifiers = new HashMap<String, Boolean>();
+    public GameState gameState = GameState.LOBBY;
     private String displayName;
     private Location lobby;
     private List<Location> playerSpawnLocs = new ArrayList<>();
     private List<Location> zombieSpawnLocs = new ArrayList<>();
-    public GameState gameState = GameState.LOBBY;
     private Integer wave;
     private Integer zombieKills;
     private Integer gameDifficulty;
@@ -24,7 +25,6 @@ public class GameInstance {
     private Double playerHPMultiplier;
     private Double playerDMGMultiplier;
     private Double playerAmmoMultiplier;
-    private HashMap<String, Boolean> selectedModifiers = new HashMap<String, Boolean>();
 
     public GameInstance(String name) {
         this.name = name;
@@ -40,9 +40,21 @@ public class GameInstance {
         return this.displayName;
     }
 
+    // SETTERS
+    public void setDisplayName(String s) {
+        if (this.gameState != GameState.ACTIVE && this.gameState != GameState.FINISHED) {
+            this.displayName = s;
+        }
+    }
+
     public Location getLobby() {
         return this.lobby;
     }
+
+    public void setLobby(Location l) {
+        this.lobby = l;
+    }
+
     public List<UUID> getPlayers() {
         return this.players;
     }
@@ -51,8 +63,16 @@ public class GameInstance {
         return this.playerSpawnLocs;
     }
 
+    public void setPlayerSpawnLocs(List<Location> list) {
+        this.playerSpawnLocs = list;
+    }
+
     public List<Location> getZombieSpawnLocs() {
         return this.zombieSpawnLocs;
+    }
+
+    public void setZombieSpawnLocs(List<Location> list) {
+        this.zombieSpawnLocs = list;
     }
 
     public Location getConcretePlayerSpawnLoc(Integer i) {
@@ -73,64 +93,8 @@ public class GameInstance {
         return this.zombieSpawnLocs.get(rng);
     }
 
-
     public Integer getWave() {
         return this.wave;
-    }
-
-    public Integer getZombieKills() {
-        return this.zombieKills;
-    }
-
-    public Integer getGameDifficulty() {
-        return this.gameDifficulty;
-    }
-
-    public Double getZombieHPMultiplier() {
-        return zombieHPMultiplier;
-    }
-
-    public Double getZombieDMGMultiplier() {
-        return zombieDMGMultiplier;
-    }
-
-    public Double getPlayerHPMultiplier() {
-        return playerHPMultiplier;
-    }
-
-    public Double getPlayerDMGMultiplier() {
-        return playerDMGMultiplier;
-    }
-
-    public Double getPlayerAmmoMultiplier() {
-        return playerAmmoMultiplier;
-    }
-
-    public HashMap<String, Boolean> getSelectedModifiers() {
-        return selectedModifiers;
-    }
-
-    public String getConcreteSelectedModifiers(String v) {
-        return String.valueOf(this.selectedModifiers.get(v));
-    }
-
-    // SETTERS
-    public void setDisplayName(String s) {
-        if (this.gameState != GameState.ACTIVE && this.gameState != GameState.FINISHED) {
-            this.displayName = s;
-        }
-    }
-
-    public void setLobby(Location l) {
-        this.lobby = l;
-    }
-
-    public void setPlayerSpawnLocs(List<Location> list) {
-        this.playerSpawnLocs = list;
-    }
-
-    public void setZombieSpawnLocs(List<Location> list) {
-        this.zombieSpawnLocs = list;
     }
 
     public void setWave(Integer i) {
@@ -139,10 +103,18 @@ public class GameInstance {
         }
     }
 
+    public Integer getZombieKills() {
+        return this.zombieKills;
+    }
+
     public void setZombieKills(Integer i) {
         if (this.gameState == GameState.ACTIVE) {
             this.zombieKills = i;
         }
+    }
+
+    public Integer getGameDifficulty() {
+        return this.gameDifficulty;
     }
 
     public void setGameDifficulty(Integer i) {
@@ -151,10 +123,18 @@ public class GameInstance {
         }
     }
 
+    public Double getZombieHPMultiplier() {
+        return zombieHPMultiplier;
+    }
+
     public void setZombieHPMultiplier(Double d) {
         if (this.gameState == GameState.ACTIVE) {
             this.zombieHPMultiplier = d;
         }
+    }
+
+    public Double getZombieDMGMultiplier() {
+        return zombieDMGMultiplier;
     }
 
     public void setZombieDMGMultiplier(Double d) {
@@ -163,10 +143,18 @@ public class GameInstance {
         }
     }
 
+    public Double getPlayerHPMultiplier() {
+        return playerHPMultiplier;
+    }
+
     public void setPlayerHPMultiplier(Double d) {
         if (this.gameState == GameState.ACTIVE) {
             this.playerHPMultiplier = d;
         }
+    }
+
+    public Double getPlayerDMGMultiplier() {
+        return playerDMGMultiplier;
     }
 
     public void setPlayerDMGMultiplier(Double d) {
@@ -175,10 +163,22 @@ public class GameInstance {
         }
     }
 
+    public Double getPlayerAmmoMultiplier() {
+        return playerAmmoMultiplier;
+    }
+
     public void setPlayerAmmoMultiplier(Double d) {
         if (this.gameState == GameState.ACTIVE) {
             this.playerAmmoMultiplier = d;
         }
+    }
+
+    public HashMap<String, Boolean> getSelectedModifiers() {
+        return selectedModifiers;
+    }
+
+    public String getConcreteSelectedModifiers(String v) {
+        return String.valueOf(this.selectedModifiers.get(v));
     }
 
     // A. SETTERS
@@ -190,8 +190,9 @@ public class GameInstance {
         if (this.gameState == GameState.RESTARTING && gameState != GameState.LOBBY) return false;
         if (this.gameState == gameState) return false;
 
-        if(JavaPlugin.getProvidingPlugin(this.getClass()).getConfig().getBoolean("settings.logGameStateChange")) {
-            Bukkit.getConsoleSender().sendMessage("§6INFO! §eStatus instancja areny §f"+this.getName()+" §ezostał zmieniony na: §f"+gameState+"§e!");
+        if (JavaPlugin.getProvidingPlugin(this.getClass()).getConfig().getBoolean("settings.logGameStateChange")) {
+            Bukkit.getConsoleSender().sendMessage(
+                    "§6INFO! §eStatus instancja areny §f" + this.getName() + " §ezostał zmieniony na: §f" + gameState + "§e!");
         }
 
         this.gameState = gameState;

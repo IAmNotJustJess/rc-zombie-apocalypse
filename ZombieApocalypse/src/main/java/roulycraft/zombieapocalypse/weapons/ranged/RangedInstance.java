@@ -37,34 +37,34 @@ public class RangedInstance {
     }
 
     public RangedInstance(
-        Integer id,
-        String name,
-        Integer level,
-        Material item,
-        Integer minDmg,
-        Integer maxDmg,
-        Integer projectileType,
-        Double projectileSpeed,
-        Integer pellets,
-        Integer burstAmount,
-        Double burstDelay,
-        Double bulletSpread,
-        Double additiveBulletSpread,
-        Double spreadPercentage,
-        Integer zoomAmount,
-        Double zoomSpreadMultiplier,
-        Double delayBetweenShots,
-        Integer clipSize,
-        Double reloadSpeed,
-        String reloadType,
-        String actionType,
-        Double actionDelay,
-        Integer actionSpecial,
-        Integer shootingPatternType,
-        Double shootingPatternOffset,
-        String shootingSound,
-        String reloadingSound,
-        String actionSound
+            Integer id,
+            String name,
+            Integer level,
+            Material item,
+            Integer minDmg,
+            Integer maxDmg,
+            Integer projectileType,
+            Double projectileSpeed,
+            Integer pellets,
+            Integer burstAmount,
+            Double burstDelay,
+            Double bulletSpread,
+            Double additiveBulletSpread,
+            Double spreadPercentage,
+            Integer zoomAmount,
+            Double zoomSpreadMultiplier,
+            Double delayBetweenShots,
+            Integer clipSize,
+            Double reloadSpeed,
+            String reloadType,
+            String actionType,
+            Double actionDelay,
+            Integer actionSpecial,
+            Integer shootingPatternType,
+            Double shootingPatternOffset,
+            String shootingSound,
+            String reloadingSound,
+            String actionSound
     ) {
 
         this.id = id;
@@ -106,212 +106,212 @@ public class RangedInstance {
         return this.name;
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Material getItem() {
         return this.item;
+    }
+
+    public void setItem(Material item) {
+        this.item = item;
     }
 
     public Integer getLevel() {
         return this.level;
     }
 
+    public void setLevel(Integer level) {
+        this.level = level;
+    }
+
     public Integer getMinDmg() {
         return this.minDmg;
+    }
+
+    public void setMinDmg(Integer minDmg) {
+        this.minDmg = minDmg;
     }
 
     public Integer getMaxDmg() {
         return this.maxDmg;
     }
 
+    public void setMaxDmg(Integer maxDmg) {
+        this.maxDmg = maxDmg;
+    }
+
     public Integer getProjectileType() {
         return this.projectileType;
+    }
+
+    public void setProjectileType(Integer projectileType) {
+        this.projectileType = projectileType;
     }
 
     public Double getProjectileSpeed() {
         return projectileSpeed;
     }
 
+    public void setProjectileSpeed(Double projectileSpeed) {
+        this.projectileSpeed = projectileSpeed;
+    }
+
     public Integer getPellets() {
         return this.pellets;
+    }
+
+    public void setPellets(Integer pellets) {
+        this.pellets = pellets;
     }
 
     public Integer getBurstAmount() {
         return burstAmount;
     }
 
-    public Double getBurstDelay() {
-        return burstDelay;
-    }
-
-    public Double getBulletSpread() {
-        return this.bulletSpread;
-    }
-
-    public Double getAdditiveBulletSpread() {
-        return this.additiveBulletSpread;
-    }
-
-    public Double getSpreadPercentage() {
-        return spreadPercentage;
-    }
-
-    public Integer getZoomAmount() {
-        return zoomAmount;
-    }
-
-    public Double getZoomSpreadMultiplier() {
-        return zoomSpreadMultiplier;
-    }
-
-    public Double getDelayBetweenShots() {
-        return delayBetweenShots;
-    }
-
-    public Integer getClipSize() {
-        return clipSize;
-    }
-
-    public Double getReloadSpeed() {
-        return reloadSpeed;
-    }
-
-    public String getReloadType() {
-        return reloadType;
-    }
-
-    public String getActionType() {
-        return actionType;
-    }
-
-    public Double getActionDelay() {
-        return actionDelay;
-    }
-
-    public Integer getActionSpecial() {
-        return actionSpecial;
-    }
-
-    public Integer getShootingPatternType() {
-        return shootingPatternType;
-    }
-
-    public Double getShootingPatternOffset() {
-        return shootingPatternOffset;
-    }
-
-    public String getShootingSound() {
-        return shootingSound;
-    }
-
-    public String getReloadingSound() {
-        return reloadingSound;
-    }
-
-    public String getActionSound() {
-        return actionSound;
-    }
-
-    public void setName (String name) {
-        this.name = name;
-    }
-
-    public void setItem (Material item) {
-        this.item = item;
-    }
-
-    public void setLevel (Integer level) {
-        this.level = level;
-    }
-
-    public void setMinDmg (Integer minDmg) {
-        this.minDmg = minDmg;
-    }
-
-    public void setMaxDmg (Integer maxDmg) {
-        this.maxDmg = maxDmg;
-    }
-
-    public void setProjectileType (Integer projectileType) {
-        this.projectileType = projectileType;
-    }
-
-    public void setProjectileSpeed (Double projectileSpeed) {
-        this.projectileSpeed = projectileSpeed;
-    }
-
-    public void setPellets (Integer pellets) {
-        this.pellets = pellets;
-    }
-
     public void setBurstAmount(Integer burstAmount) {
         this.burstAmount = burstAmount;
+    }
+
+    public Double getBurstDelay() {
+        return burstDelay;
     }
 
     public void setBurstDelay(Double burstDelay) {
         this.burstDelay = burstDelay;
     }
 
+    public Double getBulletSpread() {
+        return this.bulletSpread;
+    }
+
     public void setBulletSpread(Double bulletSpread) {
         this.bulletSpread = bulletSpread;
+    }
+
+    public Double getAdditiveBulletSpread() {
+        return this.additiveBulletSpread;
     }
 
     public void setAdditiveBulletSpread(Double additiveBulletSpread) {
         this.additiveBulletSpread = additiveBulletSpread;
     }
 
+    public Double getSpreadPercentage() {
+        return spreadPercentage;
+    }
+
     public void setSpreadPercentage(Double spreadPercentage) {
         this.spreadPercentage = spreadPercentage;
+    }
+
+    public Integer getZoomAmount() {
+        return zoomAmount;
     }
 
     public void setZoomAmount(Integer zoomAmount) {
         this.zoomAmount = zoomAmount;
     }
 
+    public Double getZoomSpreadMultiplier() {
+        return zoomSpreadMultiplier;
+    }
+
     public void setZoomSpreadMultiplier(Double zoomSpreadMultiplier) {
         this.zoomSpreadMultiplier = zoomSpreadMultiplier;
     }
 
-    public void setDelayBetweenShots (Double delayBetweenShots) {
+    public Double getDelayBetweenShots() {
+        return delayBetweenShots;
+    }
+
+    public void setDelayBetweenShots(Double delayBetweenShots) {
         this.delayBetweenShots = delayBetweenShots;
     }
 
-    public void setClipSize (Integer clipSize) {
+    public Integer getClipSize() {
+        return clipSize;
+    }
+
+    public void setClipSize(Integer clipSize) {
         this.clipSize = clipSize;
+    }
+
+    public Double getReloadSpeed() {
+        return reloadSpeed;
     }
 
     public void setReloadSpeed(Double reloadSpeed) {
         this.reloadSpeed = reloadSpeed;
     }
 
+    public String getReloadType() {
+        return reloadType;
+    }
+
     public void setReloadType(String reloadType) {
         this.reloadType = reloadType;
+    }
+
+    public String getActionType() {
+        return actionType;
     }
 
     public void setActionType(String actionType) {
         this.actionType = actionType;
     }
 
+    public Double getActionDelay() {
+        return actionDelay;
+    }
+
     public void setActionDelay(Double actionDelay) {
         this.actionDelay = actionDelay;
+    }
+
+    public Integer getActionSpecial() {
+        return actionSpecial;
     }
 
     public void setActionSpecial(Integer actionSpecial) {
         this.actionSpecial = actionSpecial;
     }
 
+    public Integer getShootingPatternType() {
+        return shootingPatternType;
+    }
+
     public void setShootingPatternType(Integer shootingPatternType) {
         this.shootingPatternType = shootingPatternType;
+    }
+
+    public Double getShootingPatternOffset() {
+        return shootingPatternOffset;
     }
 
     public void setShootingPatternOffset(Double shootingPatternOffset) {
         this.shootingPatternOffset = shootingPatternOffset;
     }
 
+    public String getShootingSound() {
+        return shootingSound;
+    }
+
     public void setShootingSound(String shootingSound) {
         this.shootingSound = shootingSound;
     }
 
+    public String getReloadingSound() {
+        return reloadingSound;
+    }
+
     public void setReloadingSound(String reloadingSound) {
         this.reloadingSound = reloadingSound;
+    }
+
+    public String getActionSound() {
+        return actionSound;
     }
 
     public void setActionSound(String actionSound) {

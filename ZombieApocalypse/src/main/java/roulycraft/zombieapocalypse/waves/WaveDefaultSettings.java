@@ -14,7 +14,7 @@ public class WaveDefaultSettings {
 
     public static void loadDefaultSettings() {
 
-        for(int i = 1; i <= 80; i++) {
+        for (int i = 1; i <= 80; i++) {
             WaveManager.getManager().createInstance(i);
         }
 
@@ -1402,7 +1402,7 @@ public class WaveDefaultSettings {
             waveInstance.add(2.0, "hive3");
         } // 80
 
-        for(int i = 1; i <= 80; i++) {
+        for (int i = 1; i <= 80; i++) {
             WaveManager.getManager().reloadWaveInstanceConfig(i);
             WaveManager.getManager().saveWaveInstanceConfig(i);
         }

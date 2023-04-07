@@ -6,9 +6,9 @@ import java.util.TreeMap;
 
 public class WaveInstance {
     private final int waveNumber;
-    private double totalWeight;
     private final NavigableMap<String, Double> preZombieList = new TreeMap<>();
     private final NavigableMap<Double, String> zombieList = new TreeMap<>();
+    private double totalWeight;
 
     public WaveInstance(int waveNumber) {
 
@@ -16,12 +16,15 @@ public class WaveInstance {
         this.totalWeight = 0.0;
 
     }
+
     public int getWaveNumber() {
         return waveNumber;
     }
+
     public NavigableMap<Double, String> getZombieList() {
         return zombieList;
     }
+
     public NavigableMap<String, Double> getPreZombieList() {
         return preZombieList;
     }
@@ -39,18 +42,18 @@ public class WaveInstance {
     }
 
     public boolean remove(String zombieName) {
-        if(!zombieList.containsValue(zombieName)) {
+        if (!zombieList.containsValue(zombieName)) {
             return false;
         }
 
-        for(double i : zombieList.keySet()) {
+        for (double i : zombieList.keySet()) {
             if (zombieList.get(i).equals(zombieName)) {
                 totalWeight -= i;
                 zombieList.remove(i, zombieName);
                 return true;
             }
         }
-        for(String i : preZombieList.keySet()) {
+        for (String i : preZombieList.keySet()) {
             if (preZombieList.containsKey(i)) {
                 preZombieList.remove(i);
                 return true;

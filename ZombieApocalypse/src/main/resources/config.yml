@@ -11,7 +11,7 @@ settings:
   logGameStateChanges: true
   maxPlayersPerArena: 32
   startCountdownAtPlayers: 1
-  countdownTime: 60
+  countdownTime: 15
   countdownReductionPlayers: 32
   countdownReduceTo: 10
   delayBeforeNextWave: 5
@@ -19,6 +19,14 @@ settings:
   gameOverAfter: 240
   spawnZombiesDelay: 2
   waveCount: 80
+  effects:
+    explosiveDamage: 40
+    explosiveAOE: 2.0
+    slowingDuration: 60
+    slowingAmplifier: 3
+    slowingAOE: 1.25
+    voidPower: 1.0
+    voidAOE: 2.0
 
 messages:
   plugin:

@@ -16,16 +16,17 @@ import java.util.List;
 public class WaveManager {
     private static WaveManager waveManager;
     private static ZombieApocalypse plugin;
+    public final List<WaveInstance> waveInstanceList = new ArrayList<>();
     private FileConfiguration waveInstanceConfig = null;
     private File waveInstanceFile = null;
-    public final List<WaveInstance> waveInstanceList = new ArrayList<>();
+
+    private WaveManager() {
+    }
 
     public static void injectPlugin(ZombieApocalypse p) {
         plugin = p;
     }
 
-    private WaveManager() {
-    }
     public static WaveManager getManager() {
 
         if (waveManager == null) {
@@ -37,6 +38,7 @@ public class WaveManager {
         return waveManager;
 
     }
+
     public WaveInstance getWaveInstance(Integer waveNumber) {
 
         int left = 0;
@@ -51,11 +53,9 @@ public class WaveManager {
                 return waveInstanceList.get(mid);
             }
 
-            if(foundWaveNo < waveNumber) {
+            if (foundWaveNo < waveNumber) {
                 left = mid + 1;
-            }
-
-            else {
+            } else {
                 right = mid - 1;
             }
         }
@@ -63,8 +63,9 @@ public class WaveManager {
         return null;
 
     }
+
     public void createInstance(Integer waveNumber) {
-        if(getWaveInstance(waveNumber) != null && waveInstanceList.contains(getWaveInstance(waveNumber))) {
+        if (getWaveInstance(waveNumber) != null && waveInstanceList.contains(getWaveInstance(waveNumber))) {
             return;
         }
 
@@ -73,16 +74,20 @@ public class WaveManager {
 
         saveWaveInstanceConfig(waveNumber);
     }
+
     public void reloadWaveInstanceConfig(Integer id) {
 
         if (waveInstanceFile == null) {
-            waveInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "waves", (id + ".yml"));
+            waveInstanceFile = new File(
+                    plugin.getDataFolder() + File.separator + "instances" + File.separator + "waves", (id + ".yml"));
         }
 
-        waveInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "waves", (id + ".yml"));
+        waveInstanceFile = new File(
+                plugin.getDataFolder() + File.separator + "instances" + File.separator + "waves", (id + ".yml"));
         waveInstanceConfig = YamlConfiguration.loadConfiguration(waveInstanceFile);
 
     }
+
     public FileConfiguration getWaveInstanceConfig(Integer id) {
 
         if (waveInstanceConfig == null) {
@@ -103,19 +108,19 @@ public class WaveManager {
 
         }
 
-        for(String zombieName : WaveManager.getManager().getWaveInstance(id).getPreZombieList().keySet()) {
-            waveInstanceConfig.set(zombieName, WaveManager.getManager().getWaveInstance(id).getPreZombieList().get(zombieName));
+        for (String zombieName : WaveManager.getManager().getWaveInstance(id).getPreZombieList().keySet()) {
+            waveInstanceConfig.set(
+                    zombieName, WaveManager.getManager().getWaveInstance(id).getPreZombieList().get(zombieName));
         }
 
         try {
 
             getWaveInstanceConfig(id).save(waveInstanceFile);
 
-        }
-
-        catch (IOException ex) {
+        } catch (IOException ex) {
             ConsoleCommandSender console = Bukkit.getConsoleSender();
-            console.sendMessage("§4BŁĄD KRYTYCZNY §cNie można było zapisać konfiguracji instancji fali do §f" + waveInstanceFile);
+            console.sendMessage(
+                    "§4BŁĄD KRYTYCZNY §cNie można było zapisać konfiguracji instancji fali do §f" + waveInstanceFile);
             console.sendMessage(String.valueOf(ex));
 
         }
@@ -137,12 +142,13 @@ public class WaveManager {
         }
 
         getWaveInstance(id).getZombieList().clear();
-        for(String zombieName : waveInstanceConfig.getKeys(false)) {
+        for (String zombieName : waveInstanceConfig.getKeys(false)) {
 
             Double weight = waveInstanceConfig.getDouble(zombieName);
 
-            if(!ZombieManager.getManager().getZombieInstance(zombieName).getName().equals(zombieName)) {
-                Bukkit.getConsoleSender().sendMessage("§4BŁĄD §cNie można było wczytać wartości zombie z§f" + zombieName + " §cpliku fali §f" + waveInstanceFile + "§c! Takie zombie nie istnieje!");
+            if (!ZombieManager.getManager().getZombieInstance(zombieName).getName().equals(zombieName)) {
+                Bukkit.getConsoleSender().sendMessage(
+                        "§4BŁĄD §cNie można było wczytać wartości zombie z§f" + zombieName + " §cpliku fali §f" + waveInstanceFile + "§c! Takie zombie nie istnieje!");
                 continue;
             }
 

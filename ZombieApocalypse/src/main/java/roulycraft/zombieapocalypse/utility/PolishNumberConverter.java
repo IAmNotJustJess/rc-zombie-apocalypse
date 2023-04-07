@@ -8,23 +8,15 @@ public class PolishNumberConverter {
         String message = Integer.toString(number);
         message += " ";
 
-        if(absNumber == 1) {
+        if (absNumber == 1) {
             message += msg1;
-        }
-
-        else if(absNumber >= 2 && absNumber <= 4) {
+        } else if (absNumber >= 2 && absNumber <= 4) {
             message += msg2;
-        }
-
-        else if(absNumber >= 5 && absNumber <= 20) {
+        } else if (absNumber >= 5 && absNumber <= 20) {
             message += msg3;
-        }
-
-        else if(absNumber % 10 >= 2 && absNumber % 10 <= 4) {
+        } else if (absNumber % 10 >= 2 && absNumber % 10 <= 4) {
             message += msg2;
-        }
-
-        else{
+        } else {
             message += msg3;
         }
 

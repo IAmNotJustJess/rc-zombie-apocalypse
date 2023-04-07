@@ -1,13 +1,15 @@
 package roulycraft.zombieapocalypse.zombie;
 
-import org.bukkit.*;
+import org.bukkit.Bukkit;
+import org.bukkit.Location;
+import org.bukkit.Material;
+import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
-
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
@@ -24,19 +26,18 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 
-import static org.bukkit.Material.*;
-
 public class ZombieManager {
     private static ZombieManager zombieManager;
     private static ZombieApocalypse plugin;
+    public final List<ZombieInstance> zombieInstanceList = new ArrayList<>();
     private FileConfiguration zombieInstanceConfig = null;
     private File zombieInstanceFile;
-    public final List<ZombieInstance> zombieInstanceList = new ArrayList<>();
+
+    private ZombieManager() {
+    }
 
     public static void injectPlugin(ZombieApocalypse p) {
         plugin = p;
-    }
-    private ZombieManager() {
     }
 
     public static ZombieManager getManager() {
@@ -56,7 +57,8 @@ public class ZombieManager {
             }
         }
 
-        zombieInstance = new ZombieInstance(name, displayName, health, damage, speed, special, helmet, chestplate, leggings, boots, xpReward);
+        zombieInstance = new ZombieInstance(
+                name, displayName, health, damage, speed, special, helmet, chestplate, leggings, boots, xpReward);
         this.zombieInstanceList.add(zombieInstance);
         this.zombieInstanceList.sort(Comparator.comparing(ZombieInstance::getName));
 
@@ -74,7 +76,7 @@ public class ZombieManager {
         saveZombieInstanceConfig(name);
     }
 
-    public ZombieInstance getZombieInstance(String name){
+    public ZombieInstance getZombieInstance(String name) {
         int left = 0;
         int right = zombieInstanceList.size() - 1;
 
@@ -83,14 +85,13 @@ public class ZombieManager {
 
             int result = name.compareTo(zombieInstanceList.get(mid).getName());
 
-            if(result == 0) {
+            if (result == 0) {
                 return zombieInstanceList.get(mid);
             }
 
-            if(result > 0) {
+            if (result > 0) {
                 left = mid + 1;
-            }
-            else {
+            } else {
                 right = mid - 1;
             }
         }
@@ -100,7 +101,8 @@ public class ZombieManager {
 
     public void reloadZombieInstanceConfig(String name) {
 
-        zombieInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "zombies", (name + ".yml"));
+        zombieInstanceFile = new File(
+                plugin.getDataFolder() + File.separator + "instances" + File.separator + "zombies", (name + ".yml"));
         zombieInstanceConfig = YamlConfiguration.loadConfiguration(zombieInstanceFile);
     }
 
@@ -115,9 +117,7 @@ public class ZombieManager {
 
         try {
             getZombieInstanceConfig(name).save(zombieInstanceFile);
-        }
-
-        catch (IOException ex) {
+        } catch (IOException ex) {
             ConsoleCommandSender console = Bukkit.getConsoleSender();
             console.sendMessage("§4BŁĄD KRYTYCZNY §cNie można było zapisać konfiguracji §fzombie.yml§c!");
             console.sendMessage(String.valueOf(ex));
@@ -145,20 +145,19 @@ public class ZombieManager {
             getZombieInstance(name).setXPReward(zombieInstanceConfig.getInt("xpReward"));
 
             return true;
-        }
-        else {
+        } else {
             createZombieInstance(
-                name,
-                zombieInstanceConfig.getString("displayName"),
-                zombieInstanceConfig.getInt("health"),
-                zombieInstanceConfig.getInt("damage"),
-                (float) zombieInstanceConfig.getDouble("speed"),
-                zombieInstanceConfig.getString("special"),
-                zombieInstanceConfig.getItemStack("helmet"),
-                zombieInstanceConfig.getItemStack("chestplate"),
-                zombieInstanceConfig.getItemStack("leggings"),
-                zombieInstanceConfig.getItemStack("boots"),
-                zombieInstanceConfig.getInt("xpReward")
+                    name,
+                    zombieInstanceConfig.getString("displayName"),
+                    zombieInstanceConfig.getInt("health"),
+                    zombieInstanceConfig.getInt("damage"),
+                    (float) zombieInstanceConfig.getDouble("speed"),
+                    zombieInstanceConfig.getString("special"),
+                    zombieInstanceConfig.getItemStack("helmet"),
+                    zombieInstanceConfig.getItemStack("chestplate"),
+                    zombieInstanceConfig.getItemStack("leggings"),
+                    zombieInstanceConfig.getItemStack("boots"),
+                    zombieInstanceConfig.getInt("xpReward")
             );
 
             return true;
@@ -174,10 +173,21 @@ public class ZombieManager {
         zombie.setCustomNameVisible(true);
 
         zombie.setMetadata("ZA", new FixedMetadataValue(plugin, true));
-        zombie.setMetadata("health", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
-        zombie.setMetadata("maxHealth", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
-        zombie.setMetadata("damage", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getDamage()));
-        zombie.setMetadata("xpReward", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getXPReward()));
+        zombie.setMetadata(
+                "health",
+                new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
+        zombie.setMetadata(
+                "maxHealth",
+                new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getHealth()));
+        zombie.setMetadata(
+                "damage",
+                new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getDamage()));
+        zombie.setMetadata(
+                "xpReward",
+                new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getXPReward()));
+        zombie.setMetadata(
+                "special",
+                new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getSpecial()));
 
         zombie.setMetadata("instanceName", new FixedMetadataValue(plugin, instanceName));
 
@@ -188,15 +198,14 @@ public class ZombieManager {
         Bukkit.getServer().getBossBar(key).setProgress(1.0);
 
 
-        if(countTowardsKills) {
+        if (countTowardsKills) {
             zombie.setMetadata("countTowardKills", new FixedMetadataValue(plugin, 1));
-        }
-
-        else {
+        } else {
             zombie.setMetadata("countTowardKills", new FixedMetadataValue(plugin, 0));
         }
 
-        zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(ZombieManager.getManager().getZombieInstance(name).getSpeed()/10);
+        zombie.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(
+                ZombieManager.getManager().getZombieInstance(name).getSpeed() / 10);
 
         zombie.setAdult();
         zombie.setRemoveWhenFarAway(false);
@@ -216,7 +225,7 @@ public class ZombieManager {
 
         if (!instanceName.equals("")) {
             Player player = GameManager.getManager().getRandomPlayer(instanceName);
-            if(player != null){
+            if (player != null) {
                 zombie.setTarget(player);
             }
         }
