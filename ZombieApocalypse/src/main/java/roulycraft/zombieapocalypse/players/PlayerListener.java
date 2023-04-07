@@ -6,6 +6,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+import org.bukkit.event.entity.EntityDamageEvent;
 import org.bukkit.event.entity.FoodLevelChangeEvent;
 import org.bukkit.event.player.PlayerQuitEvent;
 import roulycraft.zombieapocalypse.game.GameManager;
@@ -71,6 +72,11 @@ public class PlayerListener implements Listener {
         }
 
         if (!(event.getEntity() instanceof Player) || !(event.getDamager() instanceof Zombie) || !event.getDamager().getMetadata("ZA").get(0).asBoolean() || !GameManager.getManager().playerStats.containsKey(event.getEntity().getUniqueId())) {
+            return;
+        }
+
+        if(ZombieSpecial.getManager().onFireList.containsKey(event.getEntity()) && event.getCause() == EntityDamageEvent.DamageCause.FIRE_TICK) {
+            event.setCancelled(true);
             return;
         }
 

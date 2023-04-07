@@ -19,14 +19,24 @@ settings:
   gameOverAfter: 240
   spawnZombiesDelay: 2
   waveCount: 80
+
   effects:
-    explosiveDamage: 40
+    explosiveDamage: 2
     explosiveAOE: 2.0
-    slowingDuration: 60
+    slowingDuration: 3
     slowingAmplifier: 3
     slowingAOE: 1.25
     voidPower: 1.0
     voidAOE: 2.0
+    magmaDamage: 1
+    magmaDamagePerTicks: 4
+    magmaDuration: 2
+    magmaAOE: 2.0
+    slimePower: 1.0
+    slimeAOE: 2.0
+    electricDuration: 0.5
+    electricAOE: 2
+    beehiveSpawnedAmount: 3
 
 messages:
   plugin:

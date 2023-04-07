@@ -165,7 +165,7 @@ public class ZombieListener implements Listener {
 
             deleteZombieBossBar(namespacedKey);
             GameManager.getManager().addScore(entity.getMetadata("instanceName").get(0).asString(), entity.getUniqueId());
-            ZombieSpecial.getManager().onZombieDeathEffect(entity.getMetadata("special").get(0).asString(), entity.getUniqueId(), entity.getLocation());
+            ZombieSpecial.getManager().onZombieDeathEffect(entity.getMetadata("special").get(0).asString(), entity, entity.getLocation());
             entity.remove();
 
         }
@@ -268,7 +268,7 @@ public class ZombieListener implements Listener {
 
             deleteZombieBossBar(namespacedKey);
             GameManager.getManager().addScore(entity.getMetadata("instanceName").get(0).asString(), entity.getUniqueId());
-            ZombieSpecial.getManager().onZombieDeathEffect(entity.getMetadata("special").get(0).asString(), entity.getUniqueId(), entity.getLocation());
+            ZombieSpecial.getManager().onZombieDeathEffect(entity.getMetadata("special").get(0).asString(), entity, entity.getLocation());
             entity.remove();
 
         }
