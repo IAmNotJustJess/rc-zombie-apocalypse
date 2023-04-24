@@ -38,7 +38,6 @@ settings:
     electricAOE: 2
     beehiveSpawnedAmount: 3
 
-messages:
   plugin:
     name: "<gradient:#7edd7e:#95e595><bold>Zombie Apocalypse</bold></gradient>"
     command: "<#5ca4e0>"
