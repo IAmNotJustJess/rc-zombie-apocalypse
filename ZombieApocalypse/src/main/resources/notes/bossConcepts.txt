@@ -29,3 +29,53 @@ Boss 7:
 Boss 8:
 
 Ogólnie DMG bedzie zmieniany jak będziemy robić sobie roguelikować.
+
+
+
+
+
+
+Wersja islucza: 
+
+Boss 1: Zombie Rycerz
+HP: 500
+DMG: 25
+Abilitki:
+    - Tarcza - zmniejsza przyjmowany DMG o 75% na 5 sekund
+    - Szarza - no leci w gracza najbliższego i pyk
+    - Wirujący atak - atakuje dookoła zadając 30 DMG
+Wygląd: #ostatnia cecha opcjonalna, jeśli nie jest nic napisane robisz po swojemu
+    W zasadzie to zwykły rycerz, jeżeli masz możliwość rozważ zdolność zrespienia się go na koniu, przemyśl bo wyglądowo całkiem niebrzydko by to się prezentowało szczerze przekmiń abilitki tego bossa również pod kunia jeżeli wybierzesz ten wariant.
+
+Boss 2: Zombie Górnik
+HP: 750
+DMG: 25
+    - Rzut kamieniem - rzuca kamieniem zadając 25DMG
+    - Uderzenie kilofem - spowalnia i oslepia bliskich graczy na 5 sekund
+    - Dynamit - kładzie tnt, które wybucha i rozdziela sie na 3 mniejsze które potem też wybuchaja i zadaja 25HP a potem 15HP
+Wygląd:
+    Nieogolony, kmiń sam bo pojęcia nie mam
+
+Boss 3: Zombie Żołnierz
+HP: 1000
+DMG: 30
+    - Rzut granatem - no wiadomka, wybucha DMG 30
+    - Seria strzałów - strzela sobie w duzym spreadzie, kazdy pocisk bije po 5HP i no nawala jak szalony (go tez spowalnia xddd)
+    - Wystrzał ze Strzelby - no wiadomka pt. 2, 3HP per pellet, strzela 4 razy po 8 pelletów
+Wygląd:
+    Rzecz jasna ubrany po żołniersku tak w mundurze tu tego możesz zrobić że w jednej łapie trzyma róże albo jakiegoś kwiatka
+
+Boss 4: Zombie Nekromanta
+HP: 1500
+DMG: 15
+Abilitki:
+    - Przyzwanie zombie - Respi 3-5 specjalne zombie "zombie-widmo" o charakterystycznym wyglądzie (oraz trochę vexów do tego by było trudniej powiedzmy), 50HP, 15DMG
+    - Przyzwanie kolcy - Zaznacza lokacje niedaleko graczy, która po 3 sekundach zadaje 15DMG, pamiętaj ładnie zaparticlować
+    - Teleportacja - Teleportuje się do losowego gracza po sekundzie
+Wygląd:
+    Możesz spróbować dać szkieleta z głową zombie ubranego w tunike zieloną by był przecież niezauważalny
+
+Boss 5: Zombie Ogrodnik
+Boss 6:
+Boss 7:
+Boss 8:
