@@ -1,0 +1,31 @@
+Boss 1: Wojowniczy Zombie
+HP Bazowe: 500
+Damage Bazowy: 25
+Abilitki:
+    - Tarcza - zmniejsza przyjmowany DMG o 75% na 5 sekund
+    - Szarza - no leci w gracza najbliższego i pyk
+    - Wirujący atak - atakuje dookoła zadając 30 DMG
+Boss 2: Zombie Przywoływacz
+HP: 750
+DMG: 25
+    - Przyzwanie zombie - Respi 3-5 specjalne zombie "Iluzyjny Zombie", 50HP, 15DMG
+    - Przyzwanie kolcy - Zaznacza lokacje niedaleko graczy, która po 3 sekundach zadaje 15DMG
+    - Teleportacja - Teleportuje się do losowego klucza po sekundzie
+Boss 3: Kopalniany Zombie
+HP: 1000
+DMG: 30
+    - Rzut kamieniem - rzuca kamieniem zadając 25DMG
+    - Uderzenie kilofem - spowalnia i oslepia bliskich graczy na 5 sekund
+    - Dynamit - kładzie tnt, które wybucha i rozdziela sie na 3 mniejsze które potem też wybuchaja i zadaja 25HP a potem 15HP
+Boss 4: Zombie Strzelec
+HP: 1500
+DMG: 15
+    - Rzut granatem - no wiadomka, wybucha DMG 30
+    - Seria strzałów - strzela sobie w duzym spreadzie, kazdy pocisk bije po 5HP i no nawala jak szalony (go tez spowalnia xddd)
+    - Wystrzał ze Strzelby - no wiadomka pt. 2, 3HP per pellet, strzela 4 razy po 8 pelletów
+Boss 5:
+Boss 6:
+Boss 7:
+Boss 8:
+
+Ogólnie DMG bedzie zmieniany jak będziemy robić sobie roguelikować.
