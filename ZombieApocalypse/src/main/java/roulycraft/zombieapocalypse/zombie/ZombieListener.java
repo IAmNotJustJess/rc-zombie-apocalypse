@@ -43,8 +43,8 @@ public class ZombieListener implements Listener {
 
     }
 
-    private void deathParticles(BlockData blockData, Location loc) {
-        loc.getWorld().spawnParticle(Particle.FALLING_DUST, loc, 50, 0.5, 1, 0.5, 0.3, blockData);
+    private void deathParticles(BlockData data, Location loc) {
+        loc.getWorld().spawnParticle(Particle.FALLING_DUST, loc, 50, 0.5, 1, 0.5, 0.3, data);
         loc.getWorld().spawnParticle(Particle.BLOCK_DUST, loc, 50, 0.5, 1, 0.5, 0.3, new ItemStack(Material.REDSTONE_BLOCK, 1).getType().createBlockData());
         loc.getWorld().spawnParticle(Particle.CLOUD, loc, 20, 0.5, 1, 0.5, 0.1);
         loc.getWorld().spawnParticle(Particle.SMOKE_LARGE, loc, 10, 0.5, 1, 0.5, 0.2);
@@ -155,7 +155,7 @@ public class ZombieListener implements Listener {
 
             BlockData data;
 
-            if (!entity.getEquipment().getHelmet().getType().isAir()) {
+            if (!entity.getEquipment().getHelmet().getType().isAir() && entity.getEquipment().getHelmet().getType().isBlock()) {
                 data = entity.getEquipment().getHelmet().getType().createBlockData();
             }
             else {
@@ -257,21 +257,20 @@ public class ZombieListener implements Listener {
         }
         else {
 
-            BlockData data;
-
-            if (!entity.getEquipment().getHelmet().getType().isAir()) {
-                data = entity.getEquipment().getHelmet().getType().createBlockData();
-            }
-            else {
-                data = new ItemStack(Material.GREEN_WOOL, 1).getType().createBlockData();
-            }
-
             if(!boss) {
                 String key = entity.getMetadata("bossbarKey").get(0).asString();
                 NamespacedKey namespacedKey = new NamespacedKey(plugin, key);
                 deleteZombieBossBar(namespacedKey);
             }
 
+            BlockData data;
+
+            if (!entity.getEquipment().getHelmet().getType().isAir() && entity.getEquipment().getHelmet().getType().isBlock()) {
+                data = entity.getEquipment().getHelmet().getType().createBlockData();
+            }
+            else {
+                data = new ItemStack(Material.GREEN_WOOL, 1).getType().createBlockData();
+            }
             deathParticles(data, entity.getLocation().add(0, 1, 0));
             GameManager.getManager().addScore(entity.getMetadata("instanceName").get(0).asString(), entity.getUniqueId());
             ZombieSpecial.getManager().onZombieDeathEffect(entity.getMetadata("special").get(0).asString(), entity, entity.getLocation());
