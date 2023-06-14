@@ -2,11 +2,7 @@ package roulycraft.zombieapocalypse.bosses;
 
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
-import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.command.ConsoleCommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
@@ -18,8 +14,6 @@ import org.bukkit.metadata.FixedMetadataValue;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.game.GameManager;
 import roulycraft.zombieapocalypse.utility.StringSerialisation;
-import roulycraft.zombieapocalypse.bosses.BossInstance;
-import roulycraft.zombieapocalypse.bosses.BossManager;
 
 import java.io.File;
 import java.io.IOException;
@@ -49,7 +43,7 @@ public class BossManager {
         return bossManager;
     }
 
-    public void createBossInstance(String name, String displayName, Integer health, Integer damage, Float speed, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, Integer xpReward) {
+    public void createBossInstance(String name, String displayName, Integer health, Integer damage, Float speed, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, ItemStack mainhand, ItemStack offhand, Integer xpReward) {
 
         BossInstance bossInstance = null;
 
@@ -59,7 +53,7 @@ public class BossManager {
             }
         }
 
-        bossInstance = new BossInstance(name, displayName, health, damage, speed, helmet, chestplate, leggings, boots, xpReward);
+        bossInstance = new BossInstance(name, displayName, health, damage, speed, helmet, chestplate, leggings, boots, mainhand, offhand, xpReward);
         this.bossInstanceList.add(bossInstance);
         this.bossInstanceList.sort(Comparator.comparing(BossInstance::getName));
 
@@ -72,6 +66,8 @@ public class BossManager {
         getBossInstanceConfig(name).set("chestplate", chestplate);
         getBossInstanceConfig(name).set("leggings", leggings);
         getBossInstanceConfig(name).set("boots", boots);
+        getBossInstanceConfig(name).set("mainhand", mainhand);
+        getBossInstanceConfig(name).set("offhand", offhand);
         getBossInstanceConfig(name).set("xpReward", xpReward);
         saveBossInstanceConfig(name);
     }
@@ -102,7 +98,7 @@ public class BossManager {
 
     public void reloadBossInstanceConfig(String name) {
 
-        bossInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "bosss", (name + ".yml"));
+        bossInstanceFile = new File(plugin.getDataFolder() + File.separator + "instances" + File.separator + "bosses", (name + ".yml"));
         bossInstanceConfig = YamlConfiguration.loadConfiguration(bossInstanceFile);
     }
 
@@ -141,19 +137,21 @@ public class BossManager {
             getBossInstance(name).setChestplate(bossInstanceConfig.getItemStack("chestplate"));
             getBossInstance(name).setLeggings(bossInstanceConfig.getItemStack("leggings"));
             getBossInstance(name).setBoots(bossInstanceConfig.getItemStack("boots"));
+            getBossInstance(name).setMainhand(bossInstanceConfig.getItemStack("mainhand"));
+            getBossInstance(name).setOffhand(bossInstanceConfig.getItemStack("offhand"));
             getBossInstance(name).setXPReward(bossInstanceConfig.getInt("xpReward"));
 
             return true;
         }
         else {
-            createBossInstance(name, bossInstanceConfig.getString("displayName"), bossInstanceConfig.getInt("health"), bossInstanceConfig.getInt("damage"), (float) bossInstanceConfig.getDouble("speed"), bossInstanceConfig.getItemStack("helmet"), bossInstanceConfig.getItemStack("chestplate"), bossInstanceConfig.getItemStack("leggings"), bossInstanceConfig.getItemStack("boots"), bossInstanceConfig.getInt("xpReward"));
+            createBossInstance(name, bossInstanceConfig.getString("displayName"), bossInstanceConfig.getInt("health"), bossInstanceConfig.getInt("damage"), (float) bossInstanceConfig.getDouble("speed"), bossInstanceConfig.getItemStack("helmet"), bossInstanceConfig.getItemStack("chestplate"), bossInstanceConfig.getItemStack("leggings"), bossInstanceConfig.getItemStack("boots"), bossInstanceConfig.getItemStack("mainhand"), bossInstanceConfig.getItemStack("offhand"), bossInstanceConfig.getInt("xpReward"));
 
             return true;
 
         }
     }
 
-    public UUID spawnBoss(Location loc, String name, Boolean countTowardsKills, String instanceName) {
+    public UUID spawnBoss(Location loc, String name, String instanceName) {
 
         Zombie boss = (Zombie) loc.getWorld().spawnEntity(loc, EntityType.ZOMBIE);
 
@@ -170,27 +168,15 @@ public class BossManager {
 
         boss.setMetadata("instanceName", new FixedMetadataValue(plugin, instanceName));
 
-        NamespacedKey key = new NamespacedKey(plugin, ("zabossbar." + boss.getEntityId()));
-        boss.setMetadata("bossbarKey", new FixedMetadataValue(plugin, ("zabossbar." + boss.getEntityId())));
-
-        Bukkit.getServer().createBossBar(key, "", BarColor.GREEN, BarStyle.SOLID);
-        Bukkit.getServer().getBossBar(key).setProgress(1.0);
-
-
-        if (countTowardsKills) {
-            boss.setMetadata("countTowardKills", new FixedMetadataValue(plugin, 1));
-        }
-        else {
-            boss.setMetadata("countTowardKills", new FixedMetadataValue(plugin, 0));
-        }
+        boss.setMetadata("countTowardKills", new FixedMetadataValue(plugin, 1));
 
         boss.getAttribute(Attribute.GENERIC_MOVEMENT_SPEED).setBaseValue(BossManager.getManager().getBossInstance(name).getSpeed() / 10);
 
         boss.setAdult();
         boss.setRemoveWhenFarAway(false);
 
-        boss.getEquipment().setItemInMainHand(new ItemStack(Material.AIR, 0));
-        boss.getEquipment().setItemInOffHand(new ItemStack(Material.AIR, 0));
+        boss.getEquipment().setItemInMainHand(BossManager.getManager().getBossInstance(name).getMainhand());
+        boss.getEquipment().setItemInOffHand(BossManager.getManager().getBossInstance(name).getOffhand());
 
         boss.getEquipment().setHelmet(BossManager.getManager().getBossInstance(name).getHelmet());
         boss.getEquipment().setChestplate(BossManager.getManager().getBossInstance(name).getChestplate());
@@ -209,7 +195,6 @@ public class BossManager {
             }
         }
 
-//        BossListener.insertMap(NamespacedKey.fromString(boss.getMetadata("bossbarKey").get(0).asString(), plugin));
         return boss.getUniqueId();
     }
 }

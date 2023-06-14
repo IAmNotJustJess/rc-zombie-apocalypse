@@ -5,6 +5,7 @@ plugin:
 
 settings:
   logZombieLoad: true
+  logBossLoad: true
   logRangedLoad: true
   logWaveLoad: true
   logArenaLoad: true

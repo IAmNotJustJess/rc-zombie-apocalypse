@@ -13,9 +13,11 @@ public class BossInstance {
     private ItemStack chestplate;
     private ItemStack leggings;
     private ItemStack boots;
+    private ItemStack mainhand;
+    private ItemStack offhand;
     private Integer xpReward;
 
-    public BossInstance(String name, String displayName, Integer health, Integer damage, Float speed, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, Integer xpReward) {
+    public BossInstance(String name, String displayName, Integer health, Integer damage, Float speed, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, ItemStack mainhand, ItemStack offhand, Integer xpReward) {
         this.name = name;
         this.displayName = displayName;
         this.health = health;
@@ -25,6 +27,8 @@ public class BossInstance {
         this.chestplate = chestplate;
         this.leggings = leggings;
         this.boots = boots;
+        this.mainhand = mainhand;
+        this.offhand = offhand;
         this.xpReward = xpReward;
     }
 
@@ -126,5 +130,21 @@ public class BossInstance {
 
     public void setXPReward(Integer xpReward) {
         this.xpReward = xpReward;
+    }
+
+    public ItemStack getMainhand() {
+        return mainhand;
+    }
+
+    public void setMainhand(ItemStack mainhand) {
+        this.mainhand = mainhand;
+    }
+
+    public ItemStack getOffhand() {
+        return offhand;
+    }
+
+    public void setOffhand(ItemStack offhand) {
+        this.offhand = offhand;
     }
 }

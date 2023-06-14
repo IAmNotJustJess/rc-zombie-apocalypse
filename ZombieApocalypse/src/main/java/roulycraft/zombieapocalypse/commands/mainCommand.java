@@ -8,6 +8,8 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
+import roulycraft.zombieapocalypse.bosses.BossInstance;
+import roulycraft.zombieapocalypse.bosses.BossManager;
 import roulycraft.zombieapocalypse.game.GameManager;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.zombie.ZombieInstance;
@@ -304,7 +306,7 @@ public class MainCommand implements CommandExecutor {
 
                     switch (args[1].toLowerCase()) {
 
-                        case "getgun":
+                        case "getgun": {
 
                             Integer.valueOf(args[2]);
                             Integer.valueOf(args[3]);
@@ -320,8 +322,8 @@ public class MainCommand implements CommandExecutor {
                             sender.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Otrzymano broń o ID: <white>" + args[2] + " <green>i poziomie <white>" + args[3] + "<green>!"));
 
                             return true;
-
-                        case "spawnzombie":
+                        }
+                        case "spawnzombie": {
 
                             boolean count = false;
 
@@ -356,7 +358,33 @@ public class MainCommand implements CommandExecutor {
                             ZombieManager.getManager().spawnZombie(loc, args[2], count, "");
 
                             return true;
+                        }
+                        case "spawnboss": {
 
+                            if (Objects.isNull(args[2])) {
+                                sender.sendMessage(miniMessage.deserialize(missingZombieMessage));
+                                return true;
+                            }
+
+                            boolean exists = false;
+
+                            for (BossInstance checkIfExists : BossManager.getManager().bossInstanceList) {
+                                if (checkIfExists.getName().equals(args[2])) {
+                                    exists = true;
+                                    break;
+                                }
+                            }
+
+                            if (!exists) {
+                                sender.sendMessage(miniMessage.deserialize(missingZombieMessage));
+                                return true;
+                            }
+
+                            Location loc = ((Player) sender).getLocation();
+                            BossManager.getManager().spawnBoss(loc, args[2], "");
+
+                            return true;
+                        }
                     }
                 }
             }
