@@ -15,6 +15,7 @@ import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.scheduler.BukkitRunnable;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
+import roulycraft.zombieapocalypse.bosses.BossManager;
 import roulycraft.zombieapocalypse.players.PlayerInstance;
 import roulycraft.zombieapocalypse.utility.MinuteSecondsFormat;
 import roulycraft.zombieapocalypse.utility.PolishNumberConverter;
@@ -111,9 +112,14 @@ public class GameManager {
                     return;
                 }
 
+                boolean count = true;
+                if(gameInstance.getWave() % 10 == 0) {
+                    count = false;
+                }
+
                 Location loc = gameInstance.getRandomZombieSpawnLoc();
                 String zombieName = WaveManager.getManager().getWaveInstance(gameInstance.getWave()).getRandomZombie();
-                UUID id = ZombieManager.getManager().spawnZombie(loc, zombieName, true, gameInstance.getName());
+                UUID id = ZombieManager.getManager().spawnZombie(loc, zombieName, count, gameInstance.getName());
                 arenaZombieList.get(gameInstance.getName()).add(id);
 
                 spawnZombieInArena(name);
@@ -495,6 +501,11 @@ public class GameManager {
                 playerRespawn(Bukkit.getPlayer(uuid));
             }
             givePlayerLoadout(Bukkit.getPlayer(uuid));
+        }
+
+        if(wave % 10 == 0) {
+            Location loc = gameInstance.getConcreteZombieSpawnLoc(0);
+            BossManager.getManager().spawnBoss(loc, Integer.toString(wave / 10), gameInstance.getName());
         }
 
         gameInstance.setZombieKills(0);
