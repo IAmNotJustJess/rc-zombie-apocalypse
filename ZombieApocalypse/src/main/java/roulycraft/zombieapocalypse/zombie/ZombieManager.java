@@ -168,6 +168,7 @@ public class ZombieManager {
         zombie.setMetadata("special", new FixedMetadataValue(plugin, ZombieManager.getManager().getZombieInstance(name).getSpecial()));
 
         zombie.setMetadata("instanceName", new FixedMetadataValue(plugin, instanceName));
+        zombie.setMetadata("boss", new FixedMetadataValue(plugin, false));
 
         NamespacedKey key = new NamespacedKey(plugin, ("zabossbar." + zombie.getEntityId()));
         zombie.setMetadata("bossbarKey", new FixedMetadataValue(plugin, ("zabossbar." + zombie.getEntityId())));

@@ -11,6 +11,7 @@ import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.bosses.BossInstance;
 import roulycraft.zombieapocalypse.bosses.BossManager;
 import roulycraft.zombieapocalypse.game.GameManager;
+import roulycraft.zombieapocalypse.game.GameState;
 import roulycraft.zombieapocalypse.weapons.ranged.RangedManager;
 import roulycraft.zombieapocalypse.zombie.ZombieInstance;
 import roulycraft.zombieapocalypse.zombie.ZombieManager;
@@ -43,6 +44,7 @@ public class MainCommand implements CommandExecutor {
         String missingInstanceNameMessage = "<dark_red>BŁĄD! <red>Wprowadź nazwę areny!";
         String missingZombieMessage = "<dark_red>BŁĄD! <red>Wprowadź nazwę zombie!";
         String arenaDoesNotExist = "<dark_red>BŁĄD! <red>Arena nie istnieje!";
+        String arenaIsNotActive = "<dark_red>BŁĄD! <red>Arena nie jest aktywna!";
 
         if (!(sender instanceof Player)) {
 
@@ -91,7 +93,9 @@ public class MainCommand implements CommandExecutor {
                         if ("debug".equalsIgnoreCase(args[1]) && player.hasPermission("za.ct")) {
                             sender.sendMessage(miniMessage.deserialize("<newline>" + symbolColour + "== " + headlineColour + "<bold>Komendy Creation Tools " + pluginName + " " + symbolColour + "==<newline>"));
                             sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug spawnZombie <nazwa> " + symbolColour + "- " + headlineColour + "Respi zombiaka na twojej lokacji."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug spawnBoss <nazwa> " + symbolColour + "- " + headlineColour + "Respi bossa na twojej lokacji."));
                             sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug giveRanged <gracz> <id> " + symbolColour + "- " + headlineColour + "Daje graczu broń palną."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug setWave <instancja> <nrFali> " + symbolColour + "- " + headlineColour + "Ustawia fale na arenie."));
                             return true;
                         }
                     }
@@ -384,6 +388,30 @@ public class MainCommand implements CommandExecutor {
                             BossManager.getManager().spawnBoss(loc, args[2], "");
 
                             return true;
+                        }
+                        case "setwave": {
+
+                            if (Objects.isNull(args[2]) || Objects.isNull(args[3])) {
+                                sender.sendMessage(miniMessage.deserialize(missingArgumentsMessage));
+                                return false;
+                            }
+
+                            if(!GameManager.getManager().checkIfGameInstanceExists(args[2])) {
+                                sender.sendMessage(miniMessage.deserialize(arenaDoesNotExist));
+                                return false;
+                            }
+
+                            if(GameManager.getManager().getGameInstance(args[2]).gameState != GameState.ACTIVE) {
+                                sender.sendMessage(miniMessage.deserialize(arenaIsNotActive));
+                                return false;
+                            }
+
+                            if(Integer.valueOf(args[3]) <= 0) {
+                                return false;
+                            }
+
+                            GameManager.getManager().endWave(args[2], Integer.valueOf(args[3]));
+
                         }
                     }
                 }

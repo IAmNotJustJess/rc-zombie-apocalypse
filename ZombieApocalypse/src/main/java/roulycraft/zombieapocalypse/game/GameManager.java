@@ -36,7 +36,7 @@ public class GameManager {
     private final Map<UUID, ItemStack[]> lastPlayerInventories = new WeakHashMap<>();
     private final Map<UUID, ItemStack[]> lastPlayerArmour = new WeakHashMap<>();
     private final Map<String, Integer> arenaCountdownList = new WeakHashMap<>();
-    private final Map<String, KeyedBossBar> bossbarList = new WeakHashMap<>();
+    public final Map<String, KeyedBossBar> bossbarList = new WeakHashMap<>();
     private final List<GameInstance> gameInstanceList = new ArrayList<>();
     public Map<UUID, PlayerInstance> playerStats = new WeakHashMap<>();
     private FileConfiguration gameInstanceConfig = null;
@@ -81,7 +81,7 @@ public class GameManager {
         return null;
     }
 
-    public void addScore(String name, UUID uuid) {
+    public void addScore(String name, UUID uuid, Integer score) {
 
         if (name.equals("")) {
             return;
@@ -90,10 +90,15 @@ public class GameManager {
         GameInstance gameInstance = getGameInstance(name);
 
         arenaZombieList.get(name).remove(uuid);
-        gameInstance.setZombieKills(gameInstance.getZombieKills() + 1);
+        gameInstance.setZombieKills(gameInstance.getZombieKills() + score);
         updateBossbar(name, 0);
 
-        if (gameInstance.getZombieKills() >= plugin.getConfig().getInt("settings.newWaveZombieKills")) {
+        if (gameInstance.getWave() % 10 != 0 && gameInstance.getZombieKills() >= plugin.getConfig().getInt("settings.newWaveZombieKills")) {
+
+            endWave(name, gameInstance.getWave() + 1);
+
+        }
+        if (gameInstance.getWave() % 10 == 0 && gameInstance.getZombieKills() >= 1) {
 
             endWave(name, gameInstance.getWave() + 1);
 
@@ -330,7 +335,13 @@ public class GameManager {
                 double currentSeconds = (double) arenaCountdownList.get(name);
                 double maxSeconds = plugin.getConfig().getInt("settings.gameOverAfter");
 
-                String bossbarFormat = plugin.getConfig().getString("messages.formats.bossbarFormat");
+                String bossbarFormat;
+                if(gameInstance.getWave() % 10 == 0) {
+                    bossbarFormat = plugin.getConfig().getString("messages.formats.bossbarBossFormat");
+                }
+                else {
+                    bossbarFormat = plugin.getConfig().getString("messages.formats.bossbarFormat");
+                }
 
                 String wave = Integer.toString(gameInstance.getWave());
                 String zombie = Integer.toString(gameInstance.getZombieKills());
@@ -460,7 +471,7 @@ public class GameManager {
 
     }
 
-    private void endWave(String name, Integer wave) {
+    public void endWave(String name, Integer wave) {
 
         arenaCountdownList.remove(name);
 
@@ -505,7 +516,19 @@ public class GameManager {
 
         if(wave % 10 == 0) {
             Location loc = gameInstance.getConcreteZombieSpawnLoc(0);
-            BossManager.getManager().spawnBoss(loc, Integer.toString(wave / 10), gameInstance.getName());
+            String bossName = Integer.toString(wave / 10);
+            UUID id = BossManager.getManager().spawnBoss(loc, bossName, gameInstance.getName());
+            arenaZombieList.get(gameInstance.getName()).add(id);
+
+            String title = StringSerialisation.deserialise(BossManager.getManager().getBossInstance(bossName).getDisplayName()) + " §2[§a" + BossManager.getManager().getBossInstance(bossName).getHealth() + "§2]";
+            KeyedBossBar bar = Bukkit.createBossBar(new NamespacedKey(plugin, ("zabossbar.boss." + gameInstance.getName())), title, BarColor.RED, BarStyle.SOLID);
+            bar.setProgress(1.0);
+
+            for (UUID uuid : gameInstance.getPlayers()) {
+                bar.addPlayer(Bukkit.getPlayer(uuid));
+            }
+
+            bossbarList.put(name+".boss", bar);
         }
 
         gameInstance.setZombieKills(0);

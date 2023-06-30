@@ -39,6 +39,7 @@ settings:
     electricAOE: 2
     beehiveSpawnedAmount: 3
 
+messages:
   plugin:
     name: "<gradient:#7edd7e:#95e595><bold>Zombie Apocalypse</bold></gradient>"
     command: "<#5ca4e0>"
@@ -79,6 +80,7 @@ settings:
   formats:
     arenaPlayersFormat: "<#555555>[<#aaaaaa>%min%<#555555>/<#aaaaaa>%max%<#555555>]" # %min% - Players currently in the arena, %max% - Maximum players per arena
     bossbarFormat: "<#2d9c53>Fala <#38c268>%wave% <#555555>| <#2d9c53>Zabite zombie<#297041>: <#38c268>%zombie1%<#297041>/<#38c268>%zombie2% <#555555>| <#2d9c53>Przegrana za<#297041>: <#38c268>%time%" # %wave% - Wave, %zombie1% - Killed zombies in a wave, %zombie2% - Required zombie count until the next wave, %time% - Remaining time
+    bossbarBossFormat: "<#2d9c53>Fala <#38c268>%wave% <#555555>| <#2d9c53>Pokonaj bosssa! <#555555>| <#2d9c53>Przegrana za<#297041>: <#38c268>%time%" # %wave% - Wave, %time% - Remaining time
     playerActionBar: "<#94255b>[<#bd447f>HP<#94255b>: <#bd447f>%hp1%<#94255b>/<#bd447f>%hp2%<#94255b>]      <#258194>[<#42a8bd>Poziom 0 <#258194>| <#42a8bd>0<#258194>/<#42a8bd>0<#258194>]" # %hp1% - Current HP, %hp2% - Max HP
 
   arena:

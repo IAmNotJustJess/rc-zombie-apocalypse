@@ -100,6 +100,20 @@ public class ZombieListener implements Listener {
 
     }
 
+    private void changeBossBar(KeyedBossBar bar, String name, Integer HP, Integer maxHP) {
+
+        if (HP > 0) {
+            bar.setTitle(name + " §2[§a" + HP + "§2]");
+            bar.setProgress((double) HP / (double) maxHP);
+            return;
+        }
+
+        bar.setColor(BarColor.RED);
+        bar.setProgress(0);
+        bar.setTitle(name + " §4[§c0§4]");
+
+    }
+
     private void deleteZombieBossBar(NamespacedKey key) {
         new BukkitRunnable() {
             @Override public void run() {
@@ -139,17 +153,25 @@ public class ZombieListener implements Listener {
         int maxHP = entity.getMetadata("maxHealth").get(0).asInt();
         int HP = entity.getMetadata("health").get(0).asInt();
         String key = entity.getMetadata("bossbarKey").get(0).asString();
+        String instanceName = entity.getMetadata("instanceName").get(0).asString();
+        boolean boss = entity.getMetadata("boss").get(0).asBoolean();
 
         HP -= damage;
 
         entity.setMetadata("health", new FixedMetadataValue(plugin, HP));
+        NamespacedKey namespacedKey = new NamespacedKey(plugin, key);
 
         final org.bukkit.util.Vector v = new Vector();
         Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> entity.setVelocity(v), 1L);
 
-        NamespacedKey namespacedKey = new NamespacedKey(plugin, key);
+        if(boss) {
+            KeyedBossBar bar = GameManager.getManager().bossbarList.get(instanceName+".boss");
+            changeBossBar(bar, entity.getCustomName(), HP, maxHP);
+        }
+        else {
+            changeBossBar(namespacedKey, entity.getCustomName(), HP, maxHP);
+        }
 
-        changeBossBar(namespacedKey, entity.getCustomName(), HP, maxHP);
 
         if (HP <= 0) {
 
@@ -163,8 +185,14 @@ public class ZombieListener implements Listener {
             }
             deathParticles(data, entity.getLocation().add(0, 1, 0));
 
-            deleteZombieBossBar(namespacedKey);
-            GameManager.getManager().addScore(entity.getMetadata("instanceName").get(0).asString(), entity.getUniqueId());
+            if(boss) {
+                KeyedBossBar bar = GameManager.getManager().bossbarList.get(instanceName+".boss");
+                deleteZombieBossBar(bar.getKey());
+            }
+            else {
+                deleteZombieBossBar(namespacedKey);
+            }
+            GameManager.getManager().addScore(instanceName, entity.getUniqueId(), entity.getMetadata("countTowardKills").get(0).asInt());
             ZombieSpecial.getManager().onZombieDeathEffect(entity.getMetadata("special").get(0).asString(), entity, entity.getLocation());
             entity.remove();
 
@@ -180,6 +208,7 @@ public class ZombieListener implements Listener {
         Zombie entity = (Zombie) event.getEntity();
         LivingEntity lentity = (LivingEntity) event.getEntity();
         Player player = null;
+        String instanceName = entity.getMetadata("instanceName").get(0).asString();
 
         if (entity.getType() != EntityType.ZOMBIE || event.getEntity().getMetadata("ZA").size() != 1 || !entity.getMetadata("ZA").get(0).asBoolean()) {
             return;
@@ -239,7 +268,11 @@ public class ZombieListener implements Listener {
         final org.bukkit.util.Vector v = new Vector();
         Bukkit.getScheduler().runTaskLaterAsynchronously(plugin, () -> entity.setVelocity(v), 1L);
 
-        if(!boss) {
+        if(boss) {
+            KeyedBossBar bar = GameManager.getManager().bossbarList.get(instanceName+".boss");
+            changeBossBar(bar, entity.getCustomName(), HP, maxHP);
+        }
+        else {
             String key = entity.getMetadata("bossbarKey").get(0).asString();
             NamespacedKey namespacedKey = new NamespacedKey(plugin, key);
             changeBossBar(namespacedKey, entity.getCustomName(), HP, maxHP);
@@ -250,14 +283,20 @@ public class ZombieListener implements Listener {
             }
             bossbarList.get(namespacedKey).put(player, 50);
         }
+
         if (HP > 0) {
 
             event.setDamage(0);
 
         }
+        
         else {
 
-            if(!boss) {
+            if(boss) {
+                KeyedBossBar bar = GameManager.getManager().bossbarList.get(instanceName+".boss");
+                deleteZombieBossBar(bar.getKey());
+            }
+            else {
                 String key = entity.getMetadata("bossbarKey").get(0).asString();
                 NamespacedKey namespacedKey = new NamespacedKey(plugin, key);
                 deleteZombieBossBar(namespacedKey);
@@ -272,7 +311,7 @@ public class ZombieListener implements Listener {
                 data = new ItemStack(Material.GREEN_WOOL, 1).getType().createBlockData();
             }
             deathParticles(data, entity.getLocation().add(0, 1, 0));
-            GameManager.getManager().addScore(entity.getMetadata("instanceName").get(0).asString(), entity.getUniqueId());
+            GameManager.getManager().addScore(instanceName, entity.getUniqueId(), entity.getMetadata("countTowardKills").get(0).asInt());
             ZombieSpecial.getManager().onZombieDeathEffect(entity.getMetadata("special").get(0).asString(), entity, entity.getLocation());
             entity.remove();
 
