@@ -63,6 +63,42 @@ public class BossDefaultSettings {
         leggings.setItemMeta(leggingsMeta);
         boots.setItemMeta(bootsMeta);
 
-        BossManager.getManager().createBossInstance("4", ("<#602d93><bold>Zombie Nekromanta"), 1500, 15, 3.2f, new ItemStack(SKELETON_SKULL, 1), chestplate, leggings, boots, new ItemStack(IRON_HORSE_ARMOR, 1), new ItemStack(AIR, 1), 1000);
+        BossManager.getManager().createBossInstance("4", ("<#602d93><bold>Zombie Nekromanta"), 1500, 15, 3.2f, new ItemStack(SKELETON_SKULL, 1), chestplate, leggings, boots, new ItemStack(IRON_HORSE_ARMOR, 1), new ItemStack(AIR, 1), 1250);
+
+        chestplateMeta.setColor(Color.fromRGB(82, 35, 130));
+        leggingsMeta.setColor(Color.fromRGB(57, 20, 94));
+        bootsMeta.setColor(Color.fromRGB(27, 9, 45));
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        BossManager.getManager().createBossInstance("5", ("<#602d93><bold>PLACEHOLDER"), 1500, 15, 3.2f, new ItemStack(SKELETON_SKULL, 1), chestplate, leggings, boots, new ItemStack(IRON_HORSE_ARMOR, 1), new ItemStack(AIR, 1), 1500);
+
+        chestplateMeta.setColor(Color.fromRGB(82, 35, 130));
+        leggingsMeta.setColor(Color.fromRGB(57, 20, 94));
+        bootsMeta.setColor(Color.fromRGB(27, 9, 45));
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        BossManager.getManager().createBossInstance("6", ("<#602d93><bold>PLACEHOLDER"), 1500, 15, 3.2f, new ItemStack(SKELETON_SKULL, 1), chestplate, leggings, boots, new ItemStack(IRON_HORSE_ARMOR, 1), new ItemStack(AIR, 1), 1750);
+
+        chestplateMeta.setColor(Color.fromRGB(82, 35, 130));
+        leggingsMeta.setColor(Color.fromRGB(57, 20, 94));
+        bootsMeta.setColor(Color.fromRGB(27, 9, 45));
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        BossManager.getManager().createBossInstance("7", ("<#602d93><bold>PLACEHOLDER"), 1500, 15, 3.2f, new ItemStack(SKELETON_SKULL, 1), chestplate, leggings, boots, new ItemStack(IRON_HORSE_ARMOR, 1), new ItemStack(AIR, 1), 2000);
+
+        chestplateMeta.setColor(Color.fromRGB(82, 35, 130));
+        leggingsMeta.setColor(Color.fromRGB(57, 20, 94));
+        bootsMeta.setColor(Color.fromRGB(27, 9, 45));
+        chestplate.setItemMeta(chestplateMeta);
+        leggings.setItemMeta(leggingsMeta);
+        boots.setItemMeta(bootsMeta);
+
+        BossManager.getManager().createBossInstance("8", ("<#602d93><bold>PLACEHOLDER"), 1500, 15, 3.2f, new ItemStack(SKELETON_SKULL, 1), chestplate, leggings, boots, new ItemStack(IRON_HORSE_ARMOR, 1), new ItemStack(AIR, 1), 2500);
     }
 }

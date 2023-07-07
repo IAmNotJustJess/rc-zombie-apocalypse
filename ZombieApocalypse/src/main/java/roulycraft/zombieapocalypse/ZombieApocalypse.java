@@ -7,6 +7,7 @@ import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.plugin.java.JavaPlugin;
 import roulycraft.zombieapocalypse.bosses.BossDefaultSettings;
 import roulycraft.zombieapocalypse.bosses.BossManager;
+import roulycraft.zombieapocalypse.bosses.BossSpecial;
 import roulycraft.zombieapocalypse.commands.MainCommand;
 import roulycraft.zombieapocalypse.game.GameManager;
 import roulycraft.zombieapocalypse.players.PlayerListener;
@@ -48,6 +49,7 @@ public final class ZombieApocalypse extends JavaPlugin {
             ZombieDefaultSettings.injectPlugin(this);
             ZombieSpecial.injectPlugin(this);
             BossManager.injectPlugin(this);
+            BossSpecial.injectPlugin(this);
             RangedWeaponInterpreter.injectPlugin(this);
             RangedManager.injectPlugin(this);
             RangedDefaultSettings.injectPlugin(this);

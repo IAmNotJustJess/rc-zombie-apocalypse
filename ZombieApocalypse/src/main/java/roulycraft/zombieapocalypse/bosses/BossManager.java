@@ -13,6 +13,8 @@ import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.metadata.FixedMetadataValue;
+import org.bukkit.potion.PotionEffect;
+import org.bukkit.potion.PotionEffectType;
 import roulycraft.zombieapocalypse.ZombieApocalypse;
 import roulycraft.zombieapocalypse.game.GameManager;
 import roulycraft.zombieapocalypse.utility.StringSerialisation;
@@ -186,6 +188,8 @@ public class BossManager {
         boss.getEquipment().setChestplateDropChance(0f);
         boss.getEquipment().setLeggingsDropChance(0f);
         boss.getEquipment().setBootsDropChance(0f);
+
+        boss.addPotionEffect(new PotionEffect(PotionEffectType.GLOWING, 600, 0));
 
         if (!instanceName.equals("")) {
             Player player = GameManager.getManager().getRandomPlayer(instanceName);
