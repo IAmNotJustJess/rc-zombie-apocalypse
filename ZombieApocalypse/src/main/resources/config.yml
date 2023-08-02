@@ -108,6 +108,7 @@ messages:
     playerDeathTitle: "<#e05c71>Umarłeś<#aaaaaa>!"
     playerDeathSubtitle: "<#aaaaaa>Odrodzenie nastąpi po starcie <#e05c71>kolejnej fali<#aaaaaa>!"
     playerDeathMessage: "<newline><#aaaaaa>Gracz <#e05c71>%player% <#aaaaaa>został <#e05c71>zabity<#aaaaaa>! Zostało <#e05c71>%alive% <#aaaaaa>żywych graczy!<newline>" # %player% - player, %alive% - alive players
+    bossAttack: "%boss% <#5ca4e0>użył umiejętności <#555555>%attack%<#5ca4e0>!" # %boss% - boss name, %attack% - attack name
     defeat: "<newline><#e05c71>Przegrana<#aaaaaa>... Zombie was <#e05c71>pokonały<#aaaaaa>...<newline>"
     defeatTitle: "<#e05c71>Przegrana.."
     defeatBossbar: "<#e05c71>Przegrana..."

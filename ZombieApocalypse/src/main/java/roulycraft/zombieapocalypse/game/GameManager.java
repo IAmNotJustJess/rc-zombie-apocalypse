@@ -725,7 +725,7 @@ public class GameManager {
         }
     }
 
-    private void sendGameMessage(MessageType type, Player player, String name, String[] message) {
+    public void sendGameMessage(MessageType type, Player player, String name, String[] message) {
 
         GameInstance gameInstance = getGameInstance(name);
         MiniMessage miniMessage = MiniMessage.miniMessage();
@@ -886,6 +886,17 @@ public class GameManager {
                     ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
                     playerUUID.sendTitle(title, subtitle, 10, 40, 10);
                     playerUUID.playSound(playerUUID.getLocation(), Sound.ENTITY_WITHER_SPAWN, SoundCategory.PLAYERS, 10, 0.5f);
+                }
+                break;
+            }
+            case BOSS_ATTACK: {
+
+                message[0] = plugin.getConfig().getString("messages.arena.bossAttack");
+                message[0] = message[0].replace("%boss%", message[1]).replace("%attack%", message[2]);
+
+                for(UUID uuid : gameInstance.getPlayers()) {
+                    Player playerUUID = Bukkit.getPlayer(uuid);
+                    ((Audience) playerUUID).sendMessage(miniMessage.deserialize(message[0]));
                 }
                 break;
             }
