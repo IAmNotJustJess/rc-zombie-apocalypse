@@ -41,77 +41,77 @@ settings:
 
 messages:
   plugin:
-    name: "<gradient:#7edd7e:#95e595><bold>Zombie Apocalypse</bold></gradient>"
-    command: "<#5ca4e0>"
+    name: "<gradient:#9dff66:#56ff49><bold>Zombie Apocalypse</bold></gradient>"
+    command: "<#9dff66>"
     symbol: "<#555555>"
-    headline: "<#aaaaaa>"
+    headline: "<#dddddd>"
 
     zombies:
       level1:
-        name: "<#7cffac>Wzmocniony"
-        colorR: 124
+        name: "<#98ff9a>Wzmocniony"
+        colorR: 152
         colorG: 255
-        colorB: 172
+        colorB: 154
       level2:
-        name: "<#3f75ff>Niepowstrzymany"
-        colorR: 63
-        colorG: 117
+        name: "<#87d5ff>Niepowstrzymany"
+        colorR: 135
+        colorG: 213
         colorB: 255
       level3:
-        name: "<#ffbc75>Ostateczny"
-        colorR: 255
-        colorG: 188
-        colorB: 117
+        name: "<#d37bff>Ostateczny"
+        colorR: 211
+        colorG: 123
+        colorB: 255
 
     guns:
       level0:
         primary: "<#dddddd>"
         secondary: "<#5e5e5e>"
       level1:
-        primary: "<#7cffac>"
-        secondary: "<#3e7f56>"
+        primary: "<#98ff9a>"
+        secondary: "<#4c7f4d>"
       level2:
-        primary: "<#3f75ff>"
-        secondary: "<#1f3a7f>"
+        primary: "<#87d5ff>"
+        secondary: "<#436a7f>"
       level3:
-        primary: "<#ffbc75>"
-        secondary: "<#7f5e3a>"
+        primary: "<#d37bff>"
+        secondary: "<#693d7f>"
 
   formats:
-    arenaPlayersFormat: "<#555555>[<#aaaaaa>%min%<#555555>/<#aaaaaa>%max%<#555555>]" # %min% - Players currently in the arena, %max% - Maximum players per arena
-    bossbarFormat: "<#2d9c53>Fala <#38c268>%wave% <#555555>| <#2d9c53>Zabite zombie<#297041>: <#38c268>%zombie1%<#297041>/<#38c268>%zombie2% <#555555>| <#2d9c53>Przegrana za<#297041>: <#38c268>%time%" # %wave% - Wave, %zombie1% - Killed zombies in a wave, %zombie2% - Required zombie count until the next wave, %time% - Remaining time
-    bossbarBossFormat: "<#2d9c53>Fala <#38c268>%wave% <#555555>| <#2d9c53>Pokonaj bosssa! <#555555>| <#2d9c53>Przegrana za<#297041>: <#38c268>%time%" # %wave% - Wave, %time% - Remaining time
-    playerActionBar: "<#94255b>[<#bd447f>HP<#94255b>: <#bd447f>%hp1%<#94255b>/<#bd447f>%hp2%<#94255b>]      <#258194>[<#42a8bd>Poziom 0 <#258194>| <#42a8bd>0<#258194>/<#42a8bd>0<#258194>]" # %hp1% - Current HP, %hp2% - Max HP
+    arenaPlayersFormat: "<#555555>[<#dddddd>%min%<#555555>/<#dddddd>%max%<#555555>]" # %min% - Players currently in the arena, %max% - Maximum players per arena
+    bossbarFormat: "<#DDDDDD>Fala <#FFD07A><bold>%wave%</bold> <#555555>| <#DDDDDD>Zabite zombie <#92FF7A>%zombie1%<#497D3D>/<#92FF7A>%zombie2% <#555555>| <#DDDDDD>Przegrana za: <#EA766E>%time%" # %wave% - Wave, %zombie1% - Killed zombies in a wave, %zombie2% - Required zombie count until the next wave, %time% - Remaining time
+    bossbarBossFormat: "<#DDDDDD>Fala <#ffd07a><bold>%wave%</bold> <#555555>| <#DDDDDD>Pokonaj <#AD3624>bossa<#DDDDDD>! <#555555>| <#DDDDDD>Przegrana za: <#EA766E>%time%" # %wave% - Wave, %time% - Remaining time
+    playerActionBar: "<#FF0741>❤ <#970D2D>| <#FF4B75>%hp1%/%hp2%          <#908405>| <#FFEC16>Poz. <#FFF58D>1 <#908405>|          <#4B8AFF>0/0 <#083C9A>| <#0C61FF>❇" # %hp1% - Current HP, %hp2% - Max HP
 
   arena:
-    playerJoinLobby: "<#5ca4e0>%player% <#aaaaaa>dołącza do areny." # %player% - Player
-    playerLeaveLobby: "<#5ca4e0>%player% <#aaaaaa>opuszcza arenę." # %player% - Player
-    minimumPlayersReached: "<newline><#aaaaaa>Na arenie jest <#5ca4e0>wystarczająca ilość graczy<#aaaaaa>!<newline><#aaaaaa>Odliczanie <#5ca4e0>rozpoczęte<#aaaaaa>!<newline>"
-    reductionPlayersReached: "<newline><#aaaaaa>Arena jest <#5ca4e0>pełna<#aaaaaa>! <newline><#aaaaaa>Odliczanie <#5ca4e0>skrócone<#aaaaaa>!<newline>"
-    arenaCountdown: "<#aaaaaa>Arena rozpocznie się za <#5ca4e0>%time%<#aaaaaa>." # %time% - Time until the arena starts
-    arenaCountdownSubtitle: "<transition:#aaaaaa:#5ca4e0:%phase%>%time%" # %phase% - Transition phase, %time - Time until the arena starts
-    weaponChange: "<#aaaaaa>Wybrano broń %weapon% o poziomie %level%<#aaaaaa>!<newline>Otrzymasz ją na następnej fali!" # %weapon% - selected weapon, %level% - level of the weapon
-    arenaBeginExplenationTitles: "<#aaaaaa>Witaj na%break%<#aaaaaa>Twoje zadania:%break%<#aaaaaa>Twoje zadania:%break%<#aaaaaa>Twoje zadania:"  # %break% - Split for multiple titles
-    arenaBeginExplenationSubtitles: "<#5ca4e0>Zombie Apocalypse<#aaaaaa>!%break%<#aaaaaa>Przetrwaj jak <#5ca4e0>najdłużej<#aaaaaa>!%break%<#aaaaaa>Zabijaj <#5ca4e0>zombie<#aaaaaa>!%break%" # %break% - Split for multiple subtitles
-    arenaBeginExplenationMessages: "<newline><#aaaaaa>Witaj na <#5ca4e0>ZombieApocalypse<#aaaaaa>!<newline><newline><#aaaaaa>Obecnie grasz na zamkniętych testach <#5ca4e0>alpha<#aaaaaa>!<newline>%break% 
-    <newline><#aaaaaa>Przetrwaj jak <#5ca4e0>najdłużej <#aaaaaa>walcząć z <#5ca4e0>licznymi falami Zombie<#aaaaaa>.<newline><newline><#aaaaaa>Im <#5ca4e0>większa fala<#aaaaaa>, tym <#5ca4e0>silniejsze stają się zombie<#aaaaaa>!<newline><#aaaaaa>Aktualnie arena <#5ca4e0>kończy się <#aaaaaa>po <#5ca4e0>80 fali<#aaaaaa>!<newline>%break%
-    <newline><#aaaaaa>Zabijaj jak <#5ca4e0>najwięcej zombie<#aaaaaa>!<newline><newline><#aaaaaa>Po zabiciu <#5ca4e0>wymaganej ilości zombie<#aaaaaa> kolejna fala rozpocznie się <#5ca4e0>automatycznie<#aaaaaa>.<newline><newline><#aaaaaa>Zmieniaj bronie (jak narazie) pod komendą <#5ca4e0>/za tb <id> <poziom>,<newline><#5ca4e0> ID: 1 - 20, Poziom 0 - 3<newline>" # %break% - Split for multiple messages, <newline> - Split for multiple rows of messages
-    arenaBeginTitle: "<#aaaaaa>Powodzenia!"
-    arenaBeginSubtitle: "<#aaaaaa>Start za <#5ca4e0>5 sekund<#aaaaaa>!"
-    arenaBeginMessages: "<newline><#aaaaaa>Powodzenia!<newline><newline><#aaaaaa>Pierwsza fala rozpoczenie się za <#5ca4e0>5 sekund<#aaaaaa>!<newline>" # <newline> - Split for multiple rows of messages
-    nextWave: "<newline><#2d9c53>Fala <#38c268>%wave% <#aaaaaa>rozpoczęta.<newline>" # %wave% - Next wave
-    nextWaveTitle: "<#2d9c53>Fala <#38c268>%wave%" # %wave% - Next wave
-    nextWaveSubtitle10s: "<#555555>Zombie stają się <#2d9c53>potężniejsze<#555555>..."
-    waveBeaten: "<#2d9c53>Fala <#38c268>%wave% <#aaaaaa>zakończona! Kolejna fala za <#2d9c53>5 sekund<#aaaaaa>..." # %wave% - Wave beaten
-    waveBeatenBossbar: "<#2d9c53>Fala <#38c268>%wave%<#aaaaaa> zakończona."
-    waveTimeout: "<#aaaaaa>Czas się <#e05c71>kończy<#aaaaaa>! Pozostało <#e05c71>%time% <#aaaaaa>do <#e05c71>przegranej!" # %time% - Time till losing
-    playerDeathTitle: "<#e05c71>Umarłeś<#aaaaaa>!"
-    playerDeathSubtitle: "<#aaaaaa>Odrodzenie nastąpi po starcie <#e05c71>kolejnej fali<#aaaaaa>!"
-    playerDeathMessage: "<newline><#aaaaaa>Gracz <#e05c71>%player% <#aaaaaa>został <#e05c71>zabity<#aaaaaa>! Zostało <#e05c71>%alive% <#aaaaaa>żywych graczy!<newline>" # %player% - player, %alive% - alive players
-    bossAttack: "%boss% <#5ca4e0>użył umiejętności <#555555>%attack%<#5ca4e0>!" # %boss% - boss name, %attack% - attack name
-    defeat: "<newline><#e05c71>Przegrana<#aaaaaa>... Zombie was <#e05c71>pokonały<#aaaaaa>...<newline>"
-    defeatTitle: "<#e05c71>Przegrana.."
-    defeatBossbar: "<#e05c71>Przegrana..."
-    victory: "<newline><#5ce088>Zwycięstwo<#aaaaaa>! Zombie zostały <#5ce088>pokonane<#aaaaaa>!<newline>"
+    playerJoinLobby: "<#9dff66>%player% <#dddddd>dołącza do areny." # %player% - Player
+    playerLeaveLobby: "<#9dff66>%player% <#dddddd>opuszcza arenę." # %player% - Player
+    minimumPlayersReached: "<newline><#dddddd>Na arenie jest <#9dff66>wystarczająca ilość graczy<#dddddd>!<newline><#9dff66>Odliczanie <#9dff66>rozpoczęte<#dddddd>!<newline>"
+    reductionPlayersReached: "<newline><#dddddd>Arena jest <#9dff66>pełna<#dddddd>! <newline><#dddddd>Odliczanie <#9dff66>skrócone<#dddddd>!<newline>"
+    arenaCountdown: "<#dddddd>Arena rozpocznie się za <#9dff66>%time%<#dddddd>." # %time% - Time until the arena starts
+    arenaCountdownSubtitle: "<transition:#dddddd:#9dff66:%phase%>%time%" # %phase% - Transition phase, %time - Time until the arena starts
+    weaponChange: "<newline><#dddddd>Wybrano broń %weapon% o poziomie %level%<#dddddd>!<newline>Otrzymasz ją po starcie kolejnej fali!<newline>" # %weapon% - selected weapon, %level% - level of the weapon
+    arenaBeginExplenationTitles: "<#dddddd>Witaj na%break%<#dddddd>Twoje zadania:%break%<#dddddd>Twoje zadania:%break%<#dddddd>Twoje zadania:"  # %break% - Split for multiple titles
+    arenaBeginExplenationSubtitles: "<gradient:#9dff66:#56ff49><bold>Zombie Apocalypse</bold></gradient><#dddddd>!%break%<#dddddd>Przetrwaj jak <#9dff66>najdłużej<#dddddd>!%break%<#dddddd>Zabijaj <#9dff66>zombie<#dddddd>!%break%" # %break% - Split for multiple subtitles
+    arenaBeginExplenationMessages: "<newline><#dddddd>Witaj na <#9dff66>ZombieApocalypse<#dddddd>!<newline><newline><#dddddd>Obecnie grasz na zamkniętych testach <#9dff66>alpha<#dddddd>!<newline>%break% 
+    <newline><#dddddd>Przetrwaj jak <#9dff66>najdłużej <#dddddd>walcząć z <#9dff66>licznymi falami Zombie<#dddddd>.<newline><newline><#dddddd>Im <#9dff66>większa fala<#dddddd>, tym <#9dff66>silniejsze stają się zombie<#dddddd>!<newline><#dddddd>Aktualnie arena <#9dff66>kończy się <#dddddd>po <#9dff66>80 fali<#dddddd>!<newline>%break%
+    <newline><#dddddd>Zabijaj jak <#9dff66>najwięcej zombie<#dddddd>!<newline><newline><#dddddd>Po zabiciu <#9dff66>wymaganej ilości zombie<#dddddd> kolejna fala rozpocznie się <#9dff66>automatycznie<#dddddd>.<newline><newline><#dddddd>Zmieniaj bronie (jak narazie) pod komendą <#9dff66>/za tb <id> <poziom>,<newline><#9dff66> ID: 1 - 20, Poziom 0 - 3<newline>" # %break% - Split for multiple messages, <newline> - Split for multiple rows of messages
+    arenaBeginTitle: "<#dddddd>Powodzenia!"
+    arenaBeginSubtitle: "<#dddddd>Start za <#9dff66>5 sekund<#dddddd>!"
+    arenaBeginMessages: "<newline><#dddddd>Powodzenia!<newline><newline><#dddddd>Pierwsza fala rozpoczenie się za <#9dff66>5 sekund<#dddddd>!<newline>" # <newline> - Split for multiple rows of messages
+    nextWave: "<newline><#dddddd>Fala <#ffd07a><bold>%wave%</bold> <#dddddd>się rozpoczyna...<newline>" # %wave% - Next wave
+    nextWaveTitle: "<#dddddd>Fala <#ffd07a><bold>%wave%</bold>" # %wave% - Next wave
+    nextWaveSubtitle10s: "<#555555>Zombie stają się <#AD3624>potężniejsze<#555555>..."
+    waveBeaten: "<#dddddd>Fala <#ffd07a><bold>%wave%</bold> <#dddddd>zakończona! Kolejna fala za <#9dff66>5 sekund<#dddddd>..." # %wave% - Wave beaten
+    waveBeatenBossbar: "<#dddddd>Fala <#ffd07a><bold>%wave%</bold><#dddddd> zakończona."
+    waveTimeout: "<#dddddd>Czas się <#AD3624>kończy<#dddddd>! Pozostało <#AD3624>%time% <#dddddd>do <#AD3624>przegranej!" # %time% - Time till losing
+    playerDeathTitle: "<#AD3624>Zabito cię...<#dddddd>"
+    playerDeathSubtitle: "<#dddddd>Odrodzenie nastąpi po starcie <#e05c71>kolejnej fali<#dddddd>!"
+    playerDeathMessage: "<newline><#dddddd>Gracz <#AD3624>%player% <#dddddd>został <#AD3624>zabity<#dddddd>! Zostało <#AD3624>%alive% <#dddddd>żywych graczy!<newline>" # %player% - player, %alive% - alive players
+    bossAttack: "%boss% <#555555>użył umiejętności: <#9dff66>%attack%<#555555>!" # %boss% - boss name, %attack% - attack name
+    defeat: "<newline><#AD3624>Przegrana<#dddddd>... Zombie was <#AD3624>pokonały<#dddddd>...<newline>"
+    defeatTitle: "<#AD3624>Przegrana.."
+    defeatBossbar: "<#AD3624>Przegrana..."
+    victory: "<newline><#5ce088>Zwycięstwo<#dddddd>! Zombie zostały <#5ce088>pokonane<#dddddd>!<newline>"
     victoryTitle: "<#5ce088>Zwycięstwo!"
     victoryBossbar: "<#5ce088>Zwycięstwo!"

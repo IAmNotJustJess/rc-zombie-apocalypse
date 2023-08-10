@@ -389,6 +389,22 @@ public class MainCommand implements CommandExecutor {
 
                             return true;
                         }
+                        case "testmessage": {
+
+                            if (Objects.isNull(args[2])) {
+                                sender.sendMessage(miniMessage.deserialize(missingArgumentsMessage));
+                                return true;
+                            }
+
+                            String message = args[2];
+
+                            for(int i = 3; i < args.length; i++) {
+                                message += " " + args[i];
+                            }
+
+                            sender.sendMessage(miniMessage.deserialize(message));
+                            return true;
+                        }
                         case "setwave": {
 
                             if (Objects.isNull(args[2]) || Objects.isNull(args[3])) {
