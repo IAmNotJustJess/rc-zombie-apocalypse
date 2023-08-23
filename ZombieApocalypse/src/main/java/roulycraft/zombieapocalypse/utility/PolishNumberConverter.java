@@ -11,14 +11,11 @@ public class PolishNumberConverter {
         if (absNumber == 1) {
             message += msg1;
         }
-        else if (absNumber >= 2 && absNumber <= 4) {
+        else if (absNumber % 10 >= 2 && absNumber % 10 <= 4) {
             message += msg2;
         }
         else if (absNumber >= 5 && absNumber <= 20) {
             message += msg3;
-        }
-        else if (absNumber % 10 >= 2 && absNumber % 10 <= 4) {
-            message += msg2;
         }
         else {
             message += msg3;
