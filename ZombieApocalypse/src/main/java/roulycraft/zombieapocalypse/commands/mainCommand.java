@@ -2,6 +2,7 @@ package roulycraft.zombieapocalypse.commands;
 
 import net.kyori.adventure.audience.Audience;
 import net.kyori.adventure.text.minimessage.MiniMessage;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -28,7 +29,8 @@ public class MainCommand implements CommandExecutor {
         plugin = p;
     }
 
-    @Override public boolean onCommand(CommandSender player, Command command, String label, String[] args) {
+    @Override
+    public boolean onCommand(CommandSender player, Command command, String label, String[] args) {
 
         Audience sender = (Audience) player;
         MiniMessage miniMessage = MiniMessage.miniMessage();
@@ -94,7 +96,9 @@ public class MainCommand implements CommandExecutor {
                             sender.sendMessage(miniMessage.deserialize("<newline>" + symbolColour + "== " + headlineColour + "<bold>Komendy Creation Tools " + pluginName + " " + symbolColour + "==<newline>"));
                             sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug spawnZombie <nazwa> " + symbolColour + "- " + headlineColour + "Respi zombiaka na twojej lokacji."));
                             sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug spawnBoss <nazwa> " + symbolColour + "- " + headlineColour + "Respi bossa na twojej lokacji."));
-                            sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug giveRanged <gracz> <id> " + symbolColour + "- " + headlineColour + "Daje graczu broń palną."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug giveGun <gracz> <id> <poziom> " + symbolColour + "- " + headlineColour + "Daje graczu broń palną."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug getGun <id> <poziom> " + symbolColour + "- " + headlineColour + "Daje tobie broń palną."));
+                            sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug testMessage <tekst> " + symbolColour + "- " + headlineColour + "Sprawdza jak wygladac bedzie tekst."));
                             sender.sendMessage(miniMessage.deserialize(commandColour + "/za debug setWave <instancja> <nrFali> " + symbolColour + "- " + headlineColour + "Ustawia fale na arenie."));
                             return true;
                         }
@@ -310,6 +314,24 @@ public class MainCommand implements CommandExecutor {
 
                     switch (args[1].toLowerCase()) {
 
+                        case "givegun": {
+
+                            if(Bukkit.getPlayer(args[2]) == null || !Bukkit.getPlayer(args[2]).isOnline()) {
+                                sender.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Gracz nie jest online!"));
+                            }
+
+                            if (RangedManager.getManager().getGun(Integer.valueOf(args[3]), Integer.valueOf(args[4])) == null) {
+
+                                sender.sendMessage(miniMessage.deserialize("<dark_red>BŁĄD! <red>Broń o ID: <white>" + args[2] + " <red>i poziomie <white>" + args[3] + "<red> nie istnieje!"));
+                                return true;
+
+                            }
+
+                            Bukkit.getPlayer(args[2]).getInventory().addItem(RangedManager.getManager().getGun(Integer.valueOf(args[3]), Integer.valueOf(args[4])));
+                            sender.sendMessage(miniMessage.deserialize("<dark_green>SUKCES! <green>Dano broń o ID: <white>" + args[3] + " <green>i poziomie <white>" + args[4] + "<green>!"));
+
+                            return true;
+                        }
                         case "getgun": {
 
                             Integer.valueOf(args[2]);

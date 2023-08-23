@@ -28,7 +28,8 @@ import java.util.Objects;
 
 public final class ZombieApocalypse extends JavaPlugin {
 
-    @Override public void onEnable() {
+    @Override
+    public void onEnable() {
 
         for (Iterator<KeyedBossBar> it = Bukkit.getBossBars(); it.hasNext(); ) {
 

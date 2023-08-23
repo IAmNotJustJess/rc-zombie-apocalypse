@@ -156,6 +156,12 @@ public class ZombieListener implements Listener {
         String instanceName = entity.getMetadata("instanceName").get(0).asString();
         boolean boss = entity.getMetadata("boss").get(0).asBoolean();
 
+        double damageReduction = 0.0;
+        if(zombie.getMetadata("damageReduction").get(0) != null){
+            damageReduction = zombie.getMetadata("damageReduction").get(0).asDouble();
+        }
+        damage -= (int)(damage * damageReduction);
+
         HP -= damage;
 
         entity.setMetadata("health", new FixedMetadataValue(plugin, HP));
@@ -260,6 +266,12 @@ public class ZombieListener implements Listener {
 
         int maxHP = entity.getMetadata("maxHealth").get(0).asInt();
         int HP = entity.getMetadata("health").get(0).asInt();
+
+        double damageReduction = 0.0;
+        if(entity.getMetadata("damageReduction").get(0) != null){
+            damageReduction = entity.getMetadata("damageReduction").get(0).asDouble();
+        }
+        damage -= (int)(damage * damageReduction);
 
         HP -= damage;
 

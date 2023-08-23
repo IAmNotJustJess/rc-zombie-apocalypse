@@ -4,17 +4,17 @@ import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 public class ZombieInstance {
-    private final String name;
-    private String displayName;
-    private Integer health;
-    private Integer damage;
-    private Float speed;
-    private String special;
-    private ItemStack helmet;
-    private ItemStack chestplate;
-    private ItemStack leggings;
-    private ItemStack boots;
-    private Integer xpReward;
+    protected String name;
+    protected String displayName;
+    protected Integer health;
+    protected Integer damage;
+    protected Float speed;
+    protected String special;
+    protected ItemStack helmet;
+    protected ItemStack chestplate;
+    protected ItemStack leggings;
+    protected ItemStack boots;
+    protected Integer xpReward;
 
     public ZombieInstance(String name, String displayName, Integer health, Integer damage, Float speed, String special, ItemStack helmet, ItemStack chestplate, ItemStack leggings, ItemStack boots, Integer xpReward) {
         this.name = name;

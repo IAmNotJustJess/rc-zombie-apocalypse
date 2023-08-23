@@ -263,6 +263,10 @@ public class GameManager {
             }
         }.runTaskLater(plugin, 100L);
 
+        if(Bukkit.getBossBar(new NamespacedKey(plugin, "zabossbar.boss." + name)) != null) {
+            Bukkit.getBossBar(new NamespacedKey(plugin, "zabossbar.boss." + name)).removeAll();
+        }
+
         arenaCountdownList.remove(name);
         switch (endType) {
             case 1: {
@@ -483,6 +487,10 @@ public class GameManager {
 
         arenaZombieList.remove(name);
         arenaZombieList.put(name, new ArrayList<>());
+
+        if(Bukkit.getBossBar(new NamespacedKey(plugin, "zabossbar.boss." + name)) != null) {
+            Bukkit.getBossBar(new NamespacedKey(plugin, "zabossbar.boss." + name)).removeAll();
+        }
 
         if (wave > plugin.getConfig().getInt("settings.waveCount")) {
             endArena(name, 2);
