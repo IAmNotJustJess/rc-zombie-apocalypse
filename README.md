@@ -31,7 +31,7 @@ Globalnego nie opisuje bo narazie go nie ma xD
 *Za poziomy:*
 - Bronie
 - Zestawy kart
-*Za monety (BY SIE W KONCU KURWA PRZYDALY XD; dodatkowo przez to, że jest to tryb PvE powinno być OK):*
+*Za monety (BY SIE W KONCU PRZYDALY XD; dodatkowo przez to, że jest to tryb PvE powinno być OK):*
 - Ulepszenia broni (Start na Lvl 1, kończy się na Lvl 5)
 - Zestawy kart (jakieś niektóre)
 - Ulepszenia zestawów kart (Start na Lvl 1, z każdym ulepszeniem zwiększa ilość dostępnych kart)
