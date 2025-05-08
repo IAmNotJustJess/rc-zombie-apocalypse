@@ -1,7 +1,0 @@
-name: Destroy the Monument
-version: '1.0'
-main: IAmNotJustJess.destroyTheMonument.DestroyTheMonument
-api-version: '1.21'
-prefix: DTM
-authors: [ IAmNotJustJess ]
-description: A Class-Based Team Minecraft Mini-Game, inspired by MCLobby's minigame.
